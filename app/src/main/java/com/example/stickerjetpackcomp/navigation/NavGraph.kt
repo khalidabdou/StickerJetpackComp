@@ -8,23 +8,24 @@ import androidx.navigation.compose.composable
 import com.example.stickerjetpackcomp.screens.Details
 import com.example.stickerjetpackcomp.screens.Home
 import com.example.stickerjetpackcomp.screens.Splash
+import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 
 
 @ExperimentalAnimationApi
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
-
+    viewModel:StickerViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Details.route
+        startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Splash.route) {
             Splash(navController = navController)
         }
         composable(route = Screen.Home.route) {
-            Home(navController = navController)
+            Home(navController = navController,viewModel=viewModel)
         }
         composable(route = Screen.Details.route) {
             Details()

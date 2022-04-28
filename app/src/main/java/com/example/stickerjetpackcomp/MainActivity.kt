@@ -9,22 +9,26 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.stickerjetpackcomp.ui.theme.StickerJetpackCompTheme
+import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.SetupNavGraph
-
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalAnimationApi
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StickerJetpackCompTheme {
+                val viewModel: StickerViewModel = hiltViewModel()
                 val navController = rememberNavController()
                 SetupNavGraph(
                     navController = navController,
+                    viewModel = viewModel
                 )
             }
         }

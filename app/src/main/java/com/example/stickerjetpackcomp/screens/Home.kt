@@ -7,13 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,39 +20,50 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
+import com.example.stickerjetpackcomp.utils.NetworkResults
+import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
-import kotlinx.coroutines.flow.collectLatest
+import com.green.china.sticker.features.sticker.models.StickerPack
 
 
 @ExperimentalAnimationApi
 @Composable
-fun Home(navController: NavController) {
+fun Home(navController: NavController, viewModel: StickerViewModel) {
 
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     var scrollState = rememberScrollState()
+    val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(scaffoldState) {
+        viewModel.getStickers()
+    }
 
     Scaffold(
-        topBar = { AppBar() }
+        scaffoldState = scaffoldState,
+        topBar = {
+            AppBar(icon = R.drawable.ic_baseline_star_half_24, onClick = {
+
+            })
+        }
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundWhite)
+                .background(Color.White)
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(10) {
-
-                    Pack {
-                       navController.navigate(Screen.Details.route)
+            if (viewModel.stickers.value!=null)
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(viewModel.stickers.value!!.size) {
+                        Pack(viewModel.stickers.value!![it]) {
+                            navController.navigate(Screen.Details.route)
+                        }
                     }
                 }
-
-            }
 
         }
     }
@@ -64,7 +71,7 @@ fun Home(navController: NavController) {
 
 
 @Composable
-fun AppBar(background: Color = backgroundWhite) {
+fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,10 +97,14 @@ fun AppBar(background: Color = backgroundWhite) {
             style = MaterialTheme.typography.h1
         )
         Icon(
-            painter = painterResource(id = R.drawable.favorite),
+            painter = painterResource(id = icon),
             contentDescription = "",
             tint = backgroundWhite,
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier
+                .size(30.dp)
+                .clickable {
+                    onClick()
+                }
         )
         Spacer(modifier = Modifier.width(5.dp))
     }
@@ -101,7 +112,7 @@ fun AppBar(background: Color = backgroundWhite) {
 
 @ExperimentalAnimationApi
 @Composable
-fun Pack(onClick: () -> Unit) {
+fun Pack(sticker:StickerPack,onClick: () -> Unit) {
 
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
@@ -167,8 +178,8 @@ fun Pack(onClick: () -> Unit) {
                     exit = slideOutVertically() + shrinkVertically() + fadeOut(),
                 ) {
 
-                Image(
-                        painter = painterResource(id = Stickers[it]),
+                    AsyncImage(
+                        model  = "${sticker.stickers[it].image_file}",
                         contentDescription = "",
                         modifier = Modifier.size(70.dp)
                     )
