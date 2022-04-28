@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,12 +64,12 @@ fun Home(navController: NavController) {
 
 
 @Composable
-fun AppBar() {
+fun AppBar(background: Color = backgroundWhite) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .background(backgroundWhite)
+            .background(background)
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -89,7 +90,7 @@ fun AppBar() {
             style = MaterialTheme.typography.h1
         )
         Icon(
-            imageVector = Icons.Default.Star,
+            painter = painterResource(id = R.drawable.favorite),
             contentDescription = "",
             tint = backgroundWhite,
             modifier = Modifier.size(30.dp)
@@ -139,7 +140,6 @@ fun Pack(onClick: () -> Unit) {
 
                     )
             }
-
             Spacer(modifier = Modifier.width(5.dp))
             Text(text = "Sticker pack ", color = darkGray, style = MaterialTheme.typography.h1)
         }
