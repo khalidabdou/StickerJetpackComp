@@ -1,7 +1,8 @@
 package com.example.stickerjetpackcomp.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -25,6 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -35,19 +37,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.Stickers
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.ui.theme.darkGray2
-import kotlinx.coroutines.delay
+import com.example.stickerjetpackcomp.viewModel.StickerViewModel
+import com.green.china.sticker.features.sticker.models.StickerPack
 
 @ExperimentalAnimationApi
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun Details() {
+fun Details(viewModel: StickerViewModel) {
 
     var process by mutableStateOf(10)
     var favIcon by mutableStateOf(R.drawable.favorite)
+
+    val pack=viewModel.detailsPack.value
 
     val state = rememberLazyListState()
     Scaffold(topBar = {
@@ -55,13 +62,13 @@ fun Details() {
             background = darkGray2,
             icon = favIcon,
             onClick = {
-                favIcon=R.drawable.ic_favorite
+                favIcon = R.drawable.ic_favorite
             })
     }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundWhite)
+                .background(darkGray)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -104,8 +111,8 @@ fun Details() {
                         color = backgroundWhite,
                         style = MaterialTheme.typography.h1
                     )
-                    LabelLikes(icon = R.drawable.eye, text = "10k")
-                    LabelLikes(icon = R.drawable.favorite, text = "1506")
+                    LabelLikes(icon = R.drawable.eye, text =pack!!.views.toString() )
+                    LabelLikes(icon = R.drawable.ic_dwonloaded, text = pack!!.addToWatsapp.toString() )
                 }
                 Column() {
                     Button(
@@ -125,7 +132,7 @@ fun Details() {
                     }
                 }
             }
-            GridStickers(state = state)
+            GridStickers(state = state, pack = pack!!)
         }
     }
 }
@@ -133,41 +140,26 @@ fun Details() {
 @ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridStickers(state: LazyListState) {
+fun GridStickers(pack:StickerPack,state: LazyListState) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
         state = state
     ) {
-        items(Stickers.size) { index ->
-            var visible by remember { mutableStateOf(false) }
-            LaunchedEffect(true) {
-                visible = true
-                delay(1000)
-            }
-            AnimatedVisibility(
-                visible = visible,
-                enter = fadeIn(
-                    initialAlpha = 0.3f,
-                    animationSpec = tween(1000)
-                ),
-                exit = slideOutVertically() + shrinkVertically() + fadeOut(),
+        items(pack.stickers.size) { index ->
+            Card(
+                modifier = Modifier
+                    .size(90.dp)
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                backgroundColor = Color.White,
             ) {
-                Card(
-                    modifier = Modifier
-                        .size(90.dp)
-                        .padding(4.dp)
-                        .clip(RoundedCornerShape(10.dp)),
-                    backgroundColor = Color.LightGray,
-                ) {
-                    Image(
-                        painter = painterResource(id = Stickers[index]),
-                        contentDescription = "",
-                        modifier = Modifier.size(70.dp)
-                    )
-                }
+                AsyncImage(
+                    model  = "${pack.stickers[index].image_file}",
+                    contentDescription = "",
+                    modifier = Modifier.size(70.dp)
+                )
             }
-
         }
     }
 }

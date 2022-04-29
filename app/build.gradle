@@ -82,5 +82,7 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
+    implementation "com.github.skydoves:landscapist-glide:1.5.1"
+
 
 }
