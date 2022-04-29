@@ -27,6 +27,8 @@ class StickerViewModel @Inject constructor(
 
     private val list= arrayListOf<StickerPack>()
 
+    var detailsPack= mutableStateOf<StickerPack?>(null)
+
     fun getStickers()=viewModelScope.launch {
         if (stickersFromApi.value is NetworkResults.Error || stickersFromApi.value is NetworkResults.Loading ){
             val response=remote.getStickers()
@@ -45,5 +47,9 @@ class StickerViewModel @Inject constructor(
 
         }
        
+    }
+
+    fun setDetailPack(pack: StickerPack) {
+        detailsPack.value=pack
     }
 }

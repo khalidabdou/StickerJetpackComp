@@ -28,7 +28,7 @@ fun SetupNavGraph(
             Home(navController = navController,viewModel=viewModel)
         }
         composable(route = Screen.Details.route) {
-            Details()
+            Details(viewModel = viewModel)
         }
 
     }

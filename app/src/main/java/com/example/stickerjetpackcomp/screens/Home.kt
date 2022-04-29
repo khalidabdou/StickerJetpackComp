@@ -15,7 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,10 +27,13 @@ import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
-import com.example.stickerjetpackcomp.utils.NetworkResults
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.green.china.sticker.features.sticker.models.StickerPack
+import com.skydoves.landscapist.glide.GlideImage
+import kotlin.Int
+import kotlin.Unit
+import kotlin.repeat
 
 
 @ExperimentalAnimationApi
@@ -39,7 +45,8 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
     var scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(scaffoldState) {
-        viewModel.getStickers()
+        if (viewModel.stickers.value.isNullOrEmpty())
+            viewModel.getStickers()
     }
 
     Scaffold(
@@ -56,10 +63,11 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 .fillMaxSize()
                 .background(Color.White )
         ) {
-            if (viewModel.stickers.value!=null)
+            if (viewModel.stickers.value != null)
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(viewModel.stickers.value!!.size) {
                         Pack(viewModel.stickers.value!![it]) {
+                            viewModel.setDetailPack(it)
                             navController.navigate(Screen.Details.route)
                         }
                     }
@@ -89,6 +97,7 @@ fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
                 darkGray
             )
     ) {
+
         Text(
             text = "Love Stickers",
             color = backgroundWhite,
@@ -106,13 +115,25 @@ fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
                     onClick()
                 }
         )
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_language_24),
+            contentDescription = "",
+            tint = backgroundWhite,
+            modifier = Modifier
+                .size(30.dp)
+                .clickable {
+                    onClick()
+                }
+        )
         Spacer(modifier = Modifier.width(5.dp))
     }
 }
 
 @ExperimentalAnimationApi
 @Composable
-fun Pack(sticker:StickerPack,onClick: () -> Unit) {
+fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
 
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
@@ -126,7 +147,7 @@ fun Pack(sticker:StickerPack,onClick: () -> Unit) {
                 RoundedCornerShape(10.dp)
             )
             .clickable {
-                onClick()
+                onClick(sticker)
             }
     ) {
         Row(
@@ -142,17 +163,23 @@ fun Pack(sticker:StickerPack,onClick: () -> Unit) {
                     .clip(
                         CircleShape
                     )
-                    .background(darkGray)
-                    .padding(5.dp)
+                    .background(Color.White)
+                    .border(BorderStroke(width = 1.dp, color = darkGray))
+                    .padding(10.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.sticker_4),
-                    contentDescription = "",
-
-                    )
+                GlideImage(
+                    imageModel = "${sticker.tray_image_file}",
+                    // Crop, Fit, Inside, FillHeight, FillWidth, None
+                    contentScale = ContentScale.Crop,
+                    // shows a placeholder while loading the image.
+                    placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
+                    // shows an error ImageBitmap when the request failed.
+                    error = ImageBitmap.imageResource(R.drawable.sticker),
+                    modifier = Modifier.size(70.dp)
+                )
             }
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = "Sticker pack ", color = darkGray, style = MaterialTheme.typography.h1)
+            Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h1)
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -179,7 +206,7 @@ fun Pack(sticker:StickerPack,onClick: () -> Unit) {
                 ) {
 
                     AsyncImage(
-                        model  = "${sticker.stickers[it].image_file}",
+                        model = "${sticker.stickers[it].image_file}",
                         contentDescription = "",
                         modifier = Modifier.size(70.dp)
                     )
