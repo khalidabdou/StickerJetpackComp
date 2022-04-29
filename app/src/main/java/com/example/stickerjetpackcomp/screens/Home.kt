@@ -29,7 +29,7 @@ import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
-import com.green.china.sticker.features.sticker.models.StickerPack
+import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.skydoves.landscapist.glide.GlideImage
 import kotlin.Int
 import kotlin.Unit

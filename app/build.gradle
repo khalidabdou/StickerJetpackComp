@@ -17,6 +17,15 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        def contentProviderAuthority = applicationId + ".provider.StickerContentProvider"
+        // Creates a placeholder property to use in the manifest.
+        manifestPlaceholders =
+                [contentProviderAuthority: contentProviderAuthority]
+        // Adds a new field for the authority to the BuildConfig class.
+        buildConfigField("String",
+                "CONTENT_PROVIDER_AUTHORITY",
+                "\"${contentProviderAuthority}\"")
         vectorDrawables {
             useSupportLibrary true
         }
@@ -83,6 +92,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
     implementation "com.github.skydoves:landscapist-glide:1.5.1"
+
+    //download files
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 
 
 }

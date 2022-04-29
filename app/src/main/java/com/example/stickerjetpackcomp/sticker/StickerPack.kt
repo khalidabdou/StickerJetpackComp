@@ -1,8 +1,4 @@
-package com.green.china.sticker.features.sticker.models
-
-import android.os.Parcelable
-
-import java.io.Serializable
+package com.example.stickerjetpackcomp.sticker
 
 
 data class StickerPack(

@@ -1,4 +1,4 @@
-package com.green.china.sticker.features.sticker.models
+package com.example.stickerjetpackcomp.sticker
 
 import java.io.Serializable
 
