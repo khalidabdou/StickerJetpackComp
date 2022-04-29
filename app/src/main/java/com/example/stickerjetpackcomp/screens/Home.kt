@@ -54,7 +54,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(Color.White )
         ) {
             if (viewModel.stickers.value!=null)
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
