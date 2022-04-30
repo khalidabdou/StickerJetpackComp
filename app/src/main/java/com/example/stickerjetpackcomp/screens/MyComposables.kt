@@ -37,16 +37,14 @@ fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
-            .background(background)
+            .height(200.dp)
+            .background(Color.White)
     )
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier =
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp))
-            .height(70.dp)
+            .height(200.dp) .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
             .background(
                 darkGray
             )
@@ -71,17 +69,6 @@ fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
         )
         Spacer(modifier = Modifier.width(8.dp))
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_language_24),
-            contentDescription = "",
-            tint = backgroundWhite,
-            modifier = Modifier
-                .size(30.dp)
-                .clickable {
-                    onClick()
-                }
-        )
-        Spacer(modifier = Modifier.width(5.dp))
     }
 }
 

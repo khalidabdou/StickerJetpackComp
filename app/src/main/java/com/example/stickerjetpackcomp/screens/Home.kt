@@ -1,19 +1,17 @@
 package com.example.stickerjetpackcomp.screens
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,7 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stickerjetpackcomp.R
-import com.example.stickerjetpackcomp.ui.theme.Purple200
+import com.example.stickerjetpackcomp.model.Category
+import com.example.stickerjetpackcomp.model.categories
+import com.example.stickerjetpackcomp.sticker.StickerPack
+import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 
@@ -33,67 +34,107 @@ import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 @Composable
 fun Home(navController: NavController, viewModel: StickerViewModel) {
 
-    Scaffold(topBar = { AppBar(icon = R.drawable.ic_language_24, onClick = {}) }
-    ) {
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
-            contentPadding = PaddingValues(8.dp),
+    val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(scaffoldState) {
+        if (viewModel.stickers.value.isNullOrEmpty())
+            viewModel.getStickers()
+    }
 
-            ) {
-            items(5){
-                Category()
+    val state= rememberLazyListState()
+
+    Log.d("scrolling",state.firstVisibleItemScrollOffset.toString())
+    Scaffold(
+        topBar = { AppBar(icon = R.drawable.ic_language_24, onClick = {}) },
+        scaffoldState = scaffoldState
+    ) {
+
+
+        LazyColumn(
+            state = state,
+            modifier = Modifier
+                .background(
+                    Color.White
+                )
+
+        ) {
+            item() {
+                Text(
+                    text = "Categories",
+                    style = MaterialTheme.typography.h3,
+                    color = darkGray,
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                )
+                val listState = rememberLazyListState()
+                LaunchedEffect(4) {
+                    listState.animateScrollToItem(1)
+                }
+                LazyRow(
+                    state=listState,
+                    contentPadding = PaddingValues(8.dp),
+
+                    ) {
+                    items(6) {
+                        Category(colors[it], categories[it])
+                    }
+                }
+
             }
+            if (viewModel.stickers.value != null)
+                items(4) {
+
+                    Popular(viewModel.stickers.value!![it])
+
+                }
+
 
         }
-
 
 
     }
 }
 
 @Composable
-fun Category() {
+fun Category(color: Color, cat: Category) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(Purple200)
-            .padding(10.dp)
+        modifier = Modifier.padding(8.dp)
 
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.funny),
-            contentDescription = "",
-            modifier = Modifier.size(50.dp)
-        )
-        Text(text = "Funny", style = MaterialTheme.typography.h4, color = Color.Black)
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.Bottom,
+        Box(
             modifier = Modifier
-                .fillMaxSize()
+                .size(70.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(color.copy(0.4f)),
+            contentAlignment = Alignment.Center
         ) {
-            Row() {
-                repeat(3) {
-                    Image(
-                        painter = painterResource(id = R.drawable.sticker_2),
-                        contentDescription = "", modifier = Modifier
-                            .size(20.dp)
-                            .clip(CircleShape)
-                            .background(darkGray.copy(0.7f))
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                }
-            }
-            Text(text = "+12", style = MaterialTheme.typography.h6)
+            Icon(
+                painter = painterResource(id = cat.icon),
+                tint = color,
+                contentDescription = "",
+                modifier = Modifier.size(40.dp)
+            )
         }
+        Text(text = cat.name, style = MaterialTheme.typography.body1, color = Color.Black)
     }
+}
+
+
+@ExperimentalAnimationApi
+@Composable
+fun Popular(pack: StickerPack) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Pack(sticker = pack, onClick = {})
+    }
+
 }
 
 @Preview
 @Composable
 fun CategoryPrev() {
-    Category()
+    //Category(colors[0])
 }
 
 val stickers = listOf(R.drawable.sticker_2, R.drawable.sticker_3, R.drawable.sticker_4)

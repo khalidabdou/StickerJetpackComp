@@ -106,7 +106,6 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                         CircleShape
                     )
                     .background(Color.White)
-                    .border(BorderStroke(width = 1.dp, color = darkGray))
                     .padding(10.dp)
             ) {
                 GlideImage(
@@ -121,7 +120,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                 )
             }
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h1)
+            Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h5)
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
