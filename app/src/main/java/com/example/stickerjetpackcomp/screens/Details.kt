@@ -61,6 +61,7 @@ import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
+import com.skydoves.landscapist.glide.GlideImage
 import java.io.File
 
 @ExperimentalAnimationApi
@@ -113,18 +114,11 @@ fun Details(viewModel: StickerViewModel) {
         openWhatsappActivityForResult()
     }
 
-    Scaffold(topBar = {
-        AppBar(
-            background = darkGray2,
-            icon = favIcon,
-            onClick = {
-                favIcon = R.drawable.ic_favorite
-            })
-    }) {
+    Scaffold(topBar = {}) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(darkGray)
+                .background(White)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -209,15 +203,15 @@ fun GridStickers(pack: StickerPack, state: LazyListState) {
         state = state
     ) {
         items(pack.stickers.size) { index ->
-            Card(
+            Box(
                 modifier = Modifier
                     .size(90.dp)
                     .padding(4.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                backgroundColor = Color.White,
+                    .clip(RoundedCornerShape(10.dp)).background(backgroundWhite.copy(0.5f)),
+            contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = "${pack.stickers[index].image_file}",
+                GlideImage(
+                    imageModel = "${pack.stickers[index].image_file}",
                     contentDescription = "",
                     modifier = Modifier.size(70.dp)
                 )

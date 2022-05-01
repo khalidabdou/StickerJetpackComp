@@ -34,44 +34,56 @@ import com.example.stickerjetpackcomp.ui.theme.darkGray
 
 @Composable
 fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(Color.White)
-    )
+    var expanded by remember { mutableStateOf(false)}
+    val options = listOf("Food", "Bill Payment", "Recharges", "Outing", "Other")
+
     Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
         modifier =
         Modifier
             .fillMaxWidth()
-            .height(200.dp) .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
-            .background(
-                darkGray
-            )
+            .height(60.dp)
+
     ) {
 
-        Text(
-            text = "Love Stickers",
-            color = backgroundWhite,
-            modifier = Modifier.weight(4f),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h1
-        )
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = "",
-            tint = backgroundWhite,
-            modifier = Modifier
-                .size(30.dp)
-                .clickable {
-                    onClick()
-                }
-        )
+        Language {}
         Spacer(modifier = Modifier.width(8.dp))
-
     }
 }
 
+@Composable
+fun Language(onClick: () -> Unit) {
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(darkGray.copy(0.9f))
+            .padding(4.dp)
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(30.dp)
+                .clip(RoundedCornerShape(5.dp))
+                .background(backgroundWhite.copy(0.6f))
+                .clickable {
+                    onClick()
+                }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_language_24),
+                contentDescription = "",
+                tint = backgroundWhite,
+
+                )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text("Language", style = MaterialTheme.typography.h6, color = backgroundWhite)
+        Spacer(modifier = Modifier.width(8.dp))
+    }
+
+}
 
 @Composable
 fun CustomComponent(

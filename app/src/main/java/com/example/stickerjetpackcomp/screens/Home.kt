@@ -1,6 +1,5 @@
 package com.example.stickerjetpackcomp.screens
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -24,6 +23,7 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.model.categories
 import com.example.stickerjetpackcomp.sticker.StickerPack
+import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
@@ -40,21 +40,18 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             viewModel.getStickers()
     }
 
-    val state= rememberLazyListState()
+    val state = rememberLazyListState()
 
-    Log.d("scrolling",state.firstVisibleItemScrollOffset.toString())
     Scaffold(
         topBar = { AppBar(icon = R.drawable.ic_language_24, onClick = {}) },
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        backgroundColor = Color.White
     ) {
 
 
         LazyColumn(
             state = state,
             modifier = Modifier
-                .background(
-                    Color.White
-                )
 
         ) {
             item() {
@@ -62,14 +59,9 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     text = "Categories",
                     style = MaterialTheme.typography.h3,
                     color = darkGray,
-                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                    modifier = Modifier.padding(start = 20.dp, top = 10.dp)
                 )
-                val listState = rememberLazyListState()
-                LaunchedEffect(4) {
-                    listState.animateScrollToItem(1)
-                }
                 LazyRow(
-                    state=listState,
                     contentPadding = PaddingValues(8.dp),
 
                     ) {
@@ -79,10 +71,29 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 }
 
             }
-            if (viewModel.stickers.value != null)
+            item {
+                Text(
+                    text = "Popular",
+                    style = MaterialTheme.typography.h3,
+                    color = darkGray,
+                    modifier = Modifier.padding(start = 20.dp, top = 10.dp)
+                )
+            }
+            if (viewModel.stickers.value != null) {
                 items(4) {
-
                     Popular(viewModel.stickers.value!![it])
+                }
+            } else
+                item {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            color = darkGray, modifier = Modifier
+                                .size(30.dp)
+
+                        )
+                    }
 
                 }
 
