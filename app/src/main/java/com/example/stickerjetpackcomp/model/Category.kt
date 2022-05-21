@@ -13,7 +13,7 @@ data class Category(
 
 val categories= listOf(
     Category(name = "Funny", icon = R.drawable.funny),
-    Category(name = "Funny", icon = R.drawable.hand),
+    Category(name = "Love", icon = R.drawable.hand),
     Category(name = "Birthday", icon = R.drawable.cake),
     Category(name = "Flowers", icon = R.drawable.freesia),
     Category(name = "Emoji", icon = R.drawable.emoji),
