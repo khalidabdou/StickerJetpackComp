@@ -19,14 +19,11 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
@@ -56,7 +53,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White )
+                .background(Color.White)
         ) {
             if (viewModel.stickers.value != null)
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -67,7 +64,6 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
                         }
                     }
                 }
-
         }
     }
 }

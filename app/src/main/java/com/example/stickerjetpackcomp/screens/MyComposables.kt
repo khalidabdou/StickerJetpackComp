@@ -5,12 +5,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +27,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
+import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 
 @Composable
@@ -37,38 +35,53 @@ fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .background(Color.White)
-    )
-    Row(
-        modifier =
-        Modifier
-            .fillMaxWidth()
-            .height(200.dp) .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
-            .background(
-                darkGray
-            )
+            .clip(RoundedCornerShape(10.dp))
+            .height(150.dp)
+            .background(colors[0])
     ) {
 
-        Text(
-            text = "Love Stickers",
-            color = backgroundWhite,
-            modifier = Modifier.weight(4f),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h1
-        )
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = "",
-            tint = backgroundWhite,
-            modifier = Modifier
-                .size(30.dp)
-                .clickable {
-                    onClick()
-                }
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+    }
+}
 
+@Composable
+fun AppAd() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(colors[0].copy(0.5f))
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.emoji),
+                contentDescription = "",
+                tint = colors[0],
+                modifier = Modifier
+                    .size(90.dp)
+                    .padding(10.dp)
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "App name")
+                Text(text = "description bla bla bla")
+            }
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Green.copy(0.8f),
+                    contentColor = darkGray
+                ),
+                onClick = { }, contentPadding = PaddingValues(4.dp),
+            ) {
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_dwonloaded),
+                    contentDescription = ""
+                )
+                Text(text = "Get")
+            }
+        }
     }
 }
 

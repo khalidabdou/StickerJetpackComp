@@ -42,7 +42,7 @@ class StickersUtils {
                 "SpecialOnes@support.com", "SpecialOnes",
                 stickers,
                 BASE_URL + "/stickers/" + sticker.folder + "/im.png",
-                "https://play.google.com/store/apps/details?id=${SETTING}",
+                "https://play.google.com/store/apps/details?id=com.snowcorp.stickerly.android",
                 "",
                 sticker.count_views,
                 sticker.count_set_to_whatsapp,
@@ -93,14 +93,10 @@ class StickersUtils {
                             "${path}/${pack.identifier}/",
                             fileName
                         )
-
                     }
-
                     override fun onError(error: com.downloader.Error?) {
                        Log.d("TAG","ERR")
                     }
-
-
                 })
         }
     }

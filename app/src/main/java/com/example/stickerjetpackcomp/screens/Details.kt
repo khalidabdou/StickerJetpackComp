@@ -4,15 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,32 +21,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.downloader.PRDownloader.download
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.ui.theme.darkGray2
-import com.example.stickerjetpackcomp.utils.StickersUtils
-import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.ADD_PACK
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -75,7 +56,9 @@ fun Details(viewModel: StickerViewModel) {
 
     val state = rememberLazyListState()
 
-    val context= LocalContext.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
 
     path = context.filesDir.toString() + "/stickers_asset"
     val myDir = File("${path}/")
@@ -83,7 +66,7 @@ fun Details(viewModel: StickerViewModel) {
     if (myDir.exists())
         myDir.delete()
 
-    Hawk.init(context).build();
+
 
 
     var resultLauncher =
@@ -91,12 +74,13 @@ fun Details(viewModel: StickerViewModel) {
             if (result.resultCode == Activity.RESULT_OK) {
                 // There are no request codes
                 val data: Intent? = result.data
-                Log.w("TAG",data.toString())
+                Log.w("TAG", data.toString())
                 //doSomeOperations()
-            }else Log.w("TAG",result.toString())
+            } else Log.w("TAG", result.toString())
         }
 
     fun openWhatsappActivityForResult() {
+
         //val intent = Intent(this, SomeActivity::class.java)
         val intent = Intent()
         intent.action = "com.whatsapp.intent.action.ENABLE_STICKER_PACK"
@@ -106,21 +90,16 @@ fun Details(viewModel: StickerViewModel) {
             BuildConfig.CONTENT_PROVIDER_AUTHORITY
         )
         intent.putExtra(EXTRA_STICKER_PACK_NAME, pack.name)
-        //resultLauncher.launch(intent)
+       //context.startActivity(intent)
+        resultLauncher.launch(intent)
+
+
     }
-    if (viewModel.isReady.value){
-        Log.d("TAG","ready")
+    if (viewModel.isReady.value) {
         openWhatsappActivityForResult()
     }
 
-    Scaffold(topBar = {
-        AppBar(
-            background = darkGray2,
-            icon = favIcon,
-            onClick = {
-                favIcon = R.drawable.ic_favorite
-            })
-    }) {
+    Scaffold() {
         Column(
             modifier = Modifier
                 .fillMaxSize()

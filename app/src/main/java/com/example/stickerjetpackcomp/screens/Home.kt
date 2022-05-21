@@ -1,6 +1,5 @@
 package com.example.stickerjetpackcomp.screens
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -27,63 +26,65 @@ import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
+import com.example.testfriends_jetpackcompose.navigation.Screen
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalAnimationApi
 @Composable
 fun Home(navController: NavController, viewModel: StickerViewModel) {
-
     val scaffoldState = rememberScaffoldState()
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             viewModel.getStickers()
     }
 
-    val state= rememberLazyListState()
+    val state = rememberLazyListState()
 
-    Log.d("scrolling",state.firstVisibleItemScrollOffset.toString())
     Scaffold(
-        topBar = { AppBar(icon = R.drawable.ic_language_24, onClick = {}) },
+        backgroundColor = Color.White,
+        modifier = Modifier,
         scaffoldState = scaffoldState
     ) {
-
-
         LazyColumn(
             state = state,
             modifier = Modifier
+                .padding(20.dp)
                 .background(
                     Color.White
                 )
 
         ) {
+            item {
+                AppAd()
+            }
             item() {
                 Text(
                     text = "Categories",
-                    style = MaterialTheme.typography.h3,
+                    style = MaterialTheme.typography.h4,
                     color = darkGray,
-                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                    modifier = Modifier
                 )
                 val listState = rememberLazyListState()
                 LaunchedEffect(4) {
                     listState.animateScrollToItem(1)
                 }
                 LazyRow(
-                    state=listState,
+                    state = listState,
                     contentPadding = PaddingValues(8.dp),
-
-                    ) {
+                ) {
                     items(6) {
                         Category(colors[it], categories[it])
+
                     }
                 }
-
             }
             if (viewModel.stickers.value != null)
-                items(4) {
-
-                    Popular(viewModel.stickers.value!![it])
-
+                items(10) {
+                    Popular(viewModel.stickers.value!![it], onClick = {
+                        viewModel.setDetailPack(viewModel.stickers.value!![it])
+                        navController.navigate(Screen.Details.route)
+                    })
                 }
 
 
@@ -121,12 +122,14 @@ fun Category(color: Color, cat: Category) {
 
 @ExperimentalAnimationApi
 @Composable
-fun Popular(pack: StickerPack) {
+fun Popular(pack: StickerPack, onClick: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
     ) {
-        Pack(sticker = pack, onClick = {})
+        Pack(sticker = pack, onClick = {
+            onClick()
+        })
     }
 
 }

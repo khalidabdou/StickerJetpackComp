@@ -64,9 +64,6 @@ class StickerViewModel @Inject constructor(
         stickerPackView = pack
     }
 
-    fun addToWhatsapp(){
-
-    }
 
     fun download() {
         if (index < stickerPackView.stickers.size) {
