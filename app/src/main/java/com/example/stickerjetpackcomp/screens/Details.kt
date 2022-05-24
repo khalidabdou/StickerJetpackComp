@@ -39,7 +39,6 @@ import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKE
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.downloadPR
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
-import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import java.io.File
@@ -67,8 +66,6 @@ fun Details(viewModel: StickerViewModel) {
         myDir.delete()
 
 
-
-
     var resultLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -90,14 +87,15 @@ fun Details(viewModel: StickerViewModel) {
             BuildConfig.CONTENT_PROVIDER_AUTHORITY
         )
         intent.putExtra(EXTRA_STICKER_PACK_NAME, pack.name)
-       //context.startActivity(intent)
+        //context.startActivity(intent)
         resultLauncher.launch(intent)
-
 
     }
     if (viewModel.isReady.value) {
         openWhatsappActivityForResult()
     }
+
+    val isVisible = remember { mutableStateOf(value = false) }
 
     Scaffold() {
         Column(
@@ -124,15 +122,27 @@ fun Details(viewModel: StickerViewModel) {
                         .background(darkGray)
                         .padding(10.dp)
                 ) {
-                    CustomComponent(
-                        indicatorValue = viewModel.progress.value,
-                        maxIndicatorValue = pack!!.stickers.size,
-                        bigTextColor = backgroundWhite,
-                        foregroundIndicatorColor = Green,
-                        backgroundIndicatorColor = White,
-                        backgroundIndicatorStrokeWidth = 15f,
-                        foregroundIndicatorStrokeWidth = 15f
-                    )
+
+                    androidx.compose.animation.AnimatedVisibility(!isVisible.value) {
+                        AsyncImage(
+                            model = "${pack!!.tray_image_file}",
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+
+                    androidx.compose.animation.AnimatedVisibility(isVisible.value) {
+                        CustomComponent(
+                            indicatorValue = viewModel.progress.value,
+                            maxIndicatorValue = pack!!.stickers.size,
+                            bigTextColor = backgroundWhite,
+                            foregroundIndicatorColor = Green,
+                            backgroundIndicatorColor = White,
+                            backgroundIndicatorStrokeWidth = 15f,
+                            foregroundIndicatorStrokeWidth = 15f
+                        )
+                    }
+
                 }
                 Spacer(modifier = Modifier.width(5.dp))
                 Column(
@@ -154,6 +164,7 @@ fun Details(viewModel: StickerViewModel) {
                 Column() {
                     Button(
                         onClick = {
+                            isVisible.value = true
                             viewModel.download()
                             val trayImageFile = getLastBitFromUrl(pack!!.tray_image_file)
                             downloadPR(pack!!.tray_image_file, trayImageFile, pack)
