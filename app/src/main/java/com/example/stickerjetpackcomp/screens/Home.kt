@@ -67,7 +67,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 )
                 val listState = rememberLazyListState()
                 LaunchedEffect(4) {
-                    listState.animateScrollToItem(1)
+                    //listState.animateScrollToItem(1)
                 }
                 LazyRow(
                     state = listState,
@@ -81,10 +81,13 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             }
             if (viewModel.stickers.value != null)
                 items(10) {
-                    Popular(viewModel.stickers.value!![it], onClick = {
-                        viewModel.setDetailPack(viewModel.stickers.value!![it])
-                        navController.navigate(Screen.Details.route)
-                    })
+                    Popular(viewModel.stickers.value!![it],
+                        onClick = {
+                            viewModel.isReady.value = false
+                            viewModel.index = 0
+                            viewModel.setDetailPack(viewModel.stickers.value!![it])
+                            navController.navigate(Screen.Details.route)
+                        })
                 }
 
 

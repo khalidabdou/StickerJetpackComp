@@ -36,9 +36,9 @@ class StickerViewModel @Inject constructor(
 
     var detailsPack = mutableStateOf<StickerPack?>(null)
 
-    var index =0
-    var progress= mutableStateOf(0)
-    var isReady= mutableStateOf(false)
+    var index = 0
+    var progress = mutableStateOf(0)
+    var isReady = mutableStateOf(false)
 
     fun getStickers() = viewModelScope.launch {
         if (stickersFromApi.value is NetworkResults.Error || stickersFromApi.value is NetworkResults.Loading) {
@@ -79,28 +79,30 @@ class StickerViewModel @Inject constructor(
                 //    binding.  progressBar.max = it.totalBytes.toInt()
                 //    progressBar.progress = it.currentBytes.toInt()
             }.start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
+                override fun onDownloadComplete() {
 
-                        val file = File(
-                            "${StickersUtils.path}/${stickerPackView.identifier}/",
-                            fileName
-                        )
-                        Log.d("TGG", "download " + index)
-                        Log.d("TGG", file.exists().toString())
-                        //Log.d("TGG", file.absolutePath.toString())
-                        //Log.d("TGG",stickerPackView.stickers[index].image_file)
-                        index++
-                        progress.value++
-                        download()
+                    val file = File(
+                        "${StickersUtils.path}/${stickerPackView.identifier}/",
+                        fileName
+                    )
+                    Log.d("TGG", "download " + index)
+                    Log.d("TGG", file.exists().toString())
+                    //Log.d("TGG", file.absolutePath.toString())
+                    //Log.d("TGG",stickerPackView.stickers[index].image_file)
+                    index++
+                    progress.value++
 
-                    }
-                    override fun onError(error: com.downloader.Error?) {
-                        Log.d("TGG", "error $error.")
-                    }
-                })
+                    download()
+
+                }
+
+                override fun onError(error: com.downloader.Error?) {
+                    Log.d("TGG", "error $error.")
+                }
+            })
         } else {
-            Log.d("TGG","finish")
-            isReady.value=true
+            Log.d("TGG", "finish")
+            isReady.value = true
             //openWahatsappActivityForResult()
         }
 

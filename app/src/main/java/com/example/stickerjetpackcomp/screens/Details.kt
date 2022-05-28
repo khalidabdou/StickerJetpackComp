@@ -48,11 +48,11 @@ import java.io.File
 @Composable
 fun Details(viewModel: StickerViewModel) {
 
-    var process by mutableStateOf(10)
+
     var favIcon by mutableStateOf(R.drawable.favorite)
 
     val pack = viewModel.detailsPack.value
-
+    //var max = viewModel.detailsPack.value!!.stickers.size
     val state = rememberLazyListState()
 
     val context = LocalContext.current
@@ -77,7 +77,6 @@ fun Details(viewModel: StickerViewModel) {
         }
 
     fun openWhatsappActivityForResult() {
-
         //val intent = Intent(this, SomeActivity::class.java)
         val intent = Intent()
         intent.action = "com.whatsapp.intent.action.ENABLE_STICKER_PACK"
@@ -89,10 +88,13 @@ fun Details(viewModel: StickerViewModel) {
         intent.putExtra(EXTRA_STICKER_PACK_NAME, pack.name)
         //context.startActivity(intent)
         resultLauncher.launch(intent)
-
     }
+
     if (viewModel.isReady.value) {
         openWhatsappActivityForResult()
+        viewModel.isReady.value = false
+        viewModel.index = 0
+        viewModel.progress.value = 0
     }
 
     val isVisible = remember { mutableStateOf(value = false) }
@@ -119,7 +121,7 @@ fun Details(viewModel: StickerViewModel) {
                         .clip(
                             CircleShape
                         )
-                        .background(darkGray)
+                        .background(backgroundWhite)
                         .padding(10.dp)
                 ) {
 
@@ -132,11 +134,12 @@ fun Details(viewModel: StickerViewModel) {
                     }
 
                     androidx.compose.animation.AnimatedVisibility(isVisible.value) {
+
                         CustomComponent(
                             indicatorValue = viewModel.progress.value,
                             maxIndicatorValue = pack!!.stickers.size,
-                            bigTextColor = backgroundWhite,
-                            foregroundIndicatorColor = Green,
+                            bigTextColor = darkGray,
+                            foregroundIndicatorColor = darkGray,
                             backgroundIndicatorColor = White,
                             backgroundIndicatorStrokeWidth = 15f,
                             foregroundIndicatorStrokeWidth = 15f
