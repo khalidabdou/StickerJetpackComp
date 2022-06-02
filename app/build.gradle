@@ -102,6 +102,7 @@ dependencies {
     //download files
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 
+
     implementation "com.github.skydoves:landscapist-coil:1.5.2"
 
 

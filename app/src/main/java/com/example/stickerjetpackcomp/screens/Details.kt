@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -20,10 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +33,7 @@ import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.ImageLoader
+import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
@@ -64,14 +63,16 @@ import java.io.File
 @Composable
 fun Details(viewModel: StickerViewModel) {
 
-    var process by mutableStateOf(10)
+
     var favIcon by mutableStateOf(R.drawable.favorite)
 
     val pack = viewModel.detailsPack.value
-
+    //var max = viewModel.detailsPack.value!!.stickers.size
     val state = rememberLazyListState()
 
-    val context= LocalContext.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
 
     path = context.filesDir.toString() + "/stickers_asset"
     val myDir = File("${path}/")
@@ -79,7 +80,9 @@ fun Details(viewModel: StickerViewModel) {
     if (myDir.exists())
         myDir.delete()
 
-    Hawk.init(context).build();
+    val progress = remember {viewModel.progress.value*100/pack!!.stickers.size}
+
+
 
 
     var resultLauncher =
@@ -87,9 +90,9 @@ fun Details(viewModel: StickerViewModel) {
             if (result.resultCode == Activity.RESULT_OK) {
                 // There are no request codes
                 val data: Intent? = result.data
-                Log.w("TAG",data.toString())
+                Log.w("TAG", data.toString())
                 //doSomeOperations()
-            }else Log.w("TAG",result.toString())
+            } else Log.w("TAG", result.toString())
         }
 
     fun openWhatsappActivityForResult() {
@@ -102,18 +105,22 @@ fun Details(viewModel: StickerViewModel) {
             BuildConfig.CONTENT_PROVIDER_AUTHORITY
         )
         intent.putExtra(EXTRA_STICKER_PACK_NAME, pack.name)
-        //resultLauncher.launch(intent)
-    }
-    if (viewModel.isReady.value){
-        Log.d("TAG","ready")
-        openWhatsappActivityForResult()
+        //context.startActivity(intent)
+        resultLauncher.launch(intent)
     }
 
-    Scaffold(topBar = {}) {
+    if (viewModel.isReady.value) {
+        openWhatsappActivityForResult()
+        viewModel.isReady.value = false
+        viewModel.index = 0
+        viewModel.progress.value = 0
+    }
+    val isVisible = remember { mutableStateOf(value = false) }
+    Scaffold() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White)
+                .background(darkGray)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -131,18 +138,31 @@ fun Details(viewModel: StickerViewModel) {
                         .clip(
                             CircleShape
                         )
-                        .background(darkGray)
+                        .background(backgroundWhite)
                         .padding(10.dp)
                 ) {
-                    CustomComponent(
-                        indicatorValue = viewModel.progress.value,
-                        maxIndicatorValue = pack!!.stickers.size,
-                        bigTextColor = backgroundWhite,
-                        foregroundIndicatorColor = Green,
-                        backgroundIndicatorColor = White,
-                        backgroundIndicatorStrokeWidth = 15f,
-                        foregroundIndicatorStrokeWidth = 15f
-                    )
+
+                    androidx.compose.animation.AnimatedVisibility(!isVisible.value) {
+                        AsyncImage(
+                            model = "${pack!!.tray_image_file}",
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+
+                    androidx.compose.animation.AnimatedVisibility(isVisible.value) {
+
+                        CustomComponent(
+                            indicatorValue = viewModel.progress.value,
+                            maxIndicatorValue = 100,
+                            bigTextColor = darkGray,
+                            foregroundIndicatorColor = darkGray,
+                            backgroundIndicatorColor = White,
+                            backgroundIndicatorStrokeWidth = 15f,
+                            foregroundIndicatorStrokeWidth = 15f
+                        )
+                    }
+
                 }
                 Spacer(modifier = Modifier.width(5.dp))
                 Column(
@@ -164,6 +184,7 @@ fun Details(viewModel: StickerViewModel) {
                 Column() {
                     Button(
                         onClick = {
+                            isVisible.value = true
                             viewModel.download()
                             val trayImageFile = getLastBitFromUrl(pack!!.tray_image_file)
                             downloadPR(pack!!.tray_image_file, trayImageFile, pack)
@@ -183,7 +204,6 @@ fun Details(viewModel: StickerViewModel) {
                     }
                 }
             }
-
             GridStickers(state = state, pack = pack!!, context = context)
         }
     }
@@ -204,18 +224,16 @@ fun GridStickers(pack: StickerPack, state: LazyListState,context: Context) {
                     .size(100.dp)
                     .padding(4.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(backgroundWhite.copy(0.5f)),
-            contentAlignment = Alignment.Center
+                    .background(White),
+                contentAlignment = Alignment.Center
             ) {
                 //"${pack.stickers[index].image_file}"
-
                 StickerView(context = context,"${pack.stickers[index].image_file}")
-
-
             }
         }
     }
 }
+
 
 @Composable
 private fun StickerView(context:Context,resource:String) {
@@ -244,6 +262,7 @@ private fun StickerPainter(painter: AsyncImagePainter) {
         )
     }
 }
+
 @Composable
 fun LabelLikes(icon: Int, text: String) {
     Row(

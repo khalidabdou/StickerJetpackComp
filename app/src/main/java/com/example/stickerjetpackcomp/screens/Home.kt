@@ -49,15 +49,12 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         LazyColumn(
             state = state,
             modifier = Modifier
-                .padding(20.dp)
+                .padding(10.dp)
                 .background(
                     Color.White
                 )
 
         ) {
-            item {
-                AppAd()
-            }
             item() {
                 Text(
                     text = "Categories",
@@ -66,18 +63,22 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     modifier = Modifier
                 )
                 val listState = rememberLazyListState()
-                LaunchedEffect(4) {
-                    //listState.animateScrollToItem(1)
-                }
                 LazyRow(
                     state = listState,
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(6) {
                         Category(colors[it], categories[it])
-
                     }
                 }
+            }
+            item {
+                Text(
+                    text = "Latest",
+                    style = MaterialTheme.typography.h4,
+                    color = darkGray,
+                    modifier = Modifier
+                )
             }
             if (viewModel.stickers.value != null)
                 items(10) {
@@ -89,11 +90,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                             navController.navigate(Screen.Details.route)
                         })
                 }
-
-
         }
-
-
     }
 }
 

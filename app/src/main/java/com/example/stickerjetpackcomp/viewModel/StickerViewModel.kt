@@ -90,7 +90,7 @@ class StickerViewModel @Inject constructor(
                     //Log.d("TGG", file.absolutePath.toString())
                     //Log.d("TGG",stickerPackView.stickers[index].image_file)
                     index++
-                    progress.value++
+                    progress.value=(index*100/detailsPack.value!!.stickers.size)
 
                     download()
 
