@@ -18,6 +18,7 @@ import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.SetupNavGraph
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.OkHttpClient
 
 @ExperimentalAnimationApi
 
@@ -27,12 +28,17 @@ class MainActivity : ComponentActivity() {
         .setReadTimeout(30000)
         .setConnectTimeout(30000)
         .build()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             StickerJetpackCompTheme {
                 Hawk.init(this).build()
+
+
                 PRDownloader.initialize(applicationContext, config)
                 val viewModel: StickerViewModel = hiltViewModel()
                 val navController = rememberNavController()

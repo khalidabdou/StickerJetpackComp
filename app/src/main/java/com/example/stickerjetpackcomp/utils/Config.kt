@@ -1,8 +1,10 @@
 package com.example.stickerjetpackcomp.utils
 
+import com.example.stickerjetpackcomp.BuildConfig
+
 class Config {
     companion object {
-        val BASE_URL: String = "http://wishesyougood.com/"
+        val BASE_URL: String = BuildConfig.API
         var SETTING="pack"
     }
 }
