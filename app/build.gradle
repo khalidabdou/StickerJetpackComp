@@ -9,7 +9,9 @@ plugins {
 
 android {
     compileSdk 31
-
+    aaptOptions {
+        noCompress "webp"
+    }
     defaultConfig {
         applicationId "com.example.stickerjetpackcomp"
         minSdk 21
@@ -99,6 +101,12 @@ dependencies {
 
     //download files
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+    implementation "com.github.skydoves:landscapist-coil:1.5.2"
+
+
+
+
 
 
 }

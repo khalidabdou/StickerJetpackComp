@@ -2,18 +2,15 @@ package com.example.stickerjetpackcomp.screens
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.os.Build.VERSION.SDK_INT
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -23,36 +20,32 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.downloader.PRDownloader.download
+import androidx.core.net.toUri
+import coil.ImageLoader
+import coil.compose.AsyncImagePainter
+import coil.compose.AsyncImagePainter.State.Empty.painter
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.ui.theme.darkGray2
-import com.example.stickerjetpackcomp.utils.StickersUtils
-import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.ADD_PACK
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -60,9 +53,11 @@ import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.downloadPR
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
+
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
-import com.skydoves.landscapist.glide.GlideImage
+
 import java.io.File
+
 
 @ExperimentalAnimationApi
 @SuppressLint("UnrememberedMutableState")
@@ -188,7 +183,8 @@ fun Details(viewModel: StickerViewModel) {
                     }
                 }
             }
-            GridStickers(state = state, pack = pack!!)
+
+            GridStickers(state = state, pack = pack!!, context = context)
         }
     }
 }
@@ -196,7 +192,7 @@ fun Details(viewModel: StickerViewModel) {
 @ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridStickers(pack: StickerPack, state: LazyListState) {
+fun GridStickers(pack: StickerPack, state: LazyListState,context: Context) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
@@ -205,21 +201,49 @@ fun GridStickers(pack: StickerPack, state: LazyListState) {
         items(pack.stickers.size) { index ->
             Box(
                 modifier = Modifier
-                    .size(90.dp)
+                    .size(100.dp)
                     .padding(4.dp)
-                    .clip(RoundedCornerShape(10.dp)).background(backgroundWhite.copy(0.5f)),
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(backgroundWhite.copy(0.5f)),
             contentAlignment = Alignment.Center
             ) {
-                GlideImage(
-                    imageModel = "${pack.stickers[index].image_file}",
-                    contentDescription = "",
-                    modifier = Modifier.size(70.dp)
-                )
+                //"${pack.stickers[index].image_file}"
+
+                StickerView(context = context,"${pack.stickers[index].image_file}")
+
+
             }
         }
     }
 }
 
+@Composable
+private fun StickerView(context:Context,resource:String) {
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
+            }
+        }
+        .build()
+    val painter = rememberAsyncImagePainter(
+        model = resource,
+        imageLoader = imageLoader,
+    )
+    StickerPainter(painter)
+}
+
+@Composable
+private fun StickerPainter(painter: AsyncImagePainter) {
+    Box(modifier = Modifier.padding(8.dp)) {
+        Image(
+            painter = painter, contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
 @Composable
 fun LabelLikes(icon: Int, text: String) {
     Row(
