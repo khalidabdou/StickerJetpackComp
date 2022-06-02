@@ -28,6 +28,7 @@ import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.skydoves.landscapist.glide.GlideImage
+import okhttp3.internal.filterList
 
 @ExperimentalAnimationApi
 @Composable
@@ -36,6 +37,10 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     val density = LocalDensity.current
     var scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
+
+    var packsByCat by remember {
+        mutableStateOf(viewModel.stickers.value!!.filter { it -> it.catId==1 })
+    }
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             viewModel.getStickers()
@@ -43,11 +48,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            AppBar(icon = R.drawable.ic_baseline_star_half_24, onClick = {
-
-            })
-        }
+        topBar = {}
     ) {
 
         Column(
@@ -57,8 +58,8 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         ) {
             if (viewModel.stickers.value != null)
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(viewModel.stickers.value!!.size) {
-                        Pack(viewModel.stickers.value!![it]) {
+                    items(packsByCat.size) {
+                        Pack(packsByCat[it]) {
                             viewModel.setDetailPack(it)
                             navController.navigate(Screen.Details.route)
                         }

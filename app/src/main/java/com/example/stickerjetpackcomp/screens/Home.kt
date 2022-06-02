@@ -3,6 +3,7 @@ package com.example.stickerjetpackcomp.screens
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -53,14 +54,13 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 .background(
                     Color.White
                 )
-
         ) {
             item() {
                 Text(
                     text = "Categories",
                     style = MaterialTheme.typography.h4,
                     color = darkGray,
-                    modifier = Modifier
+                    modifier = Modifier.padding(start = 8.dp)
                 )
                 val listState = rememberLazyListState()
                 LazyRow(
@@ -68,7 +68,12 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     contentPadding = PaddingValues(8.dp),
                 ) {
                     items(6) {
-                        Category(colors[it], categories[it])
+                        Category(
+                            colors[it],
+                            categories[it],
+                            onClick = {
+                                navController.navigate(Screen.PacksByCategory.route)
+                            })
                     }
                 }
             }
@@ -77,7 +82,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     text = "Latest",
                     style = MaterialTheme.typography.h4,
                     color = darkGray,
-                    modifier = Modifier
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
             if (viewModel.stickers.value != null)
@@ -95,7 +100,11 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
 }
 
 @Composable
-fun Category(color: Color, cat: Category) {
+fun Category(
+    color: Color,
+    cat: Category,
+    onClick: (Int) -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(8.dp)
@@ -105,7 +114,10 @@ fun Category(color: Color, cat: Category) {
             modifier = Modifier
                 .size(70.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(color.copy(0.4f)),
+                .background(color.copy(0.4f))
+                .clickable {
+                    onClick(cat.id)
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(

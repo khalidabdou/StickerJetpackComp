@@ -64,7 +64,6 @@ class StickerViewModel @Inject constructor(
         stickerPackView = pack
     }
 
-
     fun download() {
         if (index < stickerPackView.stickers.size) {
             var fileName = getLastBitFromUrl(stickerPackView.stickers[index].image_file)
@@ -80,7 +79,6 @@ class StickerViewModel @Inject constructor(
                 //    progressBar.progress = it.currentBytes.toInt()
             }.start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
-
                     val file = File(
                         "${StickersUtils.path}/${stickerPackView.identifier}/",
                         fileName

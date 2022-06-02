@@ -46,7 +46,7 @@ class StickersUtils {
                 "",
                 sticker.count_views,
                 sticker.count_set_to_whatsapp,
-
+                catId = 6
                 )
             return stickerPack
 

@@ -29,13 +29,10 @@ import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -50,11 +47,8 @@ import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKE
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.downloadPR
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
-import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
-
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
-
 import java.io.File
 
 
@@ -79,11 +73,6 @@ fun Details(viewModel: StickerViewModel) {
     myDir.mkdirs()
     if (myDir.exists())
         myDir.delete()
-
-    val progress = remember {viewModel.progress.value*100/pack!!.stickers.size}
-
-
-
 
     var resultLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -117,6 +106,8 @@ fun Details(viewModel: StickerViewModel) {
     }
     val isVisible = remember { mutableStateOf(value = false) }
     Scaffold() {
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -206,13 +197,15 @@ fun Details(viewModel: StickerViewModel) {
             }
             GridStickers(state = state, pack = pack!!, context = context)
         }
+        //SingleSticker()
+
     }
 }
 
 @ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridStickers(pack: StickerPack, state: LazyListState,context: Context) {
+fun GridStickers(pack: StickerPack, state: LazyListState, context: Context) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
@@ -228,7 +221,7 @@ fun GridStickers(pack: StickerPack, state: LazyListState,context: Context) {
                 contentAlignment = Alignment.Center
             ) {
                 //"${pack.stickers[index].image_file}"
-                StickerView(context = context,"${pack.stickers[index].image_file}")
+                StickerView(context = context, "${pack.stickers[index].image_file}")
             }
         }
     }
@@ -236,7 +229,7 @@ fun GridStickers(pack: StickerPack, state: LazyListState,context: Context) {
 
 
 @Composable
-private fun StickerView(context:Context,resource:String) {
+private fun StickerView(context: Context, resource: String) {
     val imageLoader = ImageLoader.Builder(context)
         .components {
             if (SDK_INT >= 28) {
@@ -278,5 +271,22 @@ fun LabelLikes(icon: Int, text: String) {
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = text, color = backgroundWhite.copy(0.9f))
     }
+}
+
+@Composable
+fun SingleSticker() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(modifier = Modifier
+            .size(300.dp)
+            .clip(RoundedCornerShape(5.dp))
+            .background(White)
+            ) {
+
+        }
+    }
+
 }
 

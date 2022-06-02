@@ -5,19 +5,19 @@ import android.graphics.drawable.Icon
 import com.example.stickerjetpackcomp.R
 
 data class Category(
-    //var id:Int,
+    val id:Int,
     val name:String,
     val icon: Int,
     //val color: Color
 )
 
 val categories= listOf(
-    Category(name = "Funny", icon = R.drawable.funny),
-    Category(name = "Love", icon = R.drawable.hand),
-    Category(name = "Birthday", icon = R.drawable.cake),
-    Category(name = "Flowers", icon = R.drawable.freesia),
-    Category(name = "Emoji", icon = R.drawable.emoji),
-    Category(name = "Thank you", icon = R.drawable.thanks),
-    Category(name = "Thank you", icon = R.drawable.thanks),
+    Category(id = 0, name = "Funny", icon = R.drawable.funny),
+    Category(id = 2,name = "Love", icon = R.drawable.hand),
+    Category(id = 3,name = "Birthday", icon = R.drawable.cake),
+    Category(id = 1,name = "Flowers", icon = R.drawable.freesia),
+    Category(id = 4,name = "Emoji", icon = R.drawable.emoji),
+    Category(id = 5,name = "Thank you", icon = R.drawable.thanks),
+    Category(id = 6,name = "Thank you", icon = R.drawable.thanks),
 
 )

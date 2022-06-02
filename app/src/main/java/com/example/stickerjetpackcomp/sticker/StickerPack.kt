@@ -17,5 +17,6 @@ data class StickerPack(
     val android_play_store_link: String,
     val ios_app_store_link: String,
     val views :Int,
-    val addToWatsapp:Int
+    val addToWatsapp:Int,
+    val catId:Int
  )
