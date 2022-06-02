@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
 }
 
+
 android {
     compileSdk 31
 
@@ -29,6 +30,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // should correspond to key/value pairs inside the file
+        buildConfigField("String", "API", API)
     }
 
     buildTypes {
