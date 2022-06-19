@@ -9,6 +9,8 @@ class Remote @Inject constructor(
 
     suspend fun getStickers() = api.getStickers()
 
+    suspend fun getCategories()=api.getCategories()
+
     suspend fun incrementStickerViews(id: Int) {
         api.incrementStickerViews(id)
     }

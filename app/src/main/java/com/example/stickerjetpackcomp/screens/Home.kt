@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,18 +17,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Category
-import com.example.stickerjetpackcomp.model.categories
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
+import com.example.stickerjetpackcomp.utils.Config
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
+import com.skydoves.landscapist.glide.GlideImage
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,6 +43,9 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             viewModel.getStickers()
+        if  (viewModel.categories.value.isNullOrEmpty())
+            viewModel.getCategories()
+            Log.d("cats","")
     }
 
     val state = rememberLazyListState()
@@ -67,11 +75,13 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     state = listState,
                     contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(6) {
+                    if (!viewModel.categories.value.isNullOrEmpty())
+                    items(viewModel.categories.value!!.size-1) {
                         Category(
                             colors[it],
-                            categories[it],
+                            viewModel.categories.value!![it],
                             onClick = {
+                                viewModel.cid=  it
                                 navController.navigate(Screen.PacksByCategory.route)
                             })
                     }
@@ -86,7 +96,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 )
             }
             if (viewModel.stickers.value != null)
-                items(10) {
+                items(viewModel.stickers.value!!.size) {
                     Popular(viewModel.stickers.value!![it],
                         onClick = {
                             viewModel.isReady.value = false
@@ -120,11 +130,15 @@ fun Category(
                 },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(id = cat.icon),
-                tint = color,
-                contentDescription = "",
-                modifier = Modifier.size(40.dp)
+            GlideImage(
+                imageModel = Config.BASE_URL+"categories/${cat.image}",
+                // Crop, Fit, Inside, FillHeight, FillWidth, None
+                contentScale = ContentScale.Crop,
+                // shows a placeholder while loading the image.
+                placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
+                // shows an error ImageBitmap when the request failed.
+                error = ImageBitmap.imageResource(R.drawable.sticker),
+                modifier = Modifier.size(70.dp).padding(6.dp)
             )
         }
         Text(text = cat.name, style = MaterialTheme.typography.body1, color = Color.Black)

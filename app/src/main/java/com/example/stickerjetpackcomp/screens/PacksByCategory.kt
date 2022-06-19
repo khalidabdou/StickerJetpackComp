@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -38,12 +39,11 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     var scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
 
-    var packsByCat by remember {
-        mutableStateOf(viewModel.stickers.value!!.filter { it -> it.catId==1 })
-    }
     LaunchedEffect(scaffoldState) {
-        if (viewModel.stickers.value.isNullOrEmpty())
+        if (viewModel.stickers.value.isNullOrEmpty()){
             viewModel.getStickers()
+        }
+        viewModel.stickersByCat()
     }
 
     Scaffold(
@@ -56,10 +56,10 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
                 .fillMaxSize()
                 .background(Color.White)
         ) {
-            if (viewModel.stickers.value != null)
+            if (!viewModel.stickerByCat.value.isNullOrEmpty())
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(packsByCat.size) {
-                        Pack(packsByCat[it]) {
+                    items(viewModel.stickerByCat.value!!.size) {
+                        Pack(viewModel.stickerByCat.value!![it]) {
                             viewModel.setDetailPack(it)
                             navController.navigate(Screen.Details.route)
                         }

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.example.stickerjetpackcomp.data.Remote
+import com.example.stickerjetpackcomp.model.Categories
+import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.model.Stickers
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.HandleResponse
@@ -18,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.log
 
 
 @HiltViewModel
@@ -29,8 +32,12 @@ class StickerViewModel @Inject constructor(
     private lateinit var stickerPackView: StickerPack
 
     private val stickersFromApi = mutableStateOf<NetworkResults<Stickers>>(NetworkResults.Loading())
+    private val catsFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
 
     val stickers = mutableStateOf<List<StickerPack>?>(null)
+    var stickerByCat = mutableStateOf<List<StickerPack>?>(null)
+    val categories = mutableStateOf<List<Category>?>(null)
+    var cid= 0
 
     private val list = arrayListOf<StickerPack>()
 
@@ -45,9 +52,8 @@ class StickerViewModel @Inject constructor(
             val response = remote.getStickers()
             val handleStickers = HandleResponse(response)
             stickersFromApi.value = handleStickers.handleResult()
-            Log.d("results", stickersFromApi.value.toString())
-        }
 
+        }
         if (stickersFromApi.value is NetworkResults.Success) {
             Log.d("results", list.size.toString())
             stickersFromApi.value.data!!.results.forEach { sticker ->
@@ -55,13 +61,32 @@ class StickerViewModel @Inject constructor(
                 list.add(pack)
             }
             stickers.value = list
+
             Hawk.put("sticker_packs", list)
+        }
+    }
+
+    fun getCategories() = viewModelScope.launch {
+        Log.d("cats","begin")
+        if (catsFromApi.value is NetworkResults.Error || catsFromApi.value is NetworkResults.Loading) {
+            val response = remote.getCategories()
+            val handleCats = HandleResponse(response)
+            catsFromApi.value = handleCats.handleResult()
+            Log.d("cats",catsFromApi.value.toString())
+        }
+        if (catsFromApi.value is NetworkResults.Success) {
+            categories.value = catsFromApi.value.data!!.results.shuffled()
+            Log.d("cats",categories.value.toString())
         }
     }
 
     fun setDetailPack(pack: StickerPack) {
         detailsPack.value = pack
         stickerPackView = pack
+    }
+
+    fun stickersByCat(){
+        stickerByCat.value= stickers.value!!.filter { stickerPack -> stickerPack.catId ==cid }
     }
 
     fun download() {

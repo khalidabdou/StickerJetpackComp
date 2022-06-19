@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MySticker(
     val id: Int?,
     val identifier: Int,
+    val cid:Int,
     val name: String,
     val animated_sticker_pack: Boolean,
     val android_play_store_link: String,

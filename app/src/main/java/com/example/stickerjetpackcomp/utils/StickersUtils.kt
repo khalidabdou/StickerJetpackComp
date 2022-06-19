@@ -41,12 +41,12 @@ class StickersUtils {
                 "SpecialOnes",
                 "SpecialOnes@support.com", "SpecialOnes",
                 stickers,
-                BASE_URL + "/stickers/" + sticker.folder + "/im.png",
+                BASE_URL + "/packs/oybq3/tray.png",
                 "https://play.google.com/store/apps/details?id=com.snowcorp.stickerly.android",
                 "",
                 sticker.count_views,
                 sticker.count_set_to_whatsapp,
-                catId = 6
+                catId = sticker.cid
                 )
             return stickerPack
 
@@ -58,7 +58,7 @@ class StickersUtils {
 
 
             stk.forEach { element ->
-                var urlSticker = BASE_URL + "stickers/" + packname + "/" + element
+                var urlSticker = BASE_URL + "packs/" + packname + "/" + element
                 var stickerPk = Sticker(arrayOf("", "", "").asList(), urlSticker)
                 stickerPksArray.add(stickerPk)
                 //Log.d("TAAAAG",urlSticker)
