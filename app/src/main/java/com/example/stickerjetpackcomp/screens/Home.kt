@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,11 +46,12 @@ import com.skydoves.landscapist.glide.GlideImage
 @Composable
 fun Home(navController: NavController, viewModel: StickerViewModel) {
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
-            viewModel.getStickers()
+            viewModel.getStickers(context)
         if  (viewModel.categories.value.isNullOrEmpty())
-            viewModel.getCategories()
+            viewModel.getCategories(context)
             Log.d("cats","")
     }
 
@@ -82,7 +85,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
 
                     if (!viewModel.categories.value.isNullOrEmpty())
 
-                    items(viewModel.categories.value!!.size-1) {
+                    items(viewModel.categories.value!!.size) {
                         Category(
                             colors[it],
                             viewModel.categories.value!![it],
@@ -165,6 +168,8 @@ fun Category(
             )
         }
         Text(text = cat.name, style = MaterialTheme.typography.body1, color = Color.Black)
+
+
     }
 }
 

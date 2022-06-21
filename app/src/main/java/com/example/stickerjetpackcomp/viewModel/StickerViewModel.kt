@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.viewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.HandleResponse
 import com.example.stickerjetpackcomp.utils.NetworkResults
 import com.example.stickerjetpackcomp.utils.StickersUtils
+import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.isOnline
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,7 +49,11 @@ class StickerViewModel @Inject constructor(
     var progress = mutableStateOf(0)
     var isReady = mutableStateOf(false)
 
-    fun getStickers() = viewModelScope.launch {
+    fun getStickers(context: Context) = viewModelScope.launch {
+        if (!isOnline(context)){
+            stickersFromApi.value=NetworkResults.Error("No internet connexion")
+            return@launch
+        }
         if (stickersFromApi.value is NetworkResults.Error || stickersFromApi.value is NetworkResults.Loading) {
             val response = remote.getStickers()
             val handleStickers = HandleResponse(response)
@@ -69,8 +75,13 @@ class StickerViewModel @Inject constructor(
         }
     }
 
-    fun getCategories() = viewModelScope.launch {
+    fun getCategories(context: Context) = viewModelScope.launch {
         //Log.d("cats","begin")
+
+        if (!isOnline(context)){
+            stickersFromApi.value=NetworkResults.Error("No internet connexion")
+            return@launch
+        }
         if (catsFromApi.value is NetworkResults.Error || catsFromApi.value is NetworkResults.Loading) {
             val response = remote.getCategories()
             val handleCats = HandleResponse(response)
@@ -86,6 +97,7 @@ class StickerViewModel @Inject constructor(
     fun setDetailPack(pack: StickerPack) {
         detailsPack.value = pack
         stickerPackView = pack
+        incrementViews(pack.identifier.toInt())
     }
 
     fun stickersByCat(){
@@ -148,4 +160,6 @@ class StickerViewModel @Inject constructor(
         }
 
     }
+
+
 }

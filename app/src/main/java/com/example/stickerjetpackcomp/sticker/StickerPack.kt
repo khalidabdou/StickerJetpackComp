@@ -16,7 +16,7 @@ data class StickerPack(
     val tray_image_file: String,
     val android_play_store_link: String,
     val ios_app_store_link: String,
-    val views :Int,
-    val addToWatsapp:Int,
+    val views: String,
+    val count_set_to_whatsapp: String,
     val catId:Int
  )

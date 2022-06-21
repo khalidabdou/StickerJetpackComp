@@ -62,7 +62,6 @@ import com.example.stickerjetpackcomp.ui.theme.darkGray2
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
-import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.downloadAndShare
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.downloadPR
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
 import com.example.stickerjetpackcomp.utils.shareWebp.Companion.saveImageAndShare
@@ -201,7 +200,7 @@ fun Details(viewModel: StickerViewModel) {
                     LabelLikes(icon = R.drawable.eye, text = pack.views.toString())
                     LabelLikes(
                         icon = R.drawable.ic_dwonloaded,
-                        text = pack.addToWatsapp.toString()
+                        text = pack.count_set_to_whatsapp.toString()
                     )
                 }
                 Column() {
@@ -209,7 +208,7 @@ fun Details(viewModel: StickerViewModel) {
                         onClick = {
                             isVisible.value = true
                             viewModel.download()
-                            viewModel.incrementViews(pack!!.identifier.toInt())
+                            viewModel.incrementAddToWhatsapp(pack!!.identifier.toInt())
                             val trayImageFile = getLastBitFromUrl(pack!!.tray_image_file)
                             downloadPR(pack.stickers[0].image_file, trayImageFile, pack)
                         },

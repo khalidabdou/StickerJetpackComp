@@ -17,6 +17,17 @@ val color4 = Color(0xFF30336b)
 val color5 = Color(0xFFf0932b)
 val color6 = Color(0xFF006266)
 val color7 = Color(0xFF6F1E51)
+val color8 = Color(0xFFffbe76)
+val color9 = Color(0xFFbadc58)
+val color10 = Color(0xFF30336b)
+val color11 = Color(0xFFf0932b)
+val color12 = Color(0xFF006266)
+val color13 = Color(0xFF6F1E51)
 
-val colors= listOf(color1,color2,color3,color4,color5,color6,color7)
+val colors= listOf(color1,color2,color3,color4,color5,color6,color7,color8,color9,color10,
+    color11,
+    color12,
+    color13
+
+    )
 

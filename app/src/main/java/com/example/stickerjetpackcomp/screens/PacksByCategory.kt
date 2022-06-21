@@ -18,8 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -38,10 +40,10 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     val density = LocalDensity.current
     var scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
-
+    val context= LocalContext.current
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty()){
-            viewModel.getStickers()
+            viewModel.getStickers(context)
         }
         viewModel.stickersByCat()
     }
@@ -118,6 +120,10 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             }
             Spacer(modifier = Modifier.width(5.dp))
             Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h5)
+            if (sticker.animated_sticker_pack)
+            Image(painter = painterResource(id = R.drawable.gif_24), contentDescription = "",
+                modifier = Modifier.size(30.dp)
+            )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,

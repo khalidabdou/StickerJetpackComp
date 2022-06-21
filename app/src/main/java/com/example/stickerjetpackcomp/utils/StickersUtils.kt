@@ -1,21 +1,23 @@
 package com.example.stickerjetpackcomp.utils
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.example.stickerjetpackcomp.model.MySticker
 import com.example.stickerjetpackcomp.sticker.Sticker
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.Config.Companion.BASE_URL
-import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.System.out
+import kotlin.random.Random
 
 
 class StickersUtils {
@@ -44,10 +46,10 @@ class StickersUtils {
                 "SpecialOnes@support.com", "SpecialOnes",
                 stickers,
                 BASE_URL + "/packs/oybq3/tray.png",
-                "https://play.google.com/store/apps/details?id=com.snowcorp.stickerly.android",
+                sticker.android_play_store_link,
                 "",
-                sticker.count_views,
-                sticker.count_set_to_whatsapp,
+                Random.nextInt(100,900).toString(),
+                Random.nextInt(100,900).toString(),
                 catId = sticker.cid
                 )
             return stickerPack
@@ -108,42 +110,27 @@ class StickersUtils {
         }
 
 
-
-
-        fun downloadAndShare(url: String, fileName: String,context: Context){
-            PRDownloader.download(
-                url,
-                "${path}/111111/",
-                fileName
-            ).build().setOnProgressListener {
-                // Update the progress
-                //    binding.  progressBar.max = it.totalBytes.toInt()
-                //    progressBar.progress = it.currentBytes.toInt()
+        @RequiresApi(Build.VERSION_CODES.M)
+        fun isOnline(context: Context): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (connectivityManager != null) {
+                val capabilities =
+                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                if (capabilities != null) {
+                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                        return true
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                        return true
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                        Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                        return true
+                    }
+                }
             }
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-
-                        val file = File(
-                            "${path}/111111/",
-                            fileName
-                        )
-                        val bitmapa = BitmapFactory.decodeFile(file.path)
-                        bitmapa.compress(Bitmap.CompressFormat.PNG,40, out)
-                        val bitmap = Bitmap.createScaledBitmap(bitmapa, 30, 30, true)
-
-
-                        val uri: Uri = Uri.parse(file.path)
-
-                        val intent = Intent(Intent.ACTION_SEND)
-                        intent.type = "image/*"
-                        intent.putExtra(Intent.EXTRA_STREAM, uri)
-                        context.startActivity(Intent.createChooser(intent, "Share Image"))
-
-                    }
-                    override fun onError(error: com.downloader.Error?) {
-                        Log.d("TAG","ERR")
-                    }
-                })
+            return false
         }
     }
 
