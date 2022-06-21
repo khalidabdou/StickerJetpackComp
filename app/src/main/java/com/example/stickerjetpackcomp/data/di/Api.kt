@@ -4,10 +4,7 @@ import com.example.stickerjetpackcomp.model.Categories
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.model.Stickers
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.PUT
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface Api {
@@ -19,16 +16,16 @@ interface Api {
     @GET("categories")
     suspend fun getCategories():Response<Categories?>
 
-    @Headers("Content-Type: application/json")
-    @PUT("incrementStickerViews")
+
+    @POST("incrementViews")
     suspend fun incrementStickerViews(
-        @Query("id") id: Int=7
+        @Query("sticker") id: Int=7
     )
 
-    @Headers("Content-Type: application/json")
-    @PUT("incrementStickerAddTo")
+
+    @POST("incrementAdd")
     suspend fun incrementStickerAddTo(
-        @Query("id") id: Int
+        @Query("sticker") id: Int
     )
 
 }

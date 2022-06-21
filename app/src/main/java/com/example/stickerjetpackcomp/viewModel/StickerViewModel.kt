@@ -59,24 +59,27 @@ class StickerViewModel @Inject constructor(
             stickersFromApi.value.data!!.results.forEach { sticker ->
                 val pack: StickerPack = StickersUtils.convertStickerToPack(sticker)
                 list.add(pack)
+                Hawk.delete("sticker_packs")
             }
             stickers.value = list
 
             Hawk.put("sticker_packs", list)
+                //Log.d("hwak",Hawk.get<String?>("sticker_packs").toString())
+
         }
     }
 
     fun getCategories() = viewModelScope.launch {
-        Log.d("cats","begin")
+        //Log.d("cats","begin")
         if (catsFromApi.value is NetworkResults.Error || catsFromApi.value is NetworkResults.Loading) {
             val response = remote.getCategories()
             val handleCats = HandleResponse(response)
             catsFromApi.value = handleCats.handleResult()
-            Log.d("cats",catsFromApi.value.toString())
+            //Log.d("cats",catsFromApi.value.toString())
         }
         if (catsFromApi.value is NetworkResults.Success) {
             categories.value = catsFromApi.value.data!!.results.shuffled()
-            Log.d("cats",categories.value.toString())
+            //Log.d("cats",categories.value.toString())
         }
     }
 
@@ -89,6 +92,19 @@ class StickerViewModel @Inject constructor(
         stickerByCat.value= stickers.value!!.filter { stickerPack -> stickerPack.catId ==cid }
     }
 
+
+    fun incrementAddToWhatsapp(identifier :Int){
+       viewModelScope.launch {
+           remote.incrementStickerAddTo(identifier)
+       }
+    }
+
+    fun incrementViews(identifier: Int){
+        viewModelScope.launch {
+            remote.incrementStickerViews(identifier)
+        }
+    }
+
     fun download() {
         if (index < stickerPackView.stickers.size) {
             var fileName = getLastBitFromUrl(stickerPackView.stickers[index].image_file)
@@ -99,9 +115,7 @@ class StickerViewModel @Inject constructor(
                 "${StickersUtils.path}/${stickerPackView.identifier}/",
                 fileName
             ).build().setOnProgressListener {
-                // Update the progress
-                //    binding.  progressBar.max = it.totalBytes.toInt()
-                //    progressBar.progress = it.currentBytes.toInt()
+
             }.start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
                     val file = File(
@@ -114,6 +128,10 @@ class StickerViewModel @Inject constructor(
                     //Log.d("TGG",stickerPackView.stickers[index].image_file)
                     index++
                     progress.value=(index*100/detailsPack.value!!.stickers.size)
+
+                    var lengthbmp = file.length() /1024
+
+                    Log.d("TAG",lengthbmp.toString() + " ${fileName}")
 
                     download()
 

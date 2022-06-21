@@ -1,19 +1,21 @@
 package com.example.stickerjetpackcomp.utils
 
-import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
-import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.model.MySticker
 import com.example.stickerjetpackcomp.sticker.Sticker
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.Config.Companion.BASE_URL
-import com.example.stickerjetpackcomp.utils.Config.Companion.SETTING
-import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
+import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import java.io.File
+import java.io.FileOutputStream
+import java.lang.System.out
 
 
 class StickersUtils {
@@ -74,6 +76,45 @@ class StickersUtils {
                 url,
                 "${path}/${pack.identifier}/",
                 fileName
+            ).build().setOnProgressListener {}
+                .start(object : OnDownloadListener {
+                    override fun onDownloadComplete() {
+                        Log.d("TGG", url + " ---//-- " + fileName)
+                        val file = File(
+                            "${path}/${pack.identifier}/",
+                            fileName
+                        )
+                        val bitmapa = BitmapFactory.decodeFile(file.path)
+                        bitmapa.compress(Bitmap.CompressFormat.PNG,40, out)
+                        val b = BitmapFactory.decodeFile(file.path)
+                        var bitmap = Bitmap.createScaledBitmap(bitmapa, 30, 30, false)
+                        try {
+                           val fOut = FileOutputStream(file)
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 10, fOut)
+                            fOut.flush()
+                            fOut.close()
+                            b.recycle()
+                            bitmap.recycle()
+                        } catch (e: Exception) {
+                        }
+                        var lengthbmp = file.length() /1024
+                        //Log.d("TAG",lengthbmp.toString())
+                        //Log.d("hawk",Hawk.get<Any>("sticker_packs").toString())
+                    }
+                    override fun onError(error: com.downloader.Error?) {
+                       Log.d("TAG","ERR")
+                    }
+                })
+        }
+
+
+
+
+        fun downloadAndShare(url: String, fileName: String,context: Context){
+            PRDownloader.download(
+                url,
+                "${path}/111111/",
+                fileName
             ).build().setOnProgressListener {
                 // Update the progress
                 //    binding.  progressBar.max = it.totalBytes.toInt()
@@ -81,21 +122,26 @@ class StickersUtils {
             }
                 .start(object : OnDownloadListener {
                     override fun onDownloadComplete() {
-                        // Update the progress bar to show the completeness
-//                    progressBar.max = 100
-//                    progressBar.progress = 100
-//
-//                    // Read the file
-//                    readFile(fileName)
 
-                        Log.d("TGG", url + " ---//-- " + fileName)
                         val file = File(
-                            "${path}/${pack.identifier}/",
+                            "${path}/111111/",
                             fileName
                         )
+                        val bitmapa = BitmapFactory.decodeFile(file.path)
+                        bitmapa.compress(Bitmap.CompressFormat.PNG,40, out)
+                        val bitmap = Bitmap.createScaledBitmap(bitmapa, 30, 30, true)
+
+
+                        val uri: Uri = Uri.parse(file.path)
+
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.type = "image/*"
+                        intent.putExtra(Intent.EXTRA_STREAM, uri)
+                        context.startActivity(Intent.createChooser(intent, "Share Image"))
+
                     }
                     override fun onError(error: com.downloader.Error?) {
-                       Log.d("TAG","ERR")
+                        Log.d("TAG","ERR")
                     }
                 })
         }

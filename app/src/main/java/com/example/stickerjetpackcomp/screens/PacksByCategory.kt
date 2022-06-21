@@ -106,7 +106,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                     .padding(10.dp)
             ) {
                 GlideImage(
-                    imageModel = "${sticker.tray_image_file}",
+                    imageModel = "${sticker.stickers[0].image_file}",
                     // Crop, Fit, Inside, FillHeight, FillWidth, None
                     contentScale = ContentScale.Crop,
                     // shows a placeholder while loading the image.

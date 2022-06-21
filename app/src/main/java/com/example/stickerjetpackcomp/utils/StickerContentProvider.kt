@@ -24,6 +24,7 @@ class StickerContentProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         Hawk.init(context).build()
+        Hawk.delete("sticker_packs")
         val authority = BuildConfig.CONTENT_PROVIDER_AUTHORITY
         check(authority.startsWith(context!!.packageName)) { "your authority (" + authority + ") for the content provider should start with your package name: " + context!!.packageName }
 
