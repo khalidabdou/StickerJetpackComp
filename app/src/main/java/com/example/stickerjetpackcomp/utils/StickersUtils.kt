@@ -28,7 +28,9 @@ class StickersUtils {
         const val EXTRA_STICKER_PACK_NAME = "sticker_pack_name"
         const val EXTRA_STICKERPACK = "stickerpack"
 
+
         const val ADD_PACK = 200
+        var LANGUAGE = 0
 
         @JvmField
         var path: String? = null
@@ -48,10 +50,10 @@ class StickersUtils {
                 BASE_URL + "/packs/oybq3/tray.png",
                 sticker.android_play_store_link,
                 "",
-                Random.nextInt(100,900).toString(),
-                Random.nextInt(100,900).toString(),
+                Random.nextInt(100, 900).toString(),
+                Random.nextInt(100, 900).toString(),
                 catId = sticker.cid
-                )
+            )
             return stickerPack
 
         }
@@ -73,7 +75,7 @@ class StickersUtils {
         }
 
 
-        fun  downloadPR(url: String, fileName: String, pack: StickerPack) {
+        fun downloadPR(url: String, fileName: String, pack: StickerPack) {
             PRDownloader.download(
                 url,
                 "${path}/${pack.identifier}/",
@@ -87,11 +89,11 @@ class StickersUtils {
                             fileName
                         )
                         val bitmapa = BitmapFactory.decodeFile(file.path)
-                        bitmapa.compress(Bitmap.CompressFormat.PNG,40, out)
+                        bitmapa.compress(Bitmap.CompressFormat.PNG, 40, out)
                         val b = BitmapFactory.decodeFile(file.path)
                         var bitmap = Bitmap.createScaledBitmap(bitmapa, 30, 30, false)
                         try {
-                           val fOut = FileOutputStream(file)
+                            val fOut = FileOutputStream(file)
                             bitmap.compress(Bitmap.CompressFormat.PNG, 10, fOut)
                             fOut.flush()
                             fOut.close()
@@ -99,12 +101,13 @@ class StickersUtils {
                             bitmap.recycle()
                         } catch (e: Exception) {
                         }
-                        var lengthbmp = file.length() /1024
+                        var lengthbmp = file.length() / 1024
                         //Log.d("TAG",lengthbmp.toString())
                         //Log.d("hawk",Hawk.get<Any>("sticker_packs").toString())
                     }
+
                     override fun onError(error: com.downloader.Error?) {
-                       Log.d("TAG","ERR")
+                        Log.d("TAG", "ERR")
                     }
                 })
         }

@@ -394,7 +394,5 @@ fun SingleSticker(context: Context,resource: String,editable:Boolean,onClick : (
         }
 
     }
-
-
 }
 

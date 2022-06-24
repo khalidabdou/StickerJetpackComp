@@ -20,10 +20,10 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Splash.route
     ) {
         composable(route = Screen.Splash.route) {
-            Splash(navController = navController)
+            Splash(navController = navController,viewModel)
         }
         composable(route = Screen.Home.route) {
             Home(navController = navController,viewModel=viewModel)

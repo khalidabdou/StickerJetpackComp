@@ -24,22 +24,14 @@ import okhttp3.OkHttpClient
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    var config = PRDownloaderConfig.newBuilder()
-        .setReadTimeout(30000)
-        .setConnectTimeout(30000)
-        .build()
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             StickerJetpackCompTheme {
-                Hawk.init(this).build()
 
 
-                PRDownloader.initialize(applicationContext, config)
                 val viewModel: StickerViewModel = hiltViewModel()
                 val navController = rememberNavController()
                 SetupNavGraph(

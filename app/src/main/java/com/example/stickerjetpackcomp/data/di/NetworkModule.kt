@@ -1,10 +1,13 @@
 package com.example.testfriends_jetpackcompose.di
 
+import android.content.Context
+import com.example.stickerjetpackcomp.data.Local
 import com.example.stickerjetpackcomp.utils.Config.Companion.BASE_URL
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -105,6 +108,12 @@ object NetworkModule {
             throw RuntimeException(e)
         }
     }
+
+    @Singleton
+    @Provides
+    fun provideDataStoreRepository(
+        @ApplicationContext context: Context
+    ) = Local(context = context)
 
 
 //    private fun getUnsafeOkHttpClient(): OkHttpClient? {

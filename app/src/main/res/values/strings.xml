@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Every day stickers</string>
+    <string name="send_to">get Best Stickers For whatsapp</string>
+    <string name="pre_fix"> get Best Stickers For whatsapp https://play.google.com/store/apps/details?id=</string>
+    <string name="categories">Categories</string>
+    <string name="latest">Latest</string>
+
+    <string name="morning">Good Morning</string>
+    <string name="afternoon">Good Afternoon</string>
+    <string name="evening">Good Evening</string>
+    <string name="night">Good Night</string>
+
 </resources>

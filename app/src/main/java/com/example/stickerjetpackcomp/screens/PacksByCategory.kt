@@ -43,7 +43,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     val context= LocalContext.current
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty()){
-            viewModel.getStickers(context)
+           // viewModel.getStickers(context)
         }
         viewModel.stickersByCat()
     }
@@ -121,7 +121,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             Spacer(modifier = Modifier.width(5.dp))
             Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h5)
             if (sticker.animated_sticker_pack)
-            Image(painter = painterResource(id = R.drawable.gif_24), contentDescription = "",
+            Icon(painter = painterResource(id = R.drawable.gif_24),tint= Color.Red, contentDescription = "",
                 modifier = Modifier.size(30.dp)
             )
         }

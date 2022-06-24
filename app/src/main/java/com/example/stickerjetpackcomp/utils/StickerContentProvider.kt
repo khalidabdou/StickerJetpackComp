@@ -24,7 +24,6 @@ class StickerContentProvider : ContentProvider() {
 
     override fun onCreate(): Boolean {
         Hawk.init(context).build()
-        Hawk.delete("sticker_packs")
         val authority = BuildConfig.CONTENT_PROVIDER_AUTHORITY
         check(authority.startsWith(context!!.packageName)) { "your authority (" + authority + ") for the content provider should start with your package name: " + context!!.packageName }
 
@@ -210,6 +209,8 @@ class StickerContentProvider : ContentProvider() {
     private fun getStickerPackList(): ArrayList<StickerPack> =
         Hawk.get("sticker_packs", ArrayList())
 
+
+
     private fun getPackForAllStickerPacks(uri: Uri): Cursor =
         getStickerPackInfo(uri, packList)
 
@@ -225,7 +226,6 @@ class StickerContentProvider : ContentProvider() {
         for (stickerPack in packList) {
             if (identifier == stickerPack.identifier) {
                 Log.e("getCursorForSingleStickerPack", "founded")
-
                 return getStickerPackInfo(uri, listOf(stickerPack))
             }
         }

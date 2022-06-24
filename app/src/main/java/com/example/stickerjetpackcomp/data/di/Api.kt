@@ -1,8 +1,8 @@
 package com.example.testfriends_jetpackcompose.di
 
-import com.example.stickerjetpackcomp.model.Categories
-import com.example.stickerjetpackcomp.model.Category
-import com.example.stickerjetpackcomp.model.Stickers
+import com.example.stickerjetpackcomp.model.*
+import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.LANGUAGE
+import org.intellij.lang.annotations.Language
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -10,11 +10,14 @@ import retrofit2.http.*
 interface Api {
     @GET("stickers")
     suspend fun getStickers(
-        @Query("language") language: Int = 1
+        @Query("language") language: Int = LANGUAGE
     ): Response<Stickers?>
 
-    @GET("categories")
-    suspend fun getCategories():Response<Categories?>
+    @GET("categoriesByLanguage")
+    suspend fun getCategories(@Query("language") language: Int):Response<Categories?>
+
+    @GET("languages")
+    suspend fun getLanguages():Response<ListLanguages?>
 
 
     @POST("incrementViews")
