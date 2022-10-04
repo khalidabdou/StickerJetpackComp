@@ -195,7 +195,7 @@ fun Details(viewModel: StickerViewModel) {
                     Text(
                         text = pack!!.name,
                         color = backgroundWhite,
-                        style = MaterialTheme.typography.h1
+                        style = MaterialTheme.typography.h6
                     )
                     LabelLikes(icon = R.drawable.eye, text = pack.views.toString())
                     LabelLikes(
