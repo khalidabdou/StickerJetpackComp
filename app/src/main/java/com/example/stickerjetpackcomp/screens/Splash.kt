@@ -58,12 +58,10 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
     //  Splash(alpha = alphaAnim.value)
 
     LaunchedEffect(0) {
-        if (viewModel.languages.value.isNullOrEmpty())
-            viewModel.getLanguages(context)
-
-
+        //if (viewModel.languages.value.isNullOrEmpty())
+           // viewModel.getLanguages(context)
     }
-    if (!viewModel.languages.value.isNullOrEmpty()) {
+   /* if (!viewModel.languages.value.isNullOrEmpty()) {
         val lg = local.getLanguage.collectAsState(initial = 0)
         if (lg.value != 0) {
             LaunchedEffect(key1 = true) {
@@ -77,7 +75,8 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
                 viewModel.saveLanguage(it)
                 Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
             }
-    } else Splash(alpha = alphaAnim.value)
+    } else*/
+    Splash(alpha = alphaAnim.value)
 }
 
 @Composable

@@ -39,11 +39,12 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     var scrollState = rememberScrollState()
+    var context= LocalContext.current
     val scaffoldState = rememberScaffoldState()
-    val context= LocalContext.current
+
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty()){
-           // viewModel.getStickers(context)
+            viewModel.getStickers(context.packageName)
         }
         viewModel.stickersByCat()
     }
@@ -108,7 +109,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                     .padding(10.dp)
             ) {
                 GlideImage(
-                    imageModel = "${sticker.stickers[0].image_file}",
+                    imageModel = "${sticker.tray_image_file}",
                     // Crop, Fit, Inside, FillHeight, FillWidth, None
                     contentScale = ContentScale.Crop,
                     // shows a placeholder while loading the image.

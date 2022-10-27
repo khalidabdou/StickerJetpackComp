@@ -1,10 +1,8 @@
 package com.example.stickerjetpackcomp.screens
 
-import android.content.Intent
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,40 +10,31 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.stickerjetpackcomp.MainActivity
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Category
-import com.example.stickerjetpackcomp.model.Languages
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.utils.Config
-import com.example.stickerjetpackcomp.utils.shareWebp
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.skydoves.landscapist.glide.GlideImage
-import java.io.File
 import java.util.*
 
 
@@ -55,16 +44,13 @@ import java.util.*
 fun Home(navController: NavController, viewModel: StickerViewModel) {
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+    val packagename=context.packageName
     LaunchedEffect(scaffoldState) {
-
-        if (viewModel.categories.value.isNullOrEmpty()) {
-            //Hawk.init(context)
-            viewModel.getStickers(context)
-            viewModel.getCategories(context)
-
-        }
-
-
+        if (viewModel.stickers.value.isNullOrEmpty())
+            viewModel.getStickers(packagename)
+       /* if  (viewModel.categories.value.isNullOrEmpty())
+            viewModel.getCategories()
+            Log.d("cats","")*/
     }
 
     val state = rememberLazyListState()
@@ -106,13 +92,13 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                         .padding(start = 8.dp)
                         .weight(5f)
                 )
-                AppBarIcon(icon = R.drawable.languages) {
+                /*AppBarIcon(icon = R.drawable.languages) {
                     editable = !editable
-                }
+                }*/
                 Spacer(modifier = Modifier.width(3.dp))
-                AppBarIcon(icon = R.drawable.share) {
+                /*AppBarIcon(icon = R.drawable.share) {
                     shareWebp.share(context)
-                }
+                }*/
             }
         }
 
@@ -154,6 +140,15 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                                 LoadingShimmerEffect()
                             }
                         }
+                    items(viewModel.categories.value!!.size) {
+                        Category(
+                            colors[it],
+                            viewModel.categories.value!![it],
+                            packagename = packagename,
+                            onClick = {
+                                viewModel.cid=  it
+                                navController.navigate(Screen.PacksByCategory.route)
+                            })
                     }
                 }
             }
@@ -165,7 +160,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
-            if (!viewModel.stickers.value.isNullOrEmpty())
+            if (viewModel.stickers.value != null)
                 items(viewModel.stickers.value!!.size) {
                     Popular(viewModel.stickers.value!![it],
                         onClick = {
@@ -217,6 +212,7 @@ fun AppBarIcon(icon: Int, onClick: () -> Unit) {
 fun Category(
     color: Color,
     cat: Category,
+    packagename:String,
     onClick: (Int) -> Unit
 ) {
     Column(
@@ -235,7 +231,7 @@ fun Category(
             contentAlignment = Alignment.Center
         ) {
             GlideImage(
-                imageModel = Config.BASE_URL + "categories/${cat.image}",
+                imageModel = Config.BASE_URL+"apps/${packagename}/category/${cat.image}",
                 // Crop, Fit, Inside, FillHeight, FillWidth, None
                 contentScale = ContentScale.Crop,
                 // shows a placeholder while loading the image.
@@ -321,9 +317,7 @@ fun ShimmerGridItem(brush: Brush) {
 
 @Composable
 fun LoadingShimmerEffect() {
-
     //These colors will be used on the brush. The lightest color should be in the middle
-
     val gradient = listOf(
         Color.LightGray.copy(alpha = 0.9f), //darker grey (90% opacity)
         Color.LightGray.copy(alpha = 0.3f), //lighter grey (30% opacity)
@@ -353,34 +347,6 @@ fun LoadingShimmerEffect() {
     ShimmerGridItem(brush = brush)
 }
 
-
-@Composable
-fun DialogLanguage(languages: List<Languages>, editable: Boolean, onClick: (Int) -> Unit) {
-    val density = LocalDensity.current
-    AnimatedVisibility(visible = editable,
-        enter = slideInVertically {
-            // Slide in from 40 dp from the top.
-            with(density) { -40.dp.roundToPx() }
-        } + expandVertically(
-            // Expand from the top.
-            expandFrom = Alignment.Top
-        ) + fadeIn(
-            // Fade in with the initial alpha of 0.3f.
-            initialAlpha = 0.3f
-        ),
-        exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(darkGray)
-        ) {
-            Languages(languages) {
-                onClick(it)
-            }
-        }
-
-    }
-}
 
 
 

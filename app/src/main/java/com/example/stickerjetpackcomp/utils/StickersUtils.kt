@@ -1,23 +1,28 @@
 package com.example.stickerjetpackcomp.utils
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.model.MySticker
 import com.example.stickerjetpackcomp.sticker.Sticker
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.Config.Companion.BASE_URL
+import com.example.stickerjetpackcomp.utils.Config.Companion.PACKAGE
+import com.example.stickerjetpackcomp.utils.Config.Companion.SETTING
+import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.System.out
-import kotlin.random.Random
 
 
 class StickersUtils {
@@ -47,13 +52,13 @@ class StickersUtils {
                 "SpecialOnes",
                 "SpecialOnes@support.com", "SpecialOnes",
                 stickers,
-                BASE_URL + "/packs/oybq3/tray.png",
-                sticker.android_play_store_link,
+                BASE_URL + "apps/${PACKAGE}/${sticker.folder}/tray.png",
+                "https://play.google.com/store/apps/details?id=com.snowcorp.stickerly.android",
                 "",
-                Random.nextInt(100, 900).toString(),
-                Random.nextInt(100, 900).toString(),
+                sticker.count_views,
+                sticker.count_set_to_whatsapp,
                 catId = sticker.cid
-            )
+                )
             return stickerPack
 
         }
@@ -107,7 +112,7 @@ class StickersUtils {
                     }
 
                     override fun onError(error: com.downloader.Error?) {
-                        Log.d("TAG", "ERR")
+                       Log.d("TAG","ERR")
                     }
                 })
         }

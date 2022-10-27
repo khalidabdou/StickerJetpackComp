@@ -80,7 +80,6 @@ fun Details(viewModel: StickerViewModel) {
 
 
     var favIcon by mutableStateOf(R.drawable.favorite)
-
     val pack = viewModel.detailsPack.value
     //var max = viewModel.detailsPack.value!!.stickers.size
     val state = rememberLazyListState()

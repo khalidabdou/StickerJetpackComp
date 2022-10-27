@@ -11,15 +11,12 @@ data class MySticker(
     val android_play_store_link: String,
     val stickers: String,
     val folder: String,
-    @SerializedName("language_app")
-    val language_app: String,
-    val count_views: Int,
-    val count_set_to_whatsapp: Int,
+    val count_views: String,
+    val count_set_to_whatsapp: String,
 )
 
 data class Stickers(
-    @SerializedName("stickers")
-    val results: List<MySticker>
+    val pack_stickers: List<MySticker>
 )
 
 

@@ -1,34 +1,33 @@
 package com.example.testfriends_jetpackcompose.di
 
-import com.example.stickerjetpackcomp.model.*
-import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.LANGUAGE
-import org.intellij.lang.annotations.Language
+import com.example.stickerjetpackcomp.model.Categories
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface Api {
-    @GET("stickers")
+    @GET("categories/{package}")
     suspend fun getStickers(
-        @Query("language") language: Int = LANGUAGE
-    ): Response<Stickers?>
+        @Path("package") packageName:String
+    ): Response<Categories?>
 
-    @GET("categoriesByLanguage")
-    suspend fun getCategories(@Query("language") language: Int):Response<Categories?>
+    @GET("categories")
+    suspend fun getCategories():Response<Categories?>
 
-    @GET("languages")
-    suspend fun getLanguages():Response<ListLanguages?>
-
-
-    @POST("incrementViews")
+    @Headers("Content-Type: application/json")
+    @PUT("incrementStickerViews")
     suspend fun incrementStickerViews(
-        @Query("sticker") id: Int=7
+        @Query("id") id: Int=7
     )
 
-
-    @POST("incrementAdd")
+    @Headers("Content-Type: application/json")
+    @PUT("incrementStickerAddTo")
     suspend fun incrementStickerAddTo(
-        @Query("sticker") id: Int
+        @Query("id") id: Int
     )
 
 }
