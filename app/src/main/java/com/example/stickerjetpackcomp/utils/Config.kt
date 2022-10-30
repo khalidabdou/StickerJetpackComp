@@ -6,6 +6,6 @@ class Config {
     companion object {
         val BASE_URL: String = BuildConfig.API
         var SETTING = "pack"
-        var PACKAGE: String = "com.catsmemes.stickers"
+        var PACKAGE: String = "com.islamic.stickers"
     }
 }

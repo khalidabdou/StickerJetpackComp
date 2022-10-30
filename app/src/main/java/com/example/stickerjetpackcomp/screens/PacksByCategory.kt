@@ -105,7 +105,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             Spacer(modifier = Modifier.width(5.dp))
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(60.dp)
                     .clip(
                         CircleShape
                     )

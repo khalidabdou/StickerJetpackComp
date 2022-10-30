@@ -13,7 +13,7 @@ android {
         noCompress "webp"
     }
     defaultConfig {
-        applicationId "com.catsmemes.stickers"
+        applicationId "com.islamic4w.stickers"
         minSdk 21
         targetSdk 33
         versionCode 2
