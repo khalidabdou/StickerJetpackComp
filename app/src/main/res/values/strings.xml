@@ -1,5 +1,14 @@
 <resources>
-    <string name="app_name" translatable="false" >Every day stickers</string>
+    <string name="app_name" translatable="false">Every day stickers</string>
+
+
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="ad_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="ad_open_app" translatable="false">ca-app-pub-3940256099942544/3419835294</string>
+
+
+    <string name="share">Share App</string>
 
     <string name="send_to">get Best Stickers For whatsapp</string>
     <string name="pre_fix"> get Best Stickers For whatsapp https://play.google.com/store/apps/details?id=</string>
@@ -10,5 +19,8 @@
     <string name="afternoon">Good Afternoon</string>
     <string name="evening">Good Evening</string>
     <string name="night">Good Night</string>
+    <string name="privacy_url">google.com</string>
+    <string name="rewarded">ca-app-pub-3940256099942544/5224354917</string>
+
 
 </resources>

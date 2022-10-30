@@ -2,11 +2,7 @@ package com.example.testfriends_jetpackcompose.di
 
 import com.example.stickerjetpackcomp.model.Categories
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface Api {
@@ -19,13 +15,13 @@ interface Api {
     suspend fun getCategories():Response<Categories?>
 
     @Headers("Content-Type: application/json")
-    @PUT("incrementStickerViews")
+    @PUT("incrementViews")
     suspend fun incrementStickerViews(
-        @Query("id") id: Int=7
+        @Query("id") id: Int
     )
 
     @Headers("Content-Type: application/json")
-    @PUT("incrementStickerAddTo")
+    @PUT("incrementAdd")
     suspend fun incrementStickerAddTo(
         @Query("id") id: Int
     )

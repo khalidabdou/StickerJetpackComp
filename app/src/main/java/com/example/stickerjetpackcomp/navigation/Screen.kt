@@ -5,5 +5,6 @@ sealed class Screen (val route :String) {
     object Home :Screen(route = "Home_screen")
     object Details : Screen(route = "details_screen")
     object PacksByCategory : Screen(route = "packs_category")
+    object CheckInternet : Screen(route = "check_internet")
 
 }

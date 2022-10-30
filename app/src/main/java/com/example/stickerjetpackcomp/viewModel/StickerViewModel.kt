@@ -1,7 +1,5 @@
 package com.example.stickerjetpackcomp.viewModel
 
-import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,7 +9,6 @@ import com.downloader.PRDownloader
 import com.example.stickerjetpackcomp.data.Remote
 import com.example.stickerjetpackcomp.model.Categories
 import com.example.stickerjetpackcomp.model.Category
-import com.example.stickerjetpackcomp.model.Stickers
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.HandleResponse
 import com.example.stickerjetpackcomp.utils.NetworkResults
@@ -19,10 +16,11 @@ import com.example.stickerjetpackcomp.utils.StickersUtils
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
-import kotlin.math.log
 
 
 @HiltViewModel
@@ -34,13 +32,17 @@ class StickerViewModel @Inject constructor(
 
     private lateinit var stickerPackView: StickerPack
 
-    private val stickersFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
+    private val stickersFromApi =
+        mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
     private val catsFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
+
+    private val _connexion = MutableStateFlow<Boolean>(false)
+    val connexionFlow: StateFlow<Boolean> get() = _connexion
 
     val stickers = mutableStateOf<List<StickerPack>?>(null)
     var stickerByCat = mutableStateOf<List<StickerPack>?>(null)
     val categories = mutableStateOf<List<Category>?>(null)
-    var cid= 0
+    var cid = 0
 
     private val list = arrayListOf<StickerPack>()
 
@@ -51,51 +53,78 @@ class StickerViewModel @Inject constructor(
     var isReady = mutableStateOf(false)
 
     fun getStickers(packageName:String) = viewModelScope.launch {
-        if (stickersFromApi.value is NetworkResults.Error || stickersFromApi.value is NetworkResults.Loading) {
-            val response = remote.getStickers(packageName)
-            val handleStickers = HandleResponse(response)
-            stickersFromApi.value = handleStickers.handleResult()
+        if (stickersFromApi.value is NetworkResults.Error) {
+
+        }
+        if (stickersFromApi.value is NetworkResults.Loading) {
+            try {
+                val response = remote.getStickers(packageName)
+                val handleStickers = HandleResponse(response)
+                stickersFromApi.value = handleStickers.handleResult()
+            } catch (ex: Exception) {
+            }
 
         }
         if (stickersFromApi.value is NetworkResults.Success) {
-            Log.d("results", list.size.toString())
-
+            //Log.d("results", list.size.toString())
+            _connexion.value = true
             categories.value = stickersFromApi.value.data!!.results.shuffled()
-
             stickersFromApi.value.data!!.results.forEach { cat ->
-                cat.pack_stickers.forEach { sticker->
+                cat.pack_stickers.forEach { sticker ->
                     val pack: StickerPack = StickersUtils.convertStickerToPack(sticker)
                     list.add(pack)
                 }
-
             }
             stickers.value = list
-
             Hawk.put("sticker_packs", list)
         }
     }
 
-    fun getCategories() = viewModelScope.launch {
-        Log.d("cats","begin")
-        if (catsFromApi.value is NetworkResults.Error || catsFromApi.value is NetworkResults.Loading) {
-            val response = remote.getCategories()
-            val handleCats = HandleResponse(response)
-            catsFromApi.value = handleCats.handleResult()
-            Log.d("cats",catsFromApi.value.toString())
-        }
-        if (catsFromApi.value is NetworkResults.Success) {
-            categories.value = catsFromApi.value.data!!.results.shuffled()
-            Log.d("cats",categories.value.toString())
-        }
-    }
+    /*  fun getCategories() = viewModelScope.launch {
+          Log.d("cats","begin")
+          if (catsFromApi.value is NetworkResults.Error || catsFromApi.value is NetworkResults.Loading) {
+              val response = remote.getCategories()
+              val handleCats = HandleResponse(response)
+              catsFromApi.value = handleCats.handleResult()
+              Log.d("cats",catsFromApi.value.toString())
+          }
+          if (catsFromApi.value is NetworkResults.Success) {
+              categories.value = catsFromApi.value.data!!.results.shuffled()
+              Log.d("cats",categories.value.toString())
+          }
+      }*/
 
     fun setDetailPack(pack: StickerPack) {
         detailsPack.value = pack
         stickerPackView = pack
     }
 
-    fun stickersByCat(){
-        stickerByCat.value= stickers.value!!.filter { stickerPack -> stickerPack.catId ==cid }
+    fun incrementAddToWhatsapp(identifier: Int) {
+        viewModelScope.launch {
+            try {
+                remote.incrementStickerAddTo(identifier)
+            } catch (ex: Exception) {
+            }
+
+        }
+    }
+
+    fun incrementView(identifier: Int) {
+        viewModelScope.launch {
+            try {
+                remote.incrementStickerViews(identifier)
+            } catch (ex: Exception) {
+            }
+
+        }
+    }
+
+    fun setConnexion(cox: Boolean) {
+        _connexion.value = cox
+    }
+
+    fun stickersByCat() {
+        stickerByCat.value = stickers.value!!.filter { stickerPack -> stickerPack.catId == cid }
     }
 
     fun download() {
@@ -117,13 +146,13 @@ class StickerViewModel @Inject constructor(
                         "${StickersUtils.path}/${stickerPackView.identifier}/",
                         fileName
                     )
-                    Log.d("TGG", "download " + index)
-                    Log.d("TGG", file.exists().toString())
+
+                    //Log.d("TGG", "download " + index)
+                    //Log.d("TGG", file.exists().toString())
                     //Log.d("TGG", file.absolutePath.toString())
                     //Log.d("TGG",stickerPackView.stickers[index].image_file)
                     index++
-                    progress.value=(index*100/detailsPack.value!!.stickers.size)
-
+                    progress.value = (index * 100 / detailsPack.value!!.stickers.size)
                     download()
 
                 }

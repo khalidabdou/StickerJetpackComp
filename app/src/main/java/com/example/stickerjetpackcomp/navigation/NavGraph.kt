@@ -5,10 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.stickerjetpackcomp.screens.Details
-import com.example.stickerjetpackcomp.screens.Home
-import com.example.stickerjetpackcomp.screens.PacksByCategory
-import com.example.stickerjetpackcomp.screens.Splash
+import com.example.stickerjetpackcomp.screens.*
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 
 
@@ -22,18 +19,25 @@ fun SetupNavGraph(
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
+
+        composable(route = Screen.CheckInternet.route) {
+            CheckInternet()
+        }
+
         composable(route = Screen.Splash.route) {
-            Splash(navController = navController,viewModel)
+            Splash(navController = navController, viewModel)
         }
         composable(route = Screen.Home.route) {
-            Home(navController = navController,viewModel=viewModel)
+            Home(navController = navController, viewModel = viewModel)
         }
         composable(route = Screen.PacksByCategory.route) {
-            PacksByCategory(navController = navController,viewModel=viewModel)
+            PacksByCategory(navController = navController, viewModel = viewModel)
         }
         composable(route = Screen.Details.route) {
             Details(viewModel = viewModel)
         }
 
     }
+
+
 }

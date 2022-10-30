@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +28,8 @@ import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
+import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
-import okhttp3.internal.filterList
 
 @ExperimentalAnimationApi
 @Composable
@@ -39,11 +37,11 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     var scrollState = rememberScrollState()
-    var context= LocalContext.current
+    var context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(scaffoldState) {
-        if (viewModel.stickers.value.isNullOrEmpty()){
+        if (viewModel.stickers.value.isNullOrEmpty()) {
             viewModel.getStickers(context.packageName)
         }
         viewModel.stickersByCat()
@@ -51,7 +49,10 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {}
+        topBar = {},
+        bottomBar = {
+            AdvertView()
+        }
     ) {
 
         Column(
@@ -67,6 +68,9 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
                             navController.navigate(Screen.Details.route)
                         }
                     }
+                    item {
+                        Spacer(modifier = Modifier.height(70.dp))
+                    }
                 }
         }
     }
@@ -76,9 +80,9 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 @ExperimentalAnimationApi
 @Composable
 fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
-
     var visible by remember { mutableStateOf(false) }
     val density = LocalDensity.current
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -122,9 +126,12 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             Spacer(modifier = Modifier.width(5.dp))
             Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h5)
             if (sticker.animated_sticker_pack)
-            Icon(painter = painterResource(id = R.drawable.gif_24),tint= Color.Red, contentDescription = "",
-                modifier = Modifier.size(30.dp)
-            )
+                Icon(
+                    painter = painterResource(id = R.drawable.gif_24),
+                    tint = Color.Red,
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp)
+                )
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -155,13 +162,10 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                         contentDescription = "",
                         modifier = Modifier.size(70.dp)
                     )
+                    Log.d("sto", "${sticker.stickers[it].image_file}")
                 }
             }
-            Icon(
-                imageVector = Icons.Default.Add, contentDescription = "", modifier = Modifier
-                    .size(30.dp)
-                    .weight(1f), tint = darkGray
-            )
+
         }
     }
 

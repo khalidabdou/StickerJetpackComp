@@ -5,17 +5,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -26,14 +22,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Green
@@ -45,10 +42,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
-import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -67,8 +62,8 @@ import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.path
 import com.example.stickerjetpackcomp.utils.shareWebp.Companion.saveImageAndShare
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
+import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -78,15 +73,18 @@ import java.io.File
 @Composable
 fun Details(viewModel: StickerViewModel) {
 
-
-    var favIcon by mutableStateOf(R.drawable.favorite)
     val pack = viewModel.detailsPack.value
-    //var max = viewModel.detailsPack.value!!.stickers.size
     val state = rememberLazyListState()
-
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     var editable by remember { mutableStateOf(false) }
+    val openDialog = remember { mutableStateOf(false) }
+
+    LaunchedEffect(pack!!.identifier) {
+
+        viewModel.incrementView(pack.identifier.toInt())
+        loadRewarded(context)
+        showInterstitialAfterClick(context)
+    }
 
     path = context.filesDir.toString() + "/stickers_asset"
     val myDir = File("${path}/")
@@ -96,25 +94,27 @@ fun Details(viewModel: StickerViewModel) {
 
     var resultLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            openDialog.value = false
             if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
                 val data: Intent? = result.data
-                Log.w("TAG", data.toString())
-                //doSomeOperations()
-            } else Log.w("TAG", result.toString())
+
+                showRewarded(context)
+            } else {
+                showInterstitial(context)
+                Toast.makeText(context, "try later", Toast.LENGTH_LONG).show()
+            }
         }
 
     fun openWhatsappActivityForResult() {
-        //val intent = Intent(this, SomeActivity::class.java)
+
         val intent = Intent()
         intent.action = "com.whatsapp.intent.action.ENABLE_STICKER_PACK"
-        intent.putExtra(EXTRA_STICKER_PACK_ID, pack!!.identifier)
+        intent.putExtra(EXTRA_STICKER_PACK_ID, pack.identifier)
         intent.putExtra(
             EXTRA_STICKER_PACK_AUTHORITY,
             BuildConfig.CONTENT_PROVIDER_AUTHORITY
         )
         intent.putExtra(EXTRA_STICKER_PACK_NAME, pack.name)
-        //context.startActivity(intent)
         resultLauncher.launch(intent)
     }
 
@@ -125,19 +125,50 @@ fun Details(viewModel: StickerViewModel) {
         viewModel.progress.value = 0
     }
     val isVisible = remember { mutableStateOf(value = false) }
-    val sharedWebp= remember {
-        mutableStateOf(value = pack!!.stickers[0].image_file)
+    val sharedWebp = remember {
+        mutableStateOf(value = pack.stickers[0].image_file)
     }
+
+    val scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
+        floatingActionButton = {
+            OutlinedButton(
+                onClick = {
+                    //showInterstitial(context = context)
+                    openDialog.value = true
+                    isVisible.value = true
+                    viewModel.download()
+                    viewModel.incrementAddToWhatsapp(pack.identifier.toInt())
+                    val trayImageFile = getLastBitFromUrl(pack.tray_image_file)
+                    downloadPR(pack.tray_image_file, trayImageFile, pack)
+                },
 
+                modifier = Modifier.padding(7.dp),  //avoid the oval shape
+                shape = RoundedCornerShape(6.dp),
+                border = BorderStroke(1.dp, Color.Green),
+                contentPadding = PaddingValues(0.dp),  //avoid the little icon
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Green,
+                    backgroundColor = darkGray
+                )
+            ) {
+
+                Icon(Icons.Default.Add, contentDescription = "content description")
+                Text(text = "Add To Whatsapp", style = MaterialTheme.typography.h4)
+                Spacer(modifier = Modifier.width(5.dp))
+            }
+        },
+        bottomBar = {
+            AdvertView()
+        }
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(darkGray)
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -157,32 +188,17 @@ fun Details(viewModel: StickerViewModel) {
                         .background(backgroundWhite)
                         .padding(10.dp)
                 ) {
+                    GlideImage(
+                        imageModel = pack.tray_image_file,
+                        // Crop, Fit, Inside, FillHeight, FillWidth, None
+                        contentScale = ContentScale.Crop,
+                        // shows a placeholder while loading the image.
+                        placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
+                        // shows an error ImageBitmap when the request failed.
+                        error = ImageBitmap.imageResource(R.drawable.sticker),
+                        modifier = Modifier.size(70.dp)
+                    )
 
-                    androidx.compose.animation.AnimatedVisibility(!isVisible.value) {
-                        GlideImage(
-                            imageModel = "${pack!!.stickers[0].image_file}",
-                            // Crop, Fit, Inside, FillHeight, FillWidth, None
-                            contentScale = ContentScale.Crop,
-                            // shows a placeholder while loading the image.
-                            placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
-                            // shows an error ImageBitmap when the request failed.
-                            error = ImageBitmap.imageResource(R.drawable.sticker),
-                            modifier = Modifier.size(70.dp)
-                        )
-                    }
-
-                    androidx.compose.animation.AnimatedVisibility(isVisible.value) {
-
-                        CustomComponent(
-                            indicatorValue = viewModel.progress.value,
-                            maxIndicatorValue = 100,
-                            bigTextColor = darkGray,
-                            foregroundIndicatorColor = darkGray,
-                            backgroundIndicatorColor = White,
-                            backgroundIndicatorStrokeWidth = 15f,
-                            foregroundIndicatorStrokeWidth = 15f
-                        )
-                    }
 
                 }
                 Spacer(modifier = Modifier.width(5.dp))
@@ -192,7 +208,7 @@ fun Details(viewModel: StickerViewModel) {
                         .weight(1f)
                 ) {
                     Text(
-                        text = pack!!.name,
+                        text = pack.name,
                         color = backgroundWhite,
                         style = MaterialTheme.typography.h6
                     )
@@ -202,14 +218,15 @@ fun Details(viewModel: StickerViewModel) {
                         text = pack.count_set_to_whatsapp.toString()
                     )
                 }
-                Column() {
+                Column {
                     Button(
                         onClick = {
+                            openDialog.value = true
                             isVisible.value = true
                             viewModel.download()
-                            viewModel.incrementAddToWhatsapp(pack!!.identifier.toInt())
-                            val trayImageFile = getLastBitFromUrl(pack!!.tray_image_file)
-                            downloadPR(pack.stickers[0].image_file, trayImageFile, pack)
+                            viewModel.incrementAddToWhatsapp(pack.identifier.toInt())
+                            val trayImageFile = getLastBitFromUrl(pack.tray_image_file)
+                            downloadPR(pack.tray_image_file, trayImageFile, pack)
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Green.copy(0.8f),
@@ -226,14 +243,42 @@ fun Details(viewModel: StickerViewModel) {
                     }
                 }
             }
-            GridStickers(state = state, pack = pack!!, context = context, onClick = {
-                sharedWebp.value=pack.stickers[it].image_file
-                editable=true
+            GridStickers(state = state, pack = pack, context = context, onClick = {
+                showInterstitialAfterClick(context)
+                sharedWebp.value = pack.stickers[it].image_file
+                editable = true
             })
         }
-        SingleSticker(context,sharedWebp.value,editable, onClick = {
-            editable=it
+        SingleSticker(context, sharedWebp.value, editable, onClick = {
+            editable = it
         })
+
+        if (openDialog.value)
+            AlertDialog(
+                onDismissRequest = {
+                    openDialog.value = false
+                },
+                title = {
+                    Text(text = "Please wait")
+                },
+                confirmButton = {
+                    Box(modifier = Modifier.size(100.dp)) {
+                        CustomComponent(
+                            indicatorValue = viewModel.progress.value,
+                            maxIndicatorValue = 100,
+                            bigTextColor = darkGray,
+                            foregroundIndicatorColor = Green,
+                            backgroundIndicatorColor = darkGray2,
+                            backgroundIndicatorStrokeWidth = 30f,
+                            foregroundIndicatorStrokeWidth = 30f
+                        )
+                    }
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            )
     }
 }
 
@@ -241,7 +286,12 @@ fun Details(viewModel: StickerViewModel) {
 @ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridStickers(pack: StickerPack, state: LazyListState, context: Context,onClick: (Int) -> Unit) {
+fun GridStickers(
+    pack: StickerPack,
+    state: LazyListState,
+    context: Context,
+    onClick: (Int) -> Unit
+) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
@@ -253,14 +303,18 @@ fun GridStickers(pack: StickerPack, state: LazyListState, context: Context,onCli
                     .size(100.dp)
                     .padding(4.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(White).clickable {
-                           onClick(index)
+                    .background(White)
+                    .clickable {
+                        onClick(index)
                     },
                 contentAlignment = Alignment.Center
             ) {
                 //"${pack.stickers[index].image_file}"
                 StickerView(context = context, "${pack.stickers[index].image_file}")
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
@@ -277,8 +331,6 @@ private fun StickerView(context: Context, resource: String) {
             }
         }
         .build()
-
-
     imageLoader.memoryCache
 
 
@@ -287,7 +339,13 @@ private fun StickerView(context: Context, resource: String) {
         imageLoader = imageLoader,
     )
 
-    Box(modifier = Modifier.padding(8.dp)) {
+    Column(modifier = Modifier.padding(5.dp)) {
+        Icon(
+            Icons.Rounded.Share,
+            tint = Color.DarkGray,
+            modifier = Modifier.size(10.dp),
+            contentDescription = "Localized description"
+        )
         Image(
             painter = painter, contentDescription = null,
             modifier = Modifier.fillMaxSize()
@@ -313,9 +371,14 @@ fun LabelLikes(icon: Int, text: String) {
 }
 
 @Composable
-fun SingleSticker(context: Context,resource: String,editable:Boolean,onClick : (Boolean)->Unit) {
+fun SingleSticker(
+    context: Context,
+    resource: String,
+    editable: Boolean,
+    onClick: (Boolean) -> Unit
+) {
     val density = LocalDensity.current
-    AnimatedVisibility(    visible = editable,
+    AnimatedVisibility(visible = editable,
         enter = slideInVertically {
             // Slide in from 40 dp from the top.
             with(density) { -40.dp.roundToPx() }
@@ -340,21 +403,25 @@ fun SingleSticker(context: Context,resource: String,editable:Boolean,onClick : (
                     onClick(!editable)
                 }
         ) {
-            Box(modifier = Modifier
-                .size(300.dp)
-                .clip(RoundedCornerShape(5.dp))
-                .background(White)
-                .blur(radius = 16.dp)
+            Box(
+                modifier = Modifier
+                    .size(300.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(White)
+                    .blur(radius = 16.dp)
             ) {
 
-                Column() {
-                    Box(modifier = Modifier.weight(3f)){
-                        StickerView(context,resource)
+                Column {
+                    Box(modifier = Modifier.weight(3f)) {
+                        StickerView(context, resource)
                     }
-                    Row(horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)) {
+                            .weight(1f)
+                    ) {
                         OutlinedButton(
                             modifier = Modifier,
                             onClick = {
@@ -364,7 +431,7 @@ fun SingleSticker(context: Context,resource: String,editable:Boolean,onClick : (
                                     .target { result ->
                                         val bitmap = (result as BitmapDrawable).bitmap
                                         val trayImageFile = getLastBitFromUrl(resource)
-                                        saveImageAndShare(bitmap,trayImageFile,context)
+                                        saveImageAndShare(bitmap, trayImageFile, context)
                                     }
                                     .build()
 
@@ -383,13 +450,15 @@ fun SingleSticker(context: Context,resource: String,editable:Boolean,onClick : (
                     }
 
 
-
                 }
             }
 
             Icon(
-                modifier = Modifier.clip(CircleShape).background(White),
-                imageVector = Icons.Default.Close, contentDescription = "")
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(White),
+                imageVector = Icons.Default.Close, contentDescription = ""
+            )
         }
 
     }

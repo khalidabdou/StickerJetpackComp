@@ -1,8 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -32,9 +30,9 @@ import com.example.stickerjetpackcomp.data.Local
 import com.example.stickerjetpackcomp.model.Languages
 import com.example.stickerjetpackcomp.ui.theme.Purple700
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
-import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.LANGUAGE
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -49,33 +47,33 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
         )
     )
 
-//    LaunchedEffect(key1 = true) {
-//        startAnimation = true
-//        delay(4000)
-//        navController.popBackStack()
-//        navController.navigate(Screen.Home.route)
-//    }
+    LaunchedEffect(key1 = true) {
+        startAnimation = true
+        delay(2000)
+        navController.popBackStack()
+        navController.navigate(Screen.Home.route)
+    }
     //  Splash(alpha = alphaAnim.value)
 
     LaunchedEffect(0) {
         //if (viewModel.languages.value.isNullOrEmpty())
-           // viewModel.getLanguages(context)
+        // viewModel.getLanguages(context)
     }
-   /* if (!viewModel.languages.value.isNullOrEmpty()) {
-        val lg = local.getLanguage.collectAsState(initial = 0)
-        if (lg.value != 0) {
-            LaunchedEffect(key1 = true) {
-                LANGUAGE=lg.value!!
-                Log.d("LANG",lg.value.toString())
-                navController.popBackStack()
-                navController.navigate(Screen.Home.route)
-            }
-        } else
-            Languages(viewModel.languages.value!!) {
-                viewModel.saveLanguage(it)
-                Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
-            }
-    } else*/
+    /* if (!viewModel.languages.value.isNullOrEmpty()) {
+         val lg = local.getLanguage.collectAsState(initial = 0)
+         if (lg.value != 0) {
+             LaunchedEffect(key1 = true) {
+                 LANGUAGE=lg.value!!
+                 Log.d("LANG",lg.value.toString())
+                 navController.popBackStack()
+                 navController.navigate(Screen.Home.route)
+             }
+         } else
+             Languages(viewModel.languages.value!!) {
+                 viewModel.saveLanguage(it)
+                 Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
+             }
+     } else*/
     Splash(alpha = alphaAnim.value)
 }
 

@@ -1,25 +1,20 @@
 package com.example.stickerjetpackcomp.utils
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
-import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.model.MySticker
 import com.example.stickerjetpackcomp.sticker.Sticker
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.Config.Companion.BASE_URL
 import com.example.stickerjetpackcomp.utils.Config.Companion.PACKAGE
-import com.example.stickerjetpackcomp.utils.Config.Companion.SETTING
-import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.System.out
@@ -41,7 +36,7 @@ class StickersUtils {
         var path: String? = null
 
         fun convertStickerToPack(sticker: MySticker): StickerPack {
-            val stickers = convertStringtoSticker(sticker.stickers, sticker.folder)
+            val stickers = convertStringtoSticker(sticker.stickers, sticker.folder, PACKAGE)
             val stickerPack = StickerPack(
                 sticker.animated_sticker_pack, true,
                 "${sticker.identifier}",
@@ -53,28 +48,35 @@ class StickersUtils {
                 "SpecialOnes@support.com", "SpecialOnes",
                 stickers,
                 BASE_URL + "apps/${PACKAGE}/${sticker.folder}/tray.png",
-                "https://play.google.com/store/apps/details?id=com.snowcorp.stickerly.android",
+                "https://play.google.com/store/apps/details?id=${sticker.android_play_store_link}",
                 "",
                 sticker.count_views,
                 sticker.count_set_to_whatsapp,
                 catId = sticker.cid
-                )
+            )
+            //Log.d("play.google",stickerPack.android_play_store_link)
             return stickerPack
 
         }
 
-        fun convertStringtoSticker(stickerString: String, packname: String): ArrayList<Sticker> {
+        fun convertStringtoSticker(
+            stickerString: String,
+            folder: String,
+            pack: String
+        ): ArrayList<Sticker> {
             val stk = stickerString.split(",").toTypedArray()
             var stickerPksArray: ArrayList<Sticker> = ArrayList()
 
 
+            //todo change package
             stk.forEach { element ->
-                var urlSticker = BASE_URL + "packs/" + packname + "/" + element
+                var urlSticker = BASE_URL + "apps/${pack}/" + folder + "/" + element
                 var stickerPk = Sticker(arrayOf("", "", "").asList(), urlSticker)
-                stickerPksArray.add(stickerPk)
-                //Log.d("TAAAAG",urlSticker)
+                if (element.contains("webp", true))
+                    stickerPksArray.add(stickerPk)
+                Log.d("TAAAAG", urlSticker)
             }
-            Log.d("TAAAAG", stickerPksArray.toString())
+            //Log.d("TAAAAG", stickerPksArray.toString())
             return stickerPksArray
 
         }
