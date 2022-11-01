@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,12 +38,12 @@ import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config
+import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.google.android.gms.ads.AdSize
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
-import java.util.*
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -51,7 +52,8 @@ import java.util.*
 fun Home(navController: NavController, viewModel: StickerViewModel) {
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
-    val packagename=context.packageName
+    val packagename = context.packageName
+    val message = viewModel.message.collectAsState()
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             try {
@@ -72,19 +74,8 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         modifier = Modifier,
         scaffoldState = scaffoldState,
         topBar = {
-            var message = "Good Morning"
-            val c: Calendar = Calendar.getInstance()
-            val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+            //var message = "Good Morning"
 
-            if (timeOfDay >= 0 && timeOfDay < 12) {
-                message = "Good Morning"
-            } else if (timeOfDay >= 12 && timeOfDay < 16) {
-                message = "Good Afternoon"
-            } else if (timeOfDay >= 16 && timeOfDay < 21) {
-                message = "Good Evening"
-            } else if (timeOfDay >= 21 && timeOfDay < 24) {
-                message = "Good Night"
-            }
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
@@ -95,7 +86,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     .padding(5.dp)
             ) {
                 Text(
-                    text = message,
+                    text = message.value,
                     style = MaterialTheme.typography.h4,
                     color = Color.White,
                     modifier = Modifier
@@ -115,7 +106,8 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             }
         },
         bottomBar = {
-            AdvertView()
+            if (ENABLE_ADS)
+                AdvertView()
         }
 
     ) {
@@ -129,7 +121,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         ) {
             item {
                 Text(
-                    text = "Categories",
+                    text = stringResource(R.string.Categories),
                     style = MaterialTheme.typography.h4,
                     color = darkGray,
                     modifier = Modifier.padding(start = 8.dp)
@@ -155,16 +147,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                                 LoadingShimmerEffect()
                             }
                         }
-//                        items(viewModel.categories.value!!.size) {
-//                            CategoryCompose(
-//                                colors[it],
-//                                viewModel.categories.value!![it],
-//                                packagename = packagename,
-//                                onClick = {
-//                                    viewModel.cid = it
-//                                    navController.navigate(Screen.PacksByCategory.route)
-//                                })
-//                        }
+
                     }
                 }
 
@@ -172,7 +155,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
 
             item {
                 Text(
-                    text = "Latest",
+                    text = stringResource(R.string.packs),
                     style = MaterialTheme.typography.h4,
                     color = darkGray,
                     modifier = Modifier.padding(start = 8.dp)

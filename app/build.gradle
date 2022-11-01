@@ -13,7 +13,7 @@ android {
         noCompress "webp"
     }
     defaultConfig {
-        applicationId "com.islamic4w.stickers"
+        applicationId "com.islamic4wt.stickers"
         minSdk 21
         targetSdk 33
         versionCode 2
@@ -35,6 +35,7 @@ android {
 
         // should correspond to key/value pairs inside the file
         buildConfigField("String", "API", API)
+        buildConfigField("String", "PACKAGE_NAME", PACKAGE_NAME)
     }
 
     buildTypes {

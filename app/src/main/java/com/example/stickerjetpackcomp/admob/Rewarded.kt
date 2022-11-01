@@ -3,6 +3,7 @@ package com.ringtones.compose.feature.admob
 import android.content.Context
 import android.util.Log
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.utils.Config
 import com.example.stickerjetpackcomp.utils.findActivity
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
@@ -12,6 +13,8 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 private var mRewardedAd: RewardedAd? = null
 
 fun loadRewarded(context: Context) {
+    if (!Config.ENABLE_ADS)
+        return
     var adRequest = AdRequest.Builder().build()
     RewardedAd.load(
         context,
@@ -34,6 +37,8 @@ fun loadRewarded(context: Context) {
 }
 
 fun showRewarded(context: Context) {
+    if (!Config.ENABLE_ADS)
+        return
     if (mRewardedAd != null) {
         val activity = context.findActivity()
         mRewardedAd?.show(activity!!, OnUserEarnedRewardListener {

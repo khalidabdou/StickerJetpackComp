@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 
@@ -32,12 +33,13 @@ class StickerViewModel @Inject constructor(
 
     private lateinit var stickerPackView: StickerPack
 
+
     private val stickersFromApi =
         mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
     private val catsFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
 
-    private val _connexion = MutableStateFlow<Boolean>(false)
-    val connexionFlow: StateFlow<Boolean> get() = _connexion
+    private val _message = MutableStateFlow<String>("Good Morning")
+    val message: StateFlow<String> get() = _message
 
     val stickers = mutableStateOf<List<StickerPack>?>(null)
     var stickerByCat = mutableStateOf<List<StickerPack>?>(null)
@@ -67,7 +69,6 @@ class StickerViewModel @Inject constructor(
         }
         if (stickersFromApi.value is NetworkResults.Success) {
             //Log.d("results", list.size.toString())
-            _connexion.value = true
             categories.value = stickersFromApi.value.data!!.results.shuffled()
             stickersFromApi.value.data!!.results.forEach { cat ->
                 cat.pack_stickers.forEach { sticker ->
@@ -119,9 +120,6 @@ class StickerViewModel @Inject constructor(
         }
     }
 
-    fun setConnexion(cox: Boolean) {
-        _connexion.value = cox
-    }
 
     fun stickersByCat() {
         stickerByCat.value = stickers.value!!.filter { stickerPack -> stickerPack.catId == cid }
@@ -167,5 +165,24 @@ class StickerViewModel @Inject constructor(
             //openWahatsappActivityForResult()
         }
 
+    }
+
+
+    fun setMessage() {
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+        if (timeOfDay >= 0 && timeOfDay < 12) {
+            _message.value = "Good Morning"
+            //message = "Good Morning"
+        } else if (timeOfDay >= 12 && timeOfDay < 16) {
+            _message.value = "Good Afternoon"
+            //message = "Good Afternoon"
+        } else if (timeOfDay >= 16 && timeOfDay < 21) {
+            _message.value = "Good Evening"
+            //message = "Good Evening"
+        } else if (timeOfDay >= 21 && timeOfDay < 24) {
+            _message.value = "Good Night"
+            //message = "Good Night"
+        }
     }
 }

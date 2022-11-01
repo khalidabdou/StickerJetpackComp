@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Every day stickers</string>
+    <string name="app_name" translatable="false">Islamic Stickers</string>
 
 
     <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
@@ -21,6 +21,9 @@
     <string name="night">Good Night</string>
     <string name="privacy_url">google.com</string>
     <string name="rewarded">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="add_to_whatsapp">Add To Whatsapp</string>
+    <string name="Categories">Categories</string>
+    <string name="packs">All Packs</string>
 
 
 </resources>

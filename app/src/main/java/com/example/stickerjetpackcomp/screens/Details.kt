@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import coil.ImageLoader
@@ -54,6 +55,7 @@ import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.ui.theme.darkGray2
+import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -66,8 +68,6 @@ import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
 import java.io.File
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @ExperimentalAnimationApi
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -80,7 +80,6 @@ fun Details(viewModel: StickerViewModel) {
     val openDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(pack!!.identifier) {
-
         viewModel.incrementView(pack.identifier.toInt())
         loadRewarded(context)
         showInterstitialAfterClick(context)
@@ -106,7 +105,6 @@ fun Details(viewModel: StickerViewModel) {
         }
 
     fun openWhatsappActivityForResult() {
-
         val intent = Intent()
         intent.action = "com.whatsapp.intent.action.ENABLE_STICKER_PACK"
         intent.putExtra(EXTRA_STICKER_PACK_ID, pack.identifier)
@@ -124,6 +122,7 @@ fun Details(viewModel: StickerViewModel) {
         viewModel.index = 0
         viewModel.progress.value = 0
     }
+
     val isVisible = remember { mutableStateOf(value = false) }
     val sharedWebp = remember {
         mutableStateOf(value = pack.stickers[0].image_file)
@@ -156,12 +155,17 @@ fun Details(viewModel: StickerViewModel) {
             ) {
 
                 Icon(Icons.Default.Add, contentDescription = "content description")
-                Text(text = "Add To Whatsapp", style = MaterialTheme.typography.h4)
+                Text(
+                    text = stringResource(R.string.add_to_whatsapp),
+                    style = MaterialTheme.typography.h4
+                )
                 Spacer(modifier = Modifier.width(5.dp))
             }
         },
+
         bottomBar = {
-            AdvertView()
+            if (ENABLE_ADS)
+                AdvertView()
         }
     ) {
         Column(
@@ -198,8 +202,6 @@ fun Details(viewModel: StickerViewModel) {
                         error = ImageBitmap.imageResource(R.drawable.sticker),
                         modifier = Modifier.size(70.dp)
                     )
-
-
                 }
                 Spacer(modifier = Modifier.width(5.dp))
                 Column(
@@ -233,7 +235,7 @@ fun Details(viewModel: StickerViewModel) {
                             contentColor = darkGray
                         )
                     ) {
-                        Text(text = "Add")
+                        Text(text = stringResource(R.string.add_to_whatsapp))
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             painter = painterResource(id = R.drawable.whatsapp),
@@ -295,7 +297,8 @@ fun GridStickers(
     LazyVerticalGrid(
         cells = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
-        state = state
+        state = state,
+        modifier = Modifier.padding(bottom = 130.dp)
     ) {
         items(pack.stickers.size) { index ->
             Box(
@@ -313,12 +316,8 @@ fun GridStickers(
                 StickerView(context = context, "${pack.stickers[index].image_file}")
             }
         }
-        item {
-            Spacer(modifier = Modifier.height(100.dp))
-        }
     }
 }
-
 
 @Composable
 private fun StickerView(context: Context, resource: String) {

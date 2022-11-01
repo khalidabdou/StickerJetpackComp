@@ -3,6 +3,7 @@ package com.ringtones.compose.feature.admob
 import android.content.Context
 import android.util.Log
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.findActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -18,7 +19,10 @@ val showAd = 3
 
 // load the interstitial ad
 fun loadInterstitial(context: Context) {
-    addInterstitialCallbacks(context)
+
+    if (!ENABLE_ADS)
+        return
+
 
     InterstitialAd.load(
         context,
@@ -39,14 +43,12 @@ fun loadInterstitial(context: Context) {
     )
 }
 
-// add the interstitial ad callbacks
-fun addInterstitialCallbacks(context: Context) {
 
-}
 
 // show the interstitial ad
 fun showInterstitial(context: Context) {
-
+    if (!ENABLE_ADS)
+        return
     if (mInterstitialAd != null) {
 
         val activity = context.findActivity()
@@ -82,6 +84,8 @@ fun showInterstitial(context: Context) {
 }
 
 fun showInterstitialAfterClick(context: Context) {
+    if (!ENABLE_ADS)
+        return
     countShow++
     if (mInterstitialAd != null) {
         if (countShow % showAd != 0) {
