@@ -114,6 +114,9 @@ class StickersUtils {
                     }
 
                     override fun onError(error: com.downloader.Error?) {
+                        val url =
+                            "https://stickersapi.specialones.online/apps/com.catsmemes.stickers/WnFdM8ribg/tray.png"
+                        downloadPR(url, fileName, pack)
                         Log.d("TAG", "ERR")
                     }
                 })
