@@ -8,11 +8,11 @@ import retrofit2.http.*
 interface Api {
     @GET("categories/{package}")
     suspend fun getStickers(
-        @Path("package") packageName:String
+        @Path("package") packageName: String
     ): Response<Categories?>
 
     @GET("categories")
-    suspend fun getCategories():Response<Categories?>
+    suspend fun getCategories(): Response<Categories?>
 
     @Headers("Content-Type: application/json")
     @PUT("incrementViews")

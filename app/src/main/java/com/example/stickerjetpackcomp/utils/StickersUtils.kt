@@ -114,7 +114,7 @@ class StickersUtils {
                     }
 
                     override fun onError(error: com.downloader.Error?) {
-                       Log.d("TAG","ERR")
+                        Log.d("TAG", "ERR")
                     }
                 })
         }

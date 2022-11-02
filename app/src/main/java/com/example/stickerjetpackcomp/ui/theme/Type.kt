@@ -9,9 +9,9 @@ import androidx.compose.ui.unit.sp
 import com.example.stickerjetpackcomp.R
 
 
-val QuickSand= FontFamily(
+val QuickSand = FontFamily(
     Font(R.font.majalla),
-    Font(R.font.majalla,FontWeight.Bold)
+    Font(R.font.majalla, FontWeight.Bold)
 )
 
 // Set of Material typography styles to start with

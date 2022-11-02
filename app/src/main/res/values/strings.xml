@@ -6,12 +6,12 @@
     <string name="ad_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="ad_id_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
     <string name="ad_open_app" translatable="false">ca-app-pub-3940256099942544/3419835294</string>
-
+    <string name="rewarded" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
 
     <string name="share">Share App</string>
 
-    <string name="send_to">get Best Stickers For whatsapp</string>
-    <string name="pre_fix"> get Best Stickers For whatsapp https://play.google.com/store/apps/details?id=</string>
+    <string name="send_to">get Best Stickers For whatsapp \n </string>
+    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="categories">Categories</string>
     <string name="latest">Latest</string>
 
@@ -19,8 +19,8 @@
     <string name="afternoon">Good Afternoon</string>
     <string name="evening">Good Evening</string>
     <string name="night">Good Night</string>
-    <string name="privacy_url">google.com</string>
-    <string name="rewarded">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="privacy_url">pa.com</string>
+
     <string name="add_to_whatsapp">Add To Whatsapp</string>
     <string name="Categories">Categories</string>
     <string name="packs">All Packs</string>

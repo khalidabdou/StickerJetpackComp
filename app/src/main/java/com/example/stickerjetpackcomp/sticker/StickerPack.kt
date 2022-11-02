@@ -18,5 +18,5 @@ data class StickerPack(
     val ios_app_store_link: String,
     val views: String,
     val count_set_to_whatsapp: String,
-    val catId:Int
- )
+    val catId: Int
+)

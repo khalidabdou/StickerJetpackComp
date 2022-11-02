@@ -6,58 +6,59 @@ import com.google.gson.Gson;
 
 public class HawkBuilder {
 
-  private static final String STORAGE_TAG_DO_NOT_CHANGE = "Hawk2";
+    private static final String STORAGE_TAG_DO_NOT_CHANGE = "Hawk2";
 
-  private final Context context;
-  private Storage cryptoStorage;
-  private Converter converter;
-  private Parser parser;
-  private Serializer serializer;
-  private LogInterceptor logInterceptor;
+    private final Context context;
+    private Storage cryptoStorage;
+    private Converter converter;
+    private Parser parser;
+    private Serializer serializer;
+    private LogInterceptor logInterceptor;
 
-  public HawkBuilder(Context context) {
-    HawkUtils.checkNull("Context", context);
+    public HawkBuilder(Context context) {
+        HawkUtils.checkNull("Context", context);
 
-    this.context = context.getApplicationContext();
-  }
-
-  LogInterceptor getLogInterceptor() {
-    if (logInterceptor == null) {
-      logInterceptor = message -> { };
+        this.context = context.getApplicationContext();
     }
-    return logInterceptor;
-  }
 
-  Storage getStorage() {
-    if (cryptoStorage == null) {
-      cryptoStorage = new SharedPreferencesStorage(context, STORAGE_TAG_DO_NOT_CHANGE);
+    LogInterceptor getLogInterceptor() {
+        if (logInterceptor == null) {
+            logInterceptor = message -> {
+            };
+        }
+        return logInterceptor;
     }
-    return cryptoStorage;
-  }
 
-  Converter getConverter() {
-    if (converter == null) {
-      converter = new HawkConverter(getParser());
+    Storage getStorage() {
+        if (cryptoStorage == null) {
+            cryptoStorage = new SharedPreferencesStorage(context, STORAGE_TAG_DO_NOT_CHANGE);
+        }
+        return cryptoStorage;
     }
-    return converter;
-  }
 
-  Parser getParser() {
-    if (parser == null) {
-      parser = new GsonParser(new Gson());
+    Converter getConverter() {
+        if (converter == null) {
+            converter = new HawkConverter(getParser());
+        }
+        return converter;
     }
-    return parser;
-  }
 
-
-  Serializer getSerializer() {
-    if (serializer == null) {
-      serializer = new HawkSerializer(getLogInterceptor());
+    Parser getParser() {
+        if (parser == null) {
+            parser = new GsonParser(new Gson());
+        }
+        return parser;
     }
-    return serializer;
-  }
 
-  public void build() {
-    Hawk.build(this);
-  }
+
+    Serializer getSerializer() {
+        if (serializer == null) {
+            serializer = new HawkSerializer(getLogInterceptor());
+        }
+        return serializer;
+    }
+
+    public void build() {
+        Hawk.build(this);
+    }
 }

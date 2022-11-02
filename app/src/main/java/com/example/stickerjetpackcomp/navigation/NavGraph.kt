@@ -13,7 +13,7 @@ import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
-    viewModel:StickerViewModel
+    viewModel: StickerViewModel
 ) {
     NavHost(
         navController = navController,

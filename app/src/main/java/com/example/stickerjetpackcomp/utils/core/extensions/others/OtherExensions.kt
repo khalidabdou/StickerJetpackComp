@@ -5,13 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.Intent
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Browser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +16,8 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.RequiresApi
-
 import androidx.core.content.ContextCompat
 import com.example.stickerjetpackcomp.R
-import java.io.IOException
 
 inline val buildIsMarshmallowAndUp: Boolean
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -61,10 +56,6 @@ fun <T> Context.openActivity(it: Class<T>, extras: Bundle.() -> Unit = {}) {
     intent.putExtras(Bundle().apply(extras))
     startActivity(intent)
 }
-
-
-
-
 
 
 fun noCrash(enableLog: Boolean = true, func: () -> Unit): String? {

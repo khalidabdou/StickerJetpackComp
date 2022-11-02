@@ -1,0 +1,25 @@
+<resources>
+
+    <string name="app_name" translatable="false">Islamic Stickers</string>
+
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="ad_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="ad_open_app" translatable="false">ca-app-pub-3940256099942544/3419835294</string>
+
+    <string name="share">شارك التطبيق</string>
+
+    <string name="send_to">احصل على أفضل ملصقات لتطبيق</string>
+    <string name="categories">فئات</string>
+    <string name="latest">آخر</string>
+
+    <string name="morning">صباح الخير</string>
+    <string name="afternoon">طاب مسائك</string>
+    <string name="evening">مساء الخير</string>
+    <string name="night">طاب مساؤك</string>
+    <string name="privacy_url">pa.com</string>
+    <string name="add_to_whatsapp">أضف إلى الواتساب</string>
+    <string name="Categories">فئات</string>
+    <string name="packs">كل الحزم</string>
+
+</resources>

@@ -14,7 +14,7 @@ class HandleResponse<T>(private val response: Response<T?>?) {
                 .contains("timeout") -> return NetworkResults.Error("Timeout")
             response.code() == 402 -> return NetworkResults.Error("Api Key Limited.")
             response.isSuccessful -> {
-                Log.d("cats_body",response.body().toString())
+                Log.d("cats_body", response.body().toString())
                 val responseBody = response.body()
                 return NetworkResults.Success(responseBody!!)
             }
@@ -24,7 +24,6 @@ class HandleResponse<T>(private val response: Response<T?>?) {
             }
         }
     }
-
 
 
 }

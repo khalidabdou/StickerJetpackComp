@@ -231,9 +231,9 @@ fun CategoryCompose(
                     // Crop, Fit, Inside, FillHeight, FillWidth, None
                     contentScale = ContentScale.Crop,
                     // shows a placeholder while loading the image.
-                    placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
+                    placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
                     // shows an error ImageBitmap when the request failed.
-                    error = ImageBitmap.imageResource(R.drawable.sticker),
+                    error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
                     modifier = Modifier
                         .size(70.dp)
                         .padding(6.dp)

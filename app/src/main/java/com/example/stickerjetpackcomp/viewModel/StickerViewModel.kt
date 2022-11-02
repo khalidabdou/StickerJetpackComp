@@ -1,11 +1,13 @@
 package com.example.stickerjetpackcomp.viewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.data.Remote
 import com.example.stickerjetpackcomp.model.Categories
 import com.example.stickerjetpackcomp.model.Category
@@ -28,7 +30,7 @@ import javax.inject.Inject
 class StickerViewModel @Inject constructor(
     private val remote: Remote,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
 
     private lateinit var stickerPackView: StickerPack
@@ -54,7 +56,7 @@ class StickerViewModel @Inject constructor(
     var progress = mutableStateOf(0)
     var isReady = mutableStateOf(false)
 
-    fun getStickers(packageName:String) = viewModelScope.launch {
+    fun getStickers(packageName: String) = viewModelScope.launch {
         if (stickersFromApi.value is NetworkResults.Error) {
 
         }
@@ -74,6 +76,7 @@ class StickerViewModel @Inject constructor(
                 cat.pack_stickers.forEach { sticker ->
                     val pack: StickerPack = StickersUtils.convertStickerToPack(sticker)
                     list.add(pack)
+                    //Log.d("AN_pack",pack.android_play_store_link)
                 }
             }
             stickers.value = list
@@ -168,21 +171,36 @@ class StickerViewModel @Inject constructor(
     }
 
 
-    fun setMessage() {
+    fun setMessage(context: Context) {
         val c: Calendar = Calendar.getInstance()
         val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
-        if (timeOfDay >= 0 && timeOfDay < 12) {
-            _message.value = "Good Morning"
-            //message = "Good Morning"
-        } else if (timeOfDay >= 12 && timeOfDay < 16) {
-            _message.value = "Good Afternoon"
-            //message = "Good Afternoon"
-        } else if (timeOfDay >= 16 && timeOfDay < 21) {
-            _message.value = "Good Evening"
-            //message = "Good Evening"
-        } else if (timeOfDay >= 21 && timeOfDay < 24) {
-            _message.value = "Good Night"
-            //message = "Good Night"
+        when (timeOfDay) {
+            in 0..11 -> {
+                _message.value = context.getString(R.string.morning)
+            }
+            in 12..15 -> {
+                _message.value = context.getString(R.string.afternoon)
+            }
+            in 16..20 -> {
+                _message.value = context.getString(R.string.evening)
+            }
+            in 21..23 -> {
+                _message.value = context.getString(R.string.night)
+            }
+
         }
+//        if (timeOfDay in 0..11) {
+//            _message.value = context.getString(R.string.morning)
+//            //message = "Good Morning"
+//        } else if (timeOfDay in 12..15) {
+//            _message.value = context.getString(R.string.afternoon)
+//            //message = "Good Afternoon"
+//        } else if (timeOfDay in 16..20) {
+//            _message.value = context.getString(R.string.evening)
+//            //message = "Good Evening"
+//        } else if (timeOfDay in 21..23) {
+//            _message.value = context.getString(R.string.night)
+//            //message = "Good Night"
+//        }
     }
 }

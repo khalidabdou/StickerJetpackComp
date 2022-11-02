@@ -1,5 +1,5 @@
 package com.example.stickerjetpackcomp.utils.core.utils.hawk;
 
 public interface LogInterceptor {
-  void onLog(String message);
+    void onLog(String message);
 }

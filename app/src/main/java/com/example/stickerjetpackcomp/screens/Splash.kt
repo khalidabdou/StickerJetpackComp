@@ -45,7 +45,7 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.setMessage()
+        viewModel.setMessage(context)
         startAnimation = true
         delay(2000)
         navController.popBackStack()

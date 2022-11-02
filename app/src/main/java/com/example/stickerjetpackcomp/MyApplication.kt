@@ -10,6 +10,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.appopen.AppOpenAd
@@ -74,6 +75,8 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
          * @param context the context of the activity that loads the ad
          */
         fun loadAd(context: Context) {
+            if (!ENABLE_ADS)
+                return
             // Do not load ad if there is an unused ad or one is already loading.
             if (isLoadingAd || isAdAvailable()) {
                 return

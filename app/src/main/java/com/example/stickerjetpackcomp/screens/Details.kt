@@ -14,9 +14,10 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -75,6 +76,7 @@ fun Details(viewModel: StickerViewModel) {
 
     val pack = viewModel.detailsPack.value
     val state = rememberLazyListState()
+    val state2 = rememberLazyGridState()
     val context = LocalContext.current
     var editable by remember { mutableStateOf(false) }
     val openDialog = remember { mutableStateOf(false) }
@@ -167,11 +169,12 @@ fun Details(viewModel: StickerViewModel) {
             if (ENABLE_ADS)
                 AdvertView()
         }
-    ) {
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(darkGray)
+                .padding(padding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -197,9 +200,9 @@ fun Details(viewModel: StickerViewModel) {
                         // Crop, Fit, Inside, FillHeight, FillWidth, None
                         contentScale = ContentScale.Crop,
                         // shows a placeholder while loading the image.
-                        placeHolder = ImageBitmap.imageResource(R.drawable.sticker),
+                        placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
                         // shows an error ImageBitmap when the request failed.
-                        error = ImageBitmap.imageResource(R.drawable.sticker),
+                        error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
                         modifier = Modifier.size(70.dp)
                     )
                 }
@@ -245,7 +248,7 @@ fun Details(viewModel: StickerViewModel) {
                     }
                 }
             }
-            GridStickers(state = state, pack = pack, context = context, onClick = {
+            GridStickers(state = state2, pack = pack, context = context, onClick = {
                 showInterstitialAfterClick(context)
                 sharedWebp.value = pack.stickers[it].image_file
                 editable = true
@@ -290,12 +293,12 @@ fun Details(viewModel: StickerViewModel) {
 @Composable
 fun GridStickers(
     pack: StickerPack,
-    state: LazyListState,
+    state: LazyGridState,
     context: Context,
     onClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(
-        cells = GridCells.Fixed(3),
+        columns = GridCells.Fixed(3),
         contentPadding = PaddingValues(8.dp),
         state = state,
         modifier = Modifier.padding(bottom = 130.dp)

@@ -62,7 +62,7 @@ object AppUtil {
         shareIntent.type = "text/plain"
         shareIntent.putExtra(
             Intent.EXTRA_TEXT,
-            "Enjoy this app \n https://play.google.com/store/apps/details?id=${context.packageName}"
+            "${context.resources.getString(R.string.send_to)}${context.resources.getString(R.string.pre_fix)}${context.packageName}"
         )
         context.startActivity(
             Intent.createChooser(

@@ -44,7 +44,6 @@ fun loadInterstitial(context: Context) {
 }
 
 
-
 // show the interstitial ad
 fun showInterstitial(context: Context) {
     if (!ENABLE_ADS)

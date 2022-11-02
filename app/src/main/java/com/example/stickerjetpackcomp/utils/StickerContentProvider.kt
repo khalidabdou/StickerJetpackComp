@@ -12,9 +12,9 @@ import android.os.ParcelFileDescriptor
 import android.text.TextUtils
 import android.util.Log
 import com.example.stickerjetpackcomp.BuildConfig
-import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
+import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -108,7 +108,7 @@ class StickerContentProvider : ContentProvider() {
         require(!TextUtils.isEmpty(fileName)) { "file name is empty, uri: $uri" }
         if (packList.isEmpty())
             packList = getStickerPackList()
-        Log.d("TGGG",getStickerPackList().size.toString())
+        Log.d("TGGG", getStickerPackList().size.toString())
         for (stickerPack in getStickerPackList()) {
             if (identifier == stickerPack.identifier.toString()) {
                 if (fileName == getLastBitFromUrl(stickerPack.tray_image_file)) {
@@ -208,7 +208,6 @@ class StickerContentProvider : ContentProvider() {
 
     private fun getStickerPackList(): ArrayList<StickerPack> =
         Hawk.get("sticker_packs", ArrayList())
-
 
 
     private fun getPackForAllStickerPacks(uri: Uri): Cursor =

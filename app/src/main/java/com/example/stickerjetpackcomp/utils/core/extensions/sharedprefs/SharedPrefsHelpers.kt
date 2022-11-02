@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
- import com.google.gson.Gson
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
@@ -97,7 +97,8 @@ class SharedPrefsHelpers {
         if (isKeyExists(key)) {
             val objectString = mSharedPreferences!!.getString(key, null)
             if (objectString != null) {
-                val t: ArrayList<T> = Gson().fromJson(objectString, object : TypeToken<List<T>?>() {}.type)
+                val t: ArrayList<T> =
+                    Gson().fromJson(objectString, object : TypeToken<List<T>?>() {}.type)
                 val finalList: MutableList<T> = ArrayList()
                 for (i in 0 until t.size) {
                     finalList.add(t[i])

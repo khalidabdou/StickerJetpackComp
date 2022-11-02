@@ -7,6 +7,7 @@ plugins {
 }
 
 
+
 android {
     compileSdk 33
     aaptOptions {
@@ -16,8 +17,8 @@ android {
         applicationId "com.islamic4wt.stickers"
         minSdk 21
         targetSdk 33
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -49,15 +50,15 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
-        useIR = true
+        jvmTarget = '11'
+
     }
     buildFeatures {
         compose true
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.5.21'
+        kotlinCompilerVersion kotlinVersion
     }
     packagingOptions {
         resources {
@@ -115,10 +116,9 @@ dependencies {
     implementation "com.github.skydoves:landscapist-coil:1.5.2"
 
 
-
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
 

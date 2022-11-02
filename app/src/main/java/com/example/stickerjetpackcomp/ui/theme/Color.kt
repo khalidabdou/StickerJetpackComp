@@ -70,6 +70,5 @@ val colors = listOf(
     color11,
     color12,
     color13
-
 )
 
