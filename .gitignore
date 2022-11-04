@@ -13,3 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/src/debug/res/mipmap-xhdpi/
+/app/src/main/res/mipmap-hdpi/
+/app/src/main/res/mipmap-xxhdpi/
+/app/src/debug/res/mipmap-mdpi/
+/app/src/debug/res/mipmap-hdpi/
+/app/src/debug/res/mipmap-anydpi-v26/
+/app/src/debug/res/mipmap-xxxhdpi/
+/app/src/main/res/mipmap-xhdpi/
+/app/src/main/res/mipmap-mdpi/
+/app/src/debug/res/mipmap-xxhdpi/
+/app/src/main/res/mipmap-xxxhdpi/
