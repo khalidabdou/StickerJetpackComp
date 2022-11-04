@@ -7,6 +7,64 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1049948455998:android:84e91e4cd10748c4ea3d6f",
+        "android_client_info": {
+          "package_name": "com.arabic4w.stickers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4wqbBs1wivQT6uetYR0xSzhulvW9CyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049948455998:android:a512ee52e024f96dea3d6f",
+        "android_client_info": {
+          "package_name": "com.catsmemes.stickers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4wqbBs1wivQT6uetYR0xSzhulvW9CyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1049948455998:android:7df8726e2cbf672aea3d6f",
         "android_client_info": {
           "package_name": "com.everyday.stickers"

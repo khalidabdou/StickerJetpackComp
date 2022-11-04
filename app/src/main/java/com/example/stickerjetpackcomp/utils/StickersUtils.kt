@@ -54,7 +54,7 @@ class StickersUtils {
                 sticker.count_set_to_whatsapp,
                 catId = sticker.cid
             )
-            //Log.d("play.google",stickerPack.android_play_store_link)
+            Log.d("play.google",stickerPack.android_play_store_link)
             return stickerPack
 
         }
