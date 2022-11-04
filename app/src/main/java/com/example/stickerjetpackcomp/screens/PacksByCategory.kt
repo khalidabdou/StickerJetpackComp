@@ -54,13 +54,14 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         bottomBar = {
             if (!ENABLE_ADS)
                 AdvertView()
+
         }
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(Color.White).padding(it)
         ) {
             if (!viewModel.stickerByCat.value.isNullOrEmpty())
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
