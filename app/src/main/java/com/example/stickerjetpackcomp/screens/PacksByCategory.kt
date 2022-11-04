@@ -52,9 +52,8 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         scaffoldState = scaffoldState,
         topBar = {},
         bottomBar = {
-            if (!ENABLE_ADS)
+            if (ENABLE_ADS)
                 AdvertView()
-
         }
     ) {
 
