@@ -238,8 +238,7 @@ fun Details(viewModel: StickerViewModel) {
                             contentColor = darkGray
                         )
                     ) {
-                        Text(text = stringResource(R.string.add_to_whatsapp))
-                        Spacer(modifier = Modifier.width(4.dp))
+
                         Icon(
                             painter = painterResource(id = R.drawable.whatsapp),
                             contentDescription = "",

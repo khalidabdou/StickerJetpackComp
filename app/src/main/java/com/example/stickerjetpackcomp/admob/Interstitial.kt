@@ -15,7 +15,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 var mInterstitialAd: InterstitialAd? = null
 var countShow = -1
-val showAd = 3
+val showAd = 10
 
 // load the interstitial ad
 fun loadInterstitial(context: Context) {
