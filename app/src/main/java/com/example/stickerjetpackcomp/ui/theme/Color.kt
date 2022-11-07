@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple200 = Color(0xFFBB86FC)
@@ -7,8 +8,8 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val backgroundWhite = Color(0xFFe8e5e9)
-val darkGray = Color(0xFF30475E)
-val darkGray2 = Color(0xFF3c6382)
+val darkGray = Color(0xFF532213)
+val darkGray2 = Color(0xFF7C3924)
 
 val color1 = Color(0xFFffbe76)
 val color2 = Color(0xFFff7979)
@@ -24,6 +25,12 @@ val color11 = Color(0xFFf0932b)
 val color12 = Color(0xFF006266)
 val color13 = Color(0xFF6F1E51)
 
+val backgroundGradient = Brush.verticalGradient(
+    colors = listOf(
+        darkGray.copy(0.5f),
+        Color.White.copy(0.5f)
+    )
+)
 
 val colors = listOf(
     color1,

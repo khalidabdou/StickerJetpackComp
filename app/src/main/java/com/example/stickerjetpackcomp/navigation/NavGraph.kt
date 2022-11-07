@@ -30,11 +30,18 @@ fun SetupNavGraph(
         composable(route = Screen.Home.route) {
             Home(navController = navController, viewModel = viewModel)
         }
+        composable(route = Screen.Home2.route) {
+            Home2(navController = navController, viewModel = viewModel)
+        }
         composable(route = Screen.PacksByCategory.route) {
             PacksByCategory(navController = navController, viewModel = viewModel)
         }
         composable(route = Screen.Details.route) {
             Details(viewModel = viewModel)
+        }
+
+        composable(route = Screen.Details2.route) {
+            Details2(viewModel = viewModel)
         }
 
     }

@@ -26,9 +26,9 @@ import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.darkGray
+import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
-import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -60,14 +60,15 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White).padding(it)
+                .background(Color.White)
+                .padding(it)
         ) {
             if (!viewModel.stickerByCat.value.isNullOrEmpty())
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(viewModel.stickerByCat.value!!.size) {
                         Pack(viewModel.stickerByCat.value!![it]) {
                             viewModel.setDetailPack(it)
-                            navController.navigate(Screen.Details.route)
+                            navController.navigate(DETAILS.route)
                         }
                     }
                     item {
