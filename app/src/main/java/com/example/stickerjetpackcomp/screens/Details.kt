@@ -238,8 +238,7 @@ fun Details(viewModel: StickerViewModel) {
                             contentColor = darkGray
                         )
                     ) {
-                        Text(text = stringResource(R.string.add_to_whatsapp))
-                        Spacer(modifier = Modifier.width(4.dp))
+
                         Icon(
                             painter = painterResource(id = R.drawable.whatsapp),
                             contentDescription = "",
@@ -365,10 +364,10 @@ fun LabelLikes(icon: Int, text: String) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "Logo Icon",
-            tint = backgroundWhite,
+            tint = darkGray,
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = text, color = backgroundWhite.copy(0.9f))
+        Text(text = text, color = darkGray.copy(0.9f))
     }
 }
 

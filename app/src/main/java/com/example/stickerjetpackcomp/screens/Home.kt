@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
@@ -36,6 +37,8 @@ import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.ui.theme.darkGray
+import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
+import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
 import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
@@ -46,6 +49,7 @@ import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @ExperimentalAnimationApi
 @Composable
@@ -147,12 +151,9 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                                 LoadingShimmerEffect()
                             }
                         }
-
                     }
                 }
-
             }
-
             item {
                 Text(
                     text = stringResource(R.string.packs),
@@ -168,7 +169,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                             viewModel.isReady.value = false
                             viewModel.index = 0
                             viewModel.setDetailPack(viewModel.stickers.value!![it])
-                            navController.navigate(Screen.Details.route)
+                            navController.navigate(DETAILS.route)
                         })
                 }
             else item {
@@ -219,7 +220,7 @@ fun CategoryCompose(
             Box(
                 modifier = Modifier
                     .size(70.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(SHAPE)
                     .background(color.copy(0.4f))
                     .clickable {
                         onClick(cat.id)
@@ -247,9 +248,8 @@ fun CategoryCompose(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .height(14.dp)
                 .width(30.dp)
-                .clip(RoundedCornerShape(6.dp))
+                .clip(SHAPE)
                 .background(color.copy(0.9f))
 
         ) {
@@ -287,7 +287,7 @@ fun ShimmerGridItem(brush: Brush) {
         Spacer(
             modifier = Modifier
                 .size(70.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .clip(SHAPE)
                 .background(brush)
         )
         Spacer(modifier = Modifier.width(10.dp))
@@ -304,7 +304,7 @@ fun ShimmerGridItem(brush: Brush) {
             Spacer(
                 modifier = Modifier
                     .height(20.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(SHAPE)
                     .fillMaxWidth(fraction = 0.7f)
                     .background(brush)
             )
