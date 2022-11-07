@@ -27,8 +27,8 @@ import androidx.navigation.NavHostController
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Languages
 import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
+import com.example.stickerjetpackcomp.utils.AppTheme.Companion.HOME
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
-import com.example.testfriends_jetpackcompose.navigation.Screen
 import kotlinx.coroutines.delay
 
 
@@ -49,7 +49,7 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
         startAnimation = true
         delay(2000)
         navController.popBackStack()
-        navController.navigate(Screen.Home.route)
+        navController.navigate(HOME.route)
     }
 
     Splash(alpha = alphaAnim.value, message.value)
