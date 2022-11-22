@@ -19,16 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.stickerjetpackcomp.ui.theme.Purple700
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
-import com.example.stickerjetpackcomp.ui.theme.darkGray
+
 
 
 @Composable
 fun CheckInternet() {
     Box(
         modifier = Modifier
-            .background(if (isSystemInDarkTheme()) backgroundWhite else Purple700)
+            .background(if (isSystemInDarkTheme()) MaterialTheme.colors.background else MaterialTheme.colors.onBackground)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -43,7 +41,7 @@ fun CheckInternet() {
             contentPadding = PaddingValues(0.dp),  //avoid the little icon
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = Color.Green,
-                backgroundColor = darkGray
+                backgroundColor = MaterialTheme.colors.background
             )
         ) {
 

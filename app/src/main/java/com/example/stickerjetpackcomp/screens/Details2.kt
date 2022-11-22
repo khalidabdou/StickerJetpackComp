@@ -34,9 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundGradient
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
-import com.example.stickerjetpackcomp.ui.theme.darkGray
-import com.example.stickerjetpackcomp.ui.theme.darkGray2
+
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
@@ -129,10 +127,10 @@ fun Details2(viewModel: StickerViewModel) {
 
                 modifier = Modifier.padding(7.dp),  //avoid the oval shape
                 shape = RoundedCornerShape(6.dp),
-                border = BorderStroke(1.dp, darkGray),
+                border = BorderStroke(1.dp, MaterialTheme.colors.background),
                 contentPadding = PaddingValues(0.dp),  //avoid the little icon
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = darkGray,
+                    contentColor = MaterialTheme.colors.primary,
 
                     )
             ) {
@@ -172,7 +170,7 @@ fun Details2(viewModel: StickerViewModel) {
                         .clip(
                             SHAPE
                         )
-                        .background(backgroundWhite)
+                        .background(MaterialTheme.colors.background)
                         .padding(10.dp)
                 ) {
                     GlideImage(
@@ -194,7 +192,7 @@ fun Details2(viewModel: StickerViewModel) {
                 ) {
                     Text(
                         text = pack.name,
-                        color = darkGray,
+                        color = MaterialTheme.colors.primary,
                         style = MaterialTheme.typography.h6
                     )
                     LabelLikes(icon = R.drawable.eye, text = pack.views.toString())
@@ -215,7 +213,7 @@ fun Details2(viewModel: StickerViewModel) {
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = White.copy(0.8f),
-                            contentColor = darkGray
+                            contentColor = MaterialTheme.colors.background
                         )
                     ) {
 
@@ -250,9 +248,9 @@ fun Details2(viewModel: StickerViewModel) {
                         CustomComponent(
                             indicatorValue = viewModel.progress.value,
                             maxIndicatorValue = 100,
-                            bigTextColor = darkGray,
+                            bigTextColor = MaterialTheme.colors.background,
                             foregroundIndicatorColor = Green,
-                            backgroundIndicatorColor = darkGray2,
+                            backgroundIndicatorColor = MaterialTheme.colors.onBackground,
                             backgroundIndicatorStrokeWidth = 30f,
                             foregroundIndicatorStrokeWidth = 30f
                         )

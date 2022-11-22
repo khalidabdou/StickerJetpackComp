@@ -53,9 +53,7 @@ import coil.request.ImageRequest
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
-import com.example.stickerjetpackcomp.ui.theme.darkGray
-import com.example.stickerjetpackcomp.ui.theme.darkGray2
+
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
@@ -152,7 +150,7 @@ fun Details(viewModel: StickerViewModel) {
                 contentPadding = PaddingValues(0.dp),  //avoid the little icon
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Green,
-                    backgroundColor = darkGray
+                    backgroundColor = MaterialTheme.colors.background
                 )
             ) {
 
@@ -173,7 +171,7 @@ fun Details(viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(darkGray)
+                .background(MaterialTheme.colors.background)
                 .padding(padding)
         ) {
             Row(
@@ -182,7 +180,7 @@ fun Details(viewModel: StickerViewModel) {
                     .fillMaxWidth()
                     .height(100.dp)
                     .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-                    .background(darkGray2)
+                    .background(MaterialTheme.colors.background)
                     .padding(10.dp)
             ) {
                 Spacer(modifier = Modifier.width(5.dp))
@@ -192,7 +190,7 @@ fun Details(viewModel: StickerViewModel) {
                         .clip(
                             CircleShape
                         )
-                        .background(backgroundWhite)
+                        .background(MaterialTheme.colors.background)
                         .padding(10.dp)
                 ) {
                     GlideImage(
@@ -214,7 +212,7 @@ fun Details(viewModel: StickerViewModel) {
                 ) {
                     Text(
                         text = pack.name,
-                        color = backgroundWhite,
+                        color = MaterialTheme.colors.background,
                         style = MaterialTheme.typography.h6
                     )
                     LabelLikes(icon = R.drawable.eye, text = pack.views.toString())
@@ -235,7 +233,7 @@ fun Details(viewModel: StickerViewModel) {
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Green.copy(0.8f),
-                            contentColor = darkGray
+                            contentColor = MaterialTheme.colors.background
                         )
                     ) {
 
@@ -270,9 +268,9 @@ fun Details(viewModel: StickerViewModel) {
                         CustomComponent(
                             indicatorValue = viewModel.progress.value,
                             maxIndicatorValue = 100,
-                            bigTextColor = darkGray,
+                            bigTextColor = MaterialTheme.colors.primary,
                             foregroundIndicatorColor = Green,
-                            backgroundIndicatorColor = darkGray2,
+                            backgroundIndicatorColor = MaterialTheme.colors.onPrimary,
                             backgroundIndicatorStrokeWidth = 30f,
                             foregroundIndicatorStrokeWidth = 30f
                         )
@@ -364,10 +362,10 @@ fun LabelLikes(icon: Int, text: String) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "Logo Icon",
-            tint = darkGray,
+            tint = MaterialTheme.colors.background,
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = text, color = darkGray.copy(0.9f))
+        Text(text = text, color = MaterialTheme.colors.background.copy(0.9f))
     }
 }
 

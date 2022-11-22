@@ -36,7 +36,6 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
-import com.example.stickerjetpackcomp.ui.theme.darkGray
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
 import com.example.stickerjetpackcomp.utils.AppUtil
@@ -61,7 +60,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             try {
-                viewModel.getStickers(packagename)
+                viewModel.getStickers(context.packageName)
             } catch (ex: Exception) {
                 Toast.makeText(context, "Please try again", Toast.LENGTH_LONG).show()
             }
@@ -79,20 +78,19 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         scaffoldState = scaffoldState,
         topBar = {
             //var message = "Good Morning"
-
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .background(darkGray)
+                    .background(MaterialTheme.colors.background)
                     .padding(5.dp)
             ) {
                 Text(
                     text = message.value,
                     style = MaterialTheme.typography.h4,
-                    color = Color.White,
+                    color = MaterialTheme.colors.primary,
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .weight(5f)
@@ -127,7 +125,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 Text(
                     text = stringResource(R.string.Categories),
                     style = MaterialTheme.typography.h4,
-                    color = darkGray,
+                    color = MaterialTheme.colors.primary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 val listState = rememberLazyListState()
@@ -158,7 +156,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 Text(
                     text = stringResource(R.string.packs),
                     style = MaterialTheme.typography.h4,
-                    color = darkGray,
+                    color = MaterialTheme.colors.primary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
@@ -198,7 +196,7 @@ fun AppBarIcon(icon: Int, onClick: () -> Unit) {
             modifier = Modifier
                 .size(30.dp),
             painter = painterResource(id = icon),
-            tint = Color.White,
+            tint = MaterialTheme.colors.primary,
             contentDescription = "Logo Icon",
         )
     }

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Languages
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
+
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.HOME
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import kotlinx.coroutines.delay
@@ -59,7 +59,7 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
 fun Splash(alpha: Float, message: String) {
     Column(
         modifier = Modifier
-            .background(backgroundWhite)
+            .background(MaterialTheme.colors.background)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

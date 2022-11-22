@@ -25,7 +25,7 @@ import androidx.navigation.NavController
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundGradient
 import com.example.stickerjetpackcomp.ui.theme.colors
-import com.example.stickerjetpackcomp.ui.theme.darkGray
+
 import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
@@ -44,7 +44,7 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
     LaunchedEffect(scaffoldState) {
         if (viewModel.stickers.value.isNullOrEmpty())
             try {
-                viewModel.getStickers(packagename)
+                viewModel.getStickers(context.packageName)
             } catch (ex: Exception) {
                 Toast.makeText(context, "Please try again", Toast.LENGTH_LONG).show()
             }
@@ -69,7 +69,7 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .background(darkGray)
+                    .background(MaterialTheme.colors.background)
                     .padding(5.dp)
             ) {
                 Text(
@@ -99,7 +99,7 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
                 val listState = rememberLazyListState()
                 Spacer(modifier = Modifier
                     .height(3.dp)
-                    .background(darkGray))
+                    .background(MaterialTheme.colors.background))
                 LazyRow(
                     state = listState,
                     contentPadding = PaddingValues(8.dp),
@@ -147,7 +147,7 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
                 Text(
                     text = stringResource(R.string.packs),
                     style = MaterialTheme.typography.h4,
-                    color = darkGray,
+                    color = MaterialTheme.colors.background,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }

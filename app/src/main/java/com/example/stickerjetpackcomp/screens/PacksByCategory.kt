@@ -25,7 +25,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.sticker.StickerPack
-import com.example.stickerjetpackcomp.ui.theme.darkGray
+
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
@@ -92,7 +92,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             .height(150.dp)
             .padding(10.dp)
             .border(
-                BorderStroke(width = 1.dp, color = darkGray.copy(0.5f)),
+                BorderStroke(width = 1.dp, color = MaterialTheme.colors.background.copy(0.5f)),
                 RoundedCornerShape(10.dp)
             )
             .clickable {
@@ -127,7 +127,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                 )
             }
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = sticker.name, color = darkGray, style = MaterialTheme.typography.h5)
+            Text(text = sticker.name, color = MaterialTheme.colors.background, style = MaterialTheme.typography.h5)
             if (sticker.animated_sticker_pack)
                 Icon(
                     painter = painterResource(id = R.drawable.gif_24),

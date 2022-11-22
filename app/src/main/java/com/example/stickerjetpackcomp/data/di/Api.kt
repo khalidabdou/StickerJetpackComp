@@ -11,6 +11,11 @@ interface Api {
         @Path("package") packageName: String
     ): Response<Categories?>
 
+    @GET("ads/{package}")
+    suspend fun getAds(
+        @Path("package") packageName: String
+    ): Response<String>
+
     @GET("categories")
     suspend fun getCategories(): Response<Categories?>
 

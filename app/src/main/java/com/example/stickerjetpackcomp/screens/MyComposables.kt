@@ -26,9 +26,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.stickerjetpackcomp.R
-import com.example.stickerjetpackcomp.ui.theme.backgroundWhite
 import com.example.stickerjetpackcomp.ui.theme.colors
-import com.example.stickerjetpackcomp.ui.theme.darkGray
+
 
 @Composable
 fun AppBar(icon: Int, background: Color = Color.White, onClick: () -> Unit) {
@@ -70,7 +69,7 @@ fun AppAd() {
             Button(
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Green.copy(0.8f),
-                    contentColor = darkGray
+                    contentColor = MaterialTheme.colors.background
                 ),
                 onClick = { }, contentPadding = PaddingValues(4.dp),
             ) {
@@ -91,16 +90,16 @@ fun CustomComponent(
     canvasSize: Dp = 300.dp,
     indicatorValue: Int = 50,
     maxIndicatorValue: Int = 100,
-    backgroundIndicatorColor: Color = backgroundWhite,//MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
+    backgroundIndicatorColor: Color = MaterialTheme.colors.background,//MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
     backgroundIndicatorStrokeWidth: Float = 100f,
-    foregroundIndicatorColor: Color = darkGray,
+    foregroundIndicatorColor: Color = MaterialTheme.colors.onBackground,
     foregroundIndicatorStrokeWidth: Float = 100f,
 //    indicatorStrokeCap: StrokeCap = StrokeCap.Round,
     bigTextFontSize: TextUnit = MaterialTheme.typography.body1.fontSize,
-    bigTextColor: Color = darkGray,
+    bigTextColor: Color = MaterialTheme.colors.background,
     bigTextSuffix: String = "%",
     smallTextFontSize: TextUnit = MaterialTheme.typography.body1.fontSize,
-    smallTextColor: Color = darkGray.copy(alpha = 0.3f)
+    smallTextColor: Color = MaterialTheme.colors.background.copy(alpha = 0.3f)
 ) {
     var allowedIndicatorValue by remember {
         mutableStateOf(maxIndicatorValue)
