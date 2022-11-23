@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.stickerjetpackcomp.ui.theme.StickerJetpackCompTheme
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.SetupNavGraph
 import dagger.hilt.android.AndroidEntryPoint

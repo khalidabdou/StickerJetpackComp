@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @Composable
 fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
@@ -49,7 +51,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     }
 
     Scaffold(
-        scaffoldState = scaffoldState,
+
         topBar = {},
         bottomBar = {
             if (ENABLE_ADS)
@@ -92,7 +94,7 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
             .height(150.dp)
             .padding(10.dp)
             .border(
-                BorderStroke(width = 1.dp, color = MaterialTheme.colors.background.copy(0.5f)),
+                BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primaryContainer),
                 RoundedCornerShape(10.dp)
             )
             .clickable {
@@ -127,7 +129,11 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                 )
             }
             Spacer(modifier = Modifier.width(5.dp))
-            Text(text = sticker.name, color = MaterialTheme.colors.background, style = MaterialTheme.typography.h5)
+            Text(
+                text = sticker.name,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleMedium
+            )
             if (sticker.animated_sticker_pack)
                 Icon(
                     painter = painterResource(id = R.drawable.gif_24),

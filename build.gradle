@@ -2,8 +2,8 @@
 buildscript {
     ext {
 
-        kotlinVersion =  '1.6.21'
-        compose_version = '1.8.0-Beta'   //compose dependencies
+        kotlinVersion =  '1.6.10'
+        compose_version = '1.1.1'   //compose dependencies
         compose_material3 = '1.0.0-beta02' //material3 release
     }
     repositories {

@@ -12,7 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,8 +49,8 @@ import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @Composable
 fun Home(navController: NavController, viewModel: StickerViewModel) {
@@ -73,9 +74,8 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
 
 
     Scaffold(
-        backgroundColor = Color.White,
         modifier = Modifier,
-        scaffoldState = scaffoldState,
+
         topBar = {
             //var message = "Good Morning"
             Row(
@@ -84,13 +84,13 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .background(MaterialTheme.colors.background)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(5.dp)
             ) {
                 Text(
                     text = message.value,
-                    style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .weight(5f)
@@ -116,16 +116,16 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
         LazyColumn(
             state = state,
             modifier = Modifier
-                .padding(10.dp)
+                .padding(it)
                 .background(
-                    Color.White
+                    MaterialTheme.colorScheme.background
                 )
         ) {
             item {
                 Text(
                     text = stringResource(R.string.Categories),
-                    style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 val listState = rememberLazyListState()
@@ -155,8 +155,8 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             item {
                 Text(
                     text = stringResource(R.string.packs),
-                    style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.primary,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
@@ -185,18 +185,19 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
 
 @Composable
 fun AppBarIcon(icon: Int, onClick: () -> Unit) {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier
-        .size(36.dp)
-        .clip(RoundedCornerShape(4.dp))
-        .padding(6.dp)
-        .clickable {
-            onClick()
-        }) {
+    Box(contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .padding(6.dp)
+            .clickable {
+                onClick()
+            }) {
         Icon(
             modifier = Modifier
                 .size(30.dp),
             painter = painterResource(id = icon),
-            tint = MaterialTheme.colors.primary,
+            tint = MaterialTheme.colorScheme.onPrimary,
             contentDescription = "Logo Icon",
         )
     }
@@ -219,7 +220,7 @@ fun CategoryCompose(
                 modifier = Modifier
                     .size(70.dp)
                     .clip(SHAPE)
-                    .background(color.copy(0.4f))
+                    .background(MaterialTheme.colorScheme.primaryContainer)
                     .clickable {
                         onClick(cat.id)
                     },
@@ -238,8 +239,11 @@ fun CategoryCompose(
                         .padding(6.dp)
                 )
             }
-            Text(text = cat.name, style = MaterialTheme.typography.body1, color = Color.Black)
-
+            Text(
+                text = cat.name.take(10),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
         }
 
@@ -248,12 +252,16 @@ fun CategoryCompose(
             modifier = Modifier
                 .width(30.dp)
                 .clip(SHAPE)
-                .background(color.copy(0.9f))
+                .background(MaterialTheme.colorScheme.onPrimaryContainer)
 
         ) {
             Text(
                 text = cat.pack_stickers.size.toString(),
-                style = TextStyle(fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    fontWeight = FontWeight.Bold
+                )
             )
         }
     }

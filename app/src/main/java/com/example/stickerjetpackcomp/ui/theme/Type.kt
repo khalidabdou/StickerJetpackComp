@@ -1,6 +1,6 @@
-package com.example.stickerjetpackcomp.ui.theme
+package com.example.wishes_jetpackcompose.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -9,58 +9,129 @@ import androidx.compose.ui.unit.sp
 import com.example.stickerjetpackcomp.R
 
 
-val QuickSand = FontFamily(
-    Font(R.font.majalla),
-    Font(R.font.majalla, FontWeight.Bold)
+val default = FontFamily.Default
+
+val Inter = FontFamily(
+    Font(R.font.inter_thin, FontWeight.Thin),
+    Font(R.font.inter_extra_light, FontWeight.ExtraLight),
+    Font(R.font.inter_light, FontWeight.Light),
+    Font(R.font.inter_regular, FontWeight.Normal),
+    Font(R.font.inter_medium, FontWeight.Medium),
+    Font(R.font.inter_semi_bold, FontWeight.SemiBold),
+    Font(R.font.inter_bold, FontWeight.Bold),
+    Font(R.font.inter_extra_bold, FontWeight.ExtraBold),
 )
 
-// Set of Material typography styles to start with
+val DMSans = FontFamily(
+    Font(R.font.dm_sans_regular, FontWeight.Normal),
+    Font(R.font.dm_sans_medium, FontWeight.Medium),
+    Font(R.font.dm_sans_bold, FontWeight.Bold),
+)
+
 val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = QuickSand,
+    displayLarge = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 57.sp,
+        lineHeight = 64.sp,
+        letterSpacing = (-0.25).sp,
     ),
-    h1 = TextStyle(
-        fontFamily = QuickSand,
+    displayMedium = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 45.sp,
+        lineHeight = 52.sp,
+        letterSpacing = 0.sp,
     ),
-    h2 = TextStyle(
-        fontFamily = QuickSand,
+    displaySmall = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 36.sp,
+        lineHeight = 44.sp,
+        letterSpacing = 0.sp,
     ),
-    h3 = TextStyle(
-        fontFamily = QuickSand,
+    headlineLarge = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 0.sp,
     ),
-    h4 = TextStyle(
-        fontFamily = QuickSand,
+    headlineMedium = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp
+        fontSize = 28.sp,
+        lineHeight = 36.sp,
+        letterSpacing = 0.sp,
     ),
-    h5 = TextStyle(
-        fontFamily = QuickSand,
+    headlineSmall = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
+        letterSpacing = 0.sp,
     ),
-    h6 = TextStyle(
-        fontFamily = QuickSand,
+    titleLarge = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
     ),
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
+    titleMedium = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.1.sp,
     ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
+    titleSmall = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp,
+    ),
+    labelLarge = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp,
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = DMSans,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp,
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp,
+    ),
+    bodySmall = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.4.sp,
+    ),
+    labelMedium = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp,
+    ),
+    labelSmall = TextStyle(
+        fontFamily = DMSans,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp,
     )
-    */
 )
