@@ -2,11 +2,7 @@
     <string name="app_name" translatable="false">Arabic Stickers</string>
 
 
-    <string name="admob_id" translatable="false">ca-app-pub-7995161781691072~3268143319</string>
-    <string name="ad_id_banner" translatable="false">ca-app-pub-7995161781691072/5219557224</string>
-    <string name="ad_id_interstitial" translatable="false">ca-app-pub-7995161781691072/3236353721</string>
-    <string name="ad_open_app" translatable="false">ca-app-pub-7995161781691072/7991461730</string>
-    <string name="rewarded" translatable="false">ca-app-pub-7995161781691072/7296493017</string>
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
 
     <string name="share">Share App</string>
 

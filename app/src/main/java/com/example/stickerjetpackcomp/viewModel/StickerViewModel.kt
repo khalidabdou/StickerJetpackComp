@@ -9,6 +9,12 @@ import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.data.Remote
+import com.example.stickerjetpackcomp.model.Ad
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Inter
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.OpenAd
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Rewarded
+import com.example.stickerjetpackcomp.model.Ads
 import com.example.stickerjetpackcomp.model.Categories
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
@@ -38,7 +44,12 @@ class StickerViewModel @Inject constructor(
 
     private val stickersFromApi =
         mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
+
+
     private val catsFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
+
+    val ads = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
+    val adsList = mutableStateOf<List<Ad>?>(null)
 
     private val _message = MutableStateFlow<String>("Good Morning")
     val message: StateFlow<String> get() = _message
@@ -65,6 +76,56 @@ class StickerViewModel @Inject constructor(
                 val response = remote.getStickers(packageName)
                 val handleStickers = HandleResponse(response)
                 stickersFromApi.value = handleStickers.handleResult()
+            } catch (ex: Exception) {
+            }
+
+        }
+        if (stickersFromApi.value is NetworkResults.Success) {
+            //Log.d("results", list.size.toString())
+            categories.value = stickersFromApi.value.data!!.results.shuffled()
+            stickersFromApi.value.data!!.results.forEach { cat ->
+                cat.pack_stickers.forEach { sticker ->
+                    val pack: StickerPack = StickersUtils.convertStickerToPack(sticker)
+                    list.add(pack)
+                    //Log.d("AN_pack",pack.android_play_store_link)
+                }
+            }
+            stickers.value = list
+            Hawk.put("sticker_packs", list)
+        }
+    }
+
+    fun getAds() = viewModelScope.launch {
+        if (ads.value is NetworkResults.Error) {
+            //Log.e("ads", ads.value.toString())
+        }
+        if (ads.value is NetworkResults.Loading) {
+            try {
+                val response = remote.getAds()
+                val handle = HandleResponse(response)
+                ads.value = handle.handleResult()
+
+                ads.value.data!!.ads.forEach {
+                    when (it.type) {
+                        "banner" -> {
+                            Banner = it
+                            Log.d("ads", Banner.toString())
+                        }
+                        "inter" -> {
+                            Inter = it
+                            Log.d("ads", Inter.toString())
+                        }
+                        "open" -> {
+                            OpenAd = it
+                            Log.d("ads", OpenAd.toString())
+                        }
+                        "rewarded" -> {
+                            Rewarded = it
+                            Log.d("ads", OpenAd.toString())
+                        }
+                    }
+                }
+
             } catch (ex: Exception) {
             }
 

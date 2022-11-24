@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.ui.theme.colors
@@ -41,7 +42,6 @@ import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
 import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config
-import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.google.android.gms.ads.AdSize
@@ -108,7 +108,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             }
         },
         bottomBar = {
-            if (ENABLE_ADS)
+            if (Banner.ad_status)
                 AdvertView()
         }
 

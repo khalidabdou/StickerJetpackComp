@@ -1,5 +1,6 @@
 package com.example.testfriends_jetpackcompose.di
 
+import com.example.stickerjetpackcomp.model.Ads
 import com.example.stickerjetpackcomp.model.Categories
 import retrofit2.Response
 import retrofit2.http.*
@@ -14,7 +15,7 @@ interface Api {
     @GET("ads/{package}")
     suspend fun getAds(
         @Path("package") packageName: String
-    ): Response<String>
+    ): Response<Ads?>
 
     @GET("categories")
     suspend fun getCategories(): Response<Categories?>

@@ -3,7 +3,10 @@ package com.example.stickerjetpackcomp.screens
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -25,10 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.sticker.StickerPack
-
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
-import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
@@ -37,9 +39,7 @@ import com.skydoves.landscapist.glide.GlideImage
 @ExperimentalAnimationApi
 @Composable
 fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
-    var visible by remember { mutableStateOf(false) }
-    val density = LocalDensity.current
-    var scrollState = rememberScrollState()
+
     var context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
 
@@ -54,7 +54,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 
         topBar = {},
         bottomBar = {
-            if (ENABLE_ADS)
+            if (AdProvider.Banner.ad_status)
                 AdvertView()
         }
     ) {

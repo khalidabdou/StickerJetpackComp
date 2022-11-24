@@ -2,7 +2,7 @@ package com.ringtones.compose.feature.admob
 
 import android.content.Context
 import android.util.Log
-import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Inter
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.findActivity
 import com.google.android.gms.ads.AdError
@@ -26,7 +26,7 @@ fun loadInterstitial(context: Context) {
 
     InterstitialAd.load(
         context,
-        context.getString(R.string.ad_id_interstitial),
+        Inter.ad_id,
         AdRequest.Builder().build(),
         object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -85,26 +85,24 @@ fun showInterstitial(context: Context) {
 fun showInterstitialAfterClick(context: Context) {
     if (!ENABLE_ADS)
         return
+    if (!Inter.ad_status)
+        return
     countShow++
     if (mInterstitialAd != null) {
-        if (countShow % showAd != 0) {
+        if (countShow % Inter.show_count!! != 0) {
             return
         }
         val activity = context.findActivity()
         mInterstitialAd?.fullScreenContentCallback =
             object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
-                    Log.d("MainActivity", "Ad was dismissed.")
-                    // Don't forget to set the ad reference to null so you
-                    // don't show the ad a second time.
+                    //Log.d("MainActivity", "Ad was dismissed.")
                     mInterstitialAd = null
                     loadInterstitial(activity!!)
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Log.d("MainActivity", "Ad failed to show.")
-                    // Don't forget to set the ad reference to null so you
-                    // don't show the ad a second time.
+                    //Log.d("MainActivity", "Ad failed to show.")
                     mInterstitialAd = null
                 }
 

@@ -21,12 +21,13 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,9 +53,8 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.sticker.StickerPack
-
-import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -67,6 +67,7 @@ import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
 import java.io.File
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -131,7 +132,7 @@ fun Details(viewModel: StickerViewModel) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
-        scaffoldState = scaffoldState,
+
         floatingActionButton = {
             OutlinedButton(
                 onClick = {
@@ -150,28 +151,27 @@ fun Details(viewModel: StickerViewModel) {
                 contentPadding = PaddingValues(0.dp),  //avoid the little icon
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Green,
-                    backgroundColor = MaterialTheme.colors.background
                 )
             ) {
 
                 Icon(Icons.Default.Add, contentDescription = "content description")
                 Text(
                     text = stringResource(R.string.add_to_whatsapp),
-                    style = MaterialTheme.typography.h4
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.width(5.dp))
             }
         },
 
         bottomBar = {
-            if (ENABLE_ADS)
+            if (AdProvider.Banner.ad_status)
                 AdvertView()
         }
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(padding)
         ) {
             Row(
@@ -180,7 +180,7 @@ fun Details(viewModel: StickerViewModel) {
                     .fillMaxWidth()
                     .height(100.dp)
                     .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-                    .background(MaterialTheme.colors.background)
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(10.dp)
             ) {
                 Spacer(modifier = Modifier.width(5.dp))
@@ -190,7 +190,7 @@ fun Details(viewModel: StickerViewModel) {
                         .clip(
                             CircleShape
                         )
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(10.dp)
                 ) {
                     GlideImage(
@@ -212,8 +212,8 @@ fun Details(viewModel: StickerViewModel) {
                 ) {
                     Text(
                         text = pack.name,
-                        color = MaterialTheme.colors.background,
-                        style = MaterialTheme.typography.h6
+                        color = MaterialTheme.colorScheme.background,
+                        style = MaterialTheme.typography.titleLarge
                     )
                     LabelLikes(icon = R.drawable.eye, text = pack.views.toString())
                     LabelLikes(
@@ -232,8 +232,8 @@ fun Details(viewModel: StickerViewModel) {
                             downloadPR(pack.tray_image_file, trayImageFile, pack)
                         },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Green.copy(0.8f),
-                            contentColor = MaterialTheme.colors.background
+
+                            contentColor = MaterialTheme.colorScheme.background
                         )
                     ) {
 
@@ -268,9 +268,9 @@ fun Details(viewModel: StickerViewModel) {
                         CustomComponent(
                             indicatorValue = viewModel.progress.value,
                             maxIndicatorValue = 100,
-                            bigTextColor = MaterialTheme.colors.primary,
-                            foregroundIndicatorColor = Green,
-                            backgroundIndicatorColor = MaterialTheme.colors.onPrimary,
+                            bigTextColor = MaterialTheme.colorScheme.primary,
+                            foregroundIndicatorColor = MaterialTheme.colorScheme.primary,
+                            backgroundIndicatorColor = MaterialTheme.colorScheme.onPrimary,
                             backgroundIndicatorStrokeWidth = 30f,
                             foregroundIndicatorStrokeWidth = 30f
                         )
@@ -362,10 +362,13 @@ fun LabelLikes(icon: Int, text: String) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "Logo Icon",
-            tint = MaterialTheme.colors.background,
+            tint = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = text, color = MaterialTheme.colors.background.copy(0.9f))
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.onBackground.copy(0.9f)
+        )
     }
 }
 
@@ -433,9 +436,7 @@ fun SingleSticker(
                                         saveImageAndShare(bitmap, trayImageFile, context)
                                     }
                                     .build()
-
                                 val disposable = loader.enqueue(req)
-
                             }
                         ) {
                             Icon(
@@ -443,12 +444,12 @@ fun SingleSticker(
                                 contentDescription = "Loc",
                                 modifier = Modifier.padding(end = 8.dp)
                             )
-                            Text(text = "Share")
+                            Text(
+                                text = "Share",
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         }
-
                     }
-
-
                 }
             }
 

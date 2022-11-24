@@ -10,6 +10,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.OpenAd
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
 import com.google.android.gms.ads.*
@@ -69,13 +70,10 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         /** Keep track of the time an app open ad is loaded to ensure you don't show an expired ad. */
         private var loadTime: Long = 0
 
-        /**
-         * Load an ad.
-         *
-         * @param context the context of the activity that loads the ad
-         */
         fun loadAd(context: Context) {
             if (!ENABLE_ADS)
+                return
+            if (!OpenAd.ad_status)
                 return
             // Do not load ad if there is an unused ad or one is already loading.
             if (isLoadingAd || isAdAvailable()) {
@@ -86,7 +84,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
             val request = AdRequest.Builder().build()
             AppOpenAd.load(
                 context,
-                context.getString(R.string.ad_open_app),
+                OpenAd.ad_id,
                 request,
                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
                 object : AppOpenAd.AppOpenAdLoadCallback() {

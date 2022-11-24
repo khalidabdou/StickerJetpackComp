@@ -1,5 +1,6 @@
 package com.example.stickerjetpackcomp.screens
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -8,8 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.Languages
 
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.HOME
+import com.example.stickerjetpackcomp.utils.NetworkResults
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import kotlinx.coroutines.delay
 
@@ -44,13 +46,53 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
         )
     )
 
-    LaunchedEffect(key1 = true) {
-        viewModel.setMessage(context)
-        startAnimation = true
-        delay(2000)
+//    LaunchedEffect(key1 = true) {
+//        viewModel.setMessage(context)
+//        startAnimation = true
+//        delay(2000)
+//        navController.popBackStack()
+//        navController.navigate(HOME.route)
+//        Toast.makeText(context,"${viewModel.adsList.value}",Toast.LENGTH_LONG).show()
+//
+//    }
+
+
+    if (viewModel.ads.value is NetworkResults.Loading) {
+        viewModel.getAds()
+    } else if (viewModel.ads.value is NetworkResults.Error) {
+        LaunchedEffect(key1 = true) {
+            viewModel.setMessage(context)
+            startAnimation = true
+            delay(2000)
+            navController.popBackStack()
+            navController.navigate(HOME.route)
+            //Toast.makeText(context, "${viewModel.adsList.value}", Toast.LENGTH_LONG).show()
+        }
+    } else {
+        LaunchedEffect(key1 = true) {
+            viewModel.setMessage(context)
+            startAnimation = true
+            delay(2000)
+            navController.popBackStack()
+            navController.navigate(HOME.route)
+            //Toast.makeText(context, "${viewModel.adsList.value}", Toast.LENGTH_LONG).show()
+
+        }
+    }
+
+
+
+    if (!viewModel.adsList.value.isNullOrEmpty()) {
+        Toast.makeText(context, "${viewModel.adsList.value}", Toast.LENGTH_LONG).show()
         navController.popBackStack()
         navController.navigate(HOME.route)
+    } else {
+        viewModel.getAds()
     }
+
+
+
+
 
     Splash(alpha = alphaAnim.value, message.value)
 }
@@ -59,8 +101,8 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
 fun Splash(alpha: Float, message: String) {
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
@@ -74,9 +116,13 @@ fun Splash(alpha: Float, message: String) {
         )
         Text(
             text = stringResource(id = R.string.app_name),
+            color = MaterialTheme.colorScheme.onBackground,
             style = TextStyle(fontSize = 19.sp)
         )
-        Text(text = message)
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
     }
 }
 
@@ -122,7 +168,8 @@ fun ItemLanguage(languages: Languages, onClick: (Int) -> Unit) {
 
             Text(
                 text = languages.name,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(4f)
             )

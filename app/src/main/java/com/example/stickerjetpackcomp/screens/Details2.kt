@@ -33,10 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.ui.theme.backgroundGradient
-
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
-import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -145,7 +144,7 @@ fun Details2(viewModel: StickerViewModel) {
         },
 
         bottomBar = {
-            if (ENABLE_ADS)
+            if (AdProvider.Banner.ad_status)
                 AdvertView()
         }
     ) { padding ->

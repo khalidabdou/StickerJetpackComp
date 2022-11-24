@@ -6,6 +6,6 @@ class Config {
     companion object {
         val BASE_URL: String = BuildConfig.API
         var PACKAGE: String = BuildConfig.PACKAGE_NAME
-        val ENABLE_ADS = false
+        val ENABLE_ADS = true
     }
 }

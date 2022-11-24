@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.stickerjetpackcomp.R
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -42,7 +42,7 @@ fun AdvertView(modifier: Modifier = Modifier) {
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = context.getString(R.string.ad_id_banner)
+                    adUnitId = Banner.ad_id
                     loadAd(AdRequest.Builder().build())
                 }
             }
