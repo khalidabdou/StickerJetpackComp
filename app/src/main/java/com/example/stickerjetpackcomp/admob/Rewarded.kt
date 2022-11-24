@@ -35,7 +35,6 @@ fun loadRewarded(context: Context) {
 
         })
 
-
 }
 
 fun showRewarded(context: Context) {

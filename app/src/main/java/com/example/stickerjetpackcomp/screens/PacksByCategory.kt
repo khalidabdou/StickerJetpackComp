@@ -51,7 +51,9 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
     }
 
     Scaffold(
-
+        modifier = Modifier.background(
+            MaterialTheme.colorScheme.background
+        ),
         topBar = {},
         bottomBar = {
             if (AdProvider.Banner.ad_status)
@@ -62,9 +64,11 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
                 .padding(it)
         ) {
+            if(!viewModel.apps.value.isNullOrEmpty()){
+                Text(text = "${viewModel.apps.value!!.size}")
+            }
             if (!viewModel.stickerByCat.value.isNullOrEmpty())
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(viewModel.stickerByCat.value!!.size) {

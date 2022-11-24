@@ -211,7 +211,6 @@ fun CategoryCompose(
     onClick: (Int) -> Unit
 ) {
     Box {
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(8.dp)
@@ -244,7 +243,6 @@ fun CategoryCompose(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-
         }
 
         Box(
@@ -265,7 +263,6 @@ fun CategoryCompose(
             )
         }
     }
-
 }
 
 

@@ -9,14 +9,11 @@ import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.data.Remote
-import com.example.stickerjetpackcomp.model.Ad
+import com.example.stickerjetpackcomp.model.*
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Inter
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.OpenAd
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Rewarded
-import com.example.stickerjetpackcomp.model.Ads
-import com.example.stickerjetpackcomp.model.Categories
-import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.HandleResponse
 import com.example.stickerjetpackcomp.utils.NetworkResults
@@ -48,8 +45,9 @@ class StickerViewModel @Inject constructor(
 
     private val catsFromApi = mutableStateOf<NetworkResults<Categories>>(NetworkResults.Loading())
 
-    val ads = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
+    val infos = mutableStateOf<NetworkResults<Ads>>(NetworkResults.Loading())
     val adsList = mutableStateOf<List<Ad>?>(null)
+    val apps = mutableStateOf<List<App>?>(null)
 
     private val _message = MutableStateFlow<String>("Good Morning")
     val message: StateFlow<String> get() = _message
@@ -96,16 +94,17 @@ class StickerViewModel @Inject constructor(
     }
 
     fun getAds() = viewModelScope.launch {
-        if (ads.value is NetworkResults.Error) {
+        if (infos.value is NetworkResults.Error) {
             //Log.e("ads", ads.value.toString())
         }
-        if (ads.value is NetworkResults.Loading) {
+        if (infos.value is NetworkResults.Loading) {
             try {
                 val response = remote.getAds()
                 val handle = HandleResponse(response)
-                ads.value = handle.handleResult()
+                infos.value = handle.handleResult()
 
-                ads.value.data!!.ads.forEach {
+                apps.value=infos.value.data!!.apps
+                infos.value.data!!.ads.forEach {
                     when (it.type) {
                         "banner" -> {
                             Banner = it

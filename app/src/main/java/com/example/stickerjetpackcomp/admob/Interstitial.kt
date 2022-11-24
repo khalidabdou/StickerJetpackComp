@@ -23,6 +23,8 @@ fun loadInterstitial(context: Context) {
     if (!ENABLE_ADS)
         return
 
+    if (!Inter.ad_status)
+        return
 
     InterstitialAd.load(
         context,

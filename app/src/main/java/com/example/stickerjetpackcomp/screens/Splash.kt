@@ -57,9 +57,9 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
 //    }
 
 
-    if (viewModel.ads.value is NetworkResults.Loading) {
+    if (viewModel.infos.value is NetworkResults.Loading) {
         viewModel.getAds()
-    } else if (viewModel.ads.value is NetworkResults.Error) {
+    } else if (viewModel.infos.value is NetworkResults.Error) {
         LaunchedEffect(key1 = true) {
             viewModel.setMessage(context)
             startAnimation = true
@@ -82,13 +82,6 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
 
 
 
-    if (!viewModel.adsList.value.isNullOrEmpty()) {
-        Toast.makeText(context, "${viewModel.adsList.value}", Toast.LENGTH_LONG).show()
-        navController.popBackStack()
-        navController.navigate(HOME.route)
-    } else {
-        viewModel.getAds()
-    }
 
 
 
