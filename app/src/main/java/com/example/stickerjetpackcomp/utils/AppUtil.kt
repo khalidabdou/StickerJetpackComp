@@ -49,9 +49,9 @@ object AppUtil {
         }
     }
 
-    fun privacy(context: Context) {
+    fun openUrl(context: Context,url:String) {
         val browserIntent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.privacy_url)))
+            Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(browserIntent)
     }
 

@@ -80,13 +80,6 @@ fun Splash(navController: NavHostController, viewModel: StickerViewModel) {
         }
     }
 
-
-
-
-
-
-
-
     Splash(alpha = alphaAnim.value, message.value)
 }
 

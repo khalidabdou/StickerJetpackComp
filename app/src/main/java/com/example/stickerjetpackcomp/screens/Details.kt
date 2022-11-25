@@ -31,7 +31,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
@@ -54,7 +53,9 @@ import coil.request.ImageRequest
 import com.example.stickerjetpackcomp.BuildConfig
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.AdProvider
+import com.example.stickerjetpackcomp.model.App
 import com.example.stickerjetpackcomp.sticker.StickerPack
+import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -66,6 +67,7 @@ import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
 import java.io.File
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
@@ -101,7 +103,7 @@ fun Details(viewModel: StickerViewModel) {
                 showRewarded(context)
             } else {
                 showInterstitial(context)
-                Toast.makeText(context, "try later", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, stringResource(R.string.later), Toast.LENGTH_LONG).show()
             }
         }
 
@@ -147,10 +149,10 @@ fun Details(viewModel: StickerViewModel) {
 
                 modifier = Modifier.padding(7.dp),  //avoid the oval shape
                 shape = RoundedCornerShape(6.dp),
-                border = BorderStroke(1.dp, Color.Green),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 contentPadding = PaddingValues(0.dp),  //avoid the little icon
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Green,
+                    contentColor = MaterialTheme.colorScheme.primary,
                 )
             ) {
 
@@ -251,9 +253,18 @@ fun Details(viewModel: StickerViewModel) {
                 editable = true
             })
         }
-        SingleSticker(context, sharedWebp.value, editable, onClick = {
-            editable = it
-        })
+        var app :App?=null
+        if (!viewModel.apps.value?.isNullOrEmpty()!!){
+            app=viewModel.apps.value?.get(Random.nextInt(0, viewModel.apps.value!!.size))
+        }
+        SingleSticker(
+            context,
+            sharedWebp.value,
+            editable,
+            app = app,
+            onClick = {
+                editable = it
+            })
 
         if (openDialog.value)
             AlertDialog(
@@ -261,7 +272,7 @@ fun Details(viewModel: StickerViewModel) {
                     openDialog.value = false
                 },
                 title = {
-                    Text(text = "Please wait")
+                    Text(text = stringResource(R.string.wait))
                 },
                 confirmButton = {
                     Box(modifier = Modifier.size(100.dp)) {
@@ -377,6 +388,7 @@ fun SingleSticker(
     context: Context,
     resource: String,
     editable: Boolean,
+    app: App?,
     onClick: (Boolean) -> Unit
 ) {
     val density = LocalDensity.current
@@ -410,7 +422,6 @@ fun SingleSticker(
                     .size(300.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(White)
-                    .blur(radius = 16.dp)
             ) {
 
                 Column {
@@ -426,6 +437,10 @@ fun SingleSticker(
                     ) {
                         OutlinedButton(
                             modifier = Modifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            ),
                             onClick = {
                                 val loader = ImageLoader(context)
                                 val req = ImageRequest.Builder(context)
@@ -445,11 +460,52 @@ fun SingleSticker(
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(
-                                text = "Share",
+                                text = stringResource(R.string.share_btn),
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
+                    //ad
+                    if (app != null)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.onBackground),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+
+                        ) {
+                            Text(
+                                text = "Ad",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            GlideImage(
+                                imageModel = "${app!!.image}",
+                                contentScale = ContentScale.Crop,
+                                placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
+                                error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(CircleShape)
+                            )
+                            Text(text = app!!.title, color = MaterialTheme.colorScheme.background)
+                            OutlinedButton(
+                                modifier = Modifier,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                ),
+                                onClick = {
+                                    AppUtil.openUrl(context, "${app.url}")
+                                }
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.install),
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
+                        }
                 }
             }
 

@@ -230,7 +230,7 @@ fun Details2(viewModel: StickerViewModel) {
                 editable = true
             })
         }
-        SingleSticker(context, sharedWebp.value, editable, onClick = {
+        SingleSticker(context, sharedWebp.value, editable, app = viewModel.apps.value?.get(0)  , onClick = {
             editable = it
         })
 

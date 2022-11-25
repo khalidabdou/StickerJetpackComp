@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">pelekat kucing</string>
+
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
+
+
+    <string name="share">Kongsi Apl</string>
+
+    <string name="send_to">dapatkan Pelekat Terbaik Untuk whatsapp \n</string>
+
+    <string name="categories">Kategori</string>
+    <string name="latest">Terkini</string>
+
+    <string name="morning">Selamat Pagi</string>
+    <string name="afternoon">Selamat petang</string>
+    <string name="evening">Selamat petang</string>
+    <string name="night">Selamat Malam</string>
+    <string name="privacy_url">pa.com</string>
+
+    <string name="add_to_whatsapp">Whatsapp</string>
+    <string name="Categories">Kategori</string>
+    <string name="packs">Semua Pek</string>
+    <string name="rate_title">Nilaikan kami</string>
+    <string name="sure">Adakah anda pasti mahu berhenti</string>
+    <string name="rate">Kadar</string>
+    <string name="quit">Berhenti</string>
+    <string name="install">pasang</string>
+    <string name="share_btn">Kongsi</string>
+    <string name="wait">Sila tunggu</string>
+    <string name="later">cuba Kemudian</string>
+</resources>

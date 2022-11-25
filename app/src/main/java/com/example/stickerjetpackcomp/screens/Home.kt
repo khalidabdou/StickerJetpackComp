@@ -1,7 +1,9 @@
 package com.example.stickerjetpackcomp.screens
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -12,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -65,17 +69,23 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             } catch (ex: Exception) {
                 Toast.makeText(context, "Please try again", Toast.LENGTH_LONG).show()
             }
-
-
     }
 
+
     val state = rememberLazyListState()
-    var editable by remember { mutableStateOf(false) }
+
+
+    var showAlertDialog by remember { mutableStateOf(false) }
+
+    val activity = (context as? Activity)
+    BackHandler {
+        showAlertDialog = true
+    }
+
 
 
     Scaffold(
         modifier = Modifier,
-
         topBar = {
             //var message = "Good Morning"
             Row(
@@ -179,6 +189,46 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 Spacer(modifier = Modifier.height(AdSize.BANNER.height.dp))
             }
 
+        }
+
+        if (showAlertDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showAlertDialog = false
+                },
+                title = {
+                    Text(
+                        text = stringResource(R.string.rate_title),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                text = {
+                    Text(
+                        stringResource(R.string.sure),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            AppUtil.openStore(context)
+
+                        }) {
+                        Text(stringResource(R.string.rate))
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            //showAlertDialog=false
+                            activity?.finish()
+                        }) {
+                        Text(stringResource(R.string.quit))
+                    }
+                },
+
+
+            )
         }
     }
 }

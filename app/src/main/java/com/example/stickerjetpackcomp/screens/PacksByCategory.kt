@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,9 +33,11 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
+import com.example.stickerjetpackcomp.utils.AppUtil.openUrl
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
@@ -64,13 +68,73 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(6.dp)
         ) {
-            if(!viewModel.apps.value.isNullOrEmpty()){
-                Text(text = "${viewModel.apps.value!!.size}")
-            }
             if (!viewModel.stickerByCat.value.isNullOrEmpty())
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    if (!viewModel.apps.value.isNullOrEmpty()) {
+                        val app=Random.nextInt(0,viewModel.apps.value!!.size)
+                        item {
+
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(150.dp)
+                                    .padding(it)
+                                    ,
+                                border = BorderStroke(1.dp,MaterialTheme.colorScheme.primary)
+
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+
+                                ) {
+                                    GlideImage(
+                                        imageModel = "${viewModel.apps?.value!![app]?.image}",
+                                        // Crop, Fit, Inside, FillHeight, FillWidth, None
+                                        contentScale = ContentScale.FillWidth,
+                                        // shows a placeholder while loading the image.
+                                        placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
+                                        // shows an error ImageBitmap when the request failed.
+                                        error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+
+                                    Text(
+                                        text = "Ad",
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.padding(3.dp)
+                                    )
+                                    Box(modifier = Modifier.fillMaxWidth().align(Alignment.Center).background(MaterialTheme.colorScheme.background.copy(0.5f))){
+                                        Text(
+                                            text =  "${viewModel.apps?.value!![app]?.title}",
+                                            color = MaterialTheme.colorScheme.onBackground,
+                                            style = MaterialTheme.typography.titleLarge,
+                                            modifier = Modifier.align(Alignment.Center)
+                                        )
+                                    }
+
+                                    Button(
+                                        onClick = {
+                                            openUrl(context,"${viewModel.apps?.value!![app]?.url}")
+                                        },
+                                        modifier = Modifier.align(
+                                            Alignment.BottomEnd
+                                        ),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = MaterialTheme.colorScheme.primary.copy(0.9f),
+                                            contentColor = MaterialTheme.colorScheme.onPrimary
+                                        )
+
+                                    ) {
+                                        Icon(Icons.Default.ArrowDropDown, contentDescription = "")
+                                        Text(text = "Download")
+                                    }
+                                }
+                            }
+                        }
+                    }
                     items(viewModel.stickerByCat.value!!.size) {
                         Pack(viewModel.stickerByCat.value!![it]) {
                             viewModel.setDetailPack(it)

@@ -1,13 +1,19 @@
-<resources>
-    <string name="app_name" translatable="false">cats Stickers</string>
 
+<!DOCTYPE resources [
+    <!ENTITY appname "Cats Stickers">
+    ]>
+<resources>
+
+    <string name="app_name">&appname;</string>
 
     <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
+
 
     <string name="share">Share App</string>
 
-    <string name="send_to">get Best Stickers For whatsapp \n </string>
-    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="send_to">Get Best Stickers For whatsapp ( &appname; ) \n </string>
+
     <string name="categories">Categories</string>
     <string name="latest">Latest</string>
 
@@ -17,9 +23,17 @@
     <string name="night">Good Night</string>
     <string name="privacy_url">pa.com</string>
 
-    <string name="add_to_whatsapp">Add To Whatsapp</string>
+    <string name="add_to_whatsapp">Whatsapp</string>
     <string name="Categories">Categories</string>
     <string name="packs">All Packs</string>
+    <string name="rate_title">Rate us</string>
+    <string name="sure">Are you sure you want quit</string>
+    <string name="rate">Rate</string>
+    <string name="quit">Quit</string>
+    <string name="install">install</string>
+    <string name="share_btn">Share</string>
+    <string name="wait">Please wait</string>
+    <string name="later">try later</string>
 
 
 </resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="app_name">Stiker kucing</string>
+
+    <string name="share">Bagikan Aplikasi</string>
+
+    <string name="send_to">dapatkan Stiker Terbaik Untuk whatsapp \n</string>
+
+    <string name="categories">Kategori</string>
+    <string name="latest">Terbaru</string>
+
+    <string name="morning">Selamat pagi</string>
+    <string name="afternoon">Selamat siang</string>
+    <string name="evening">Selamat malam</string>
+    <string name="night">Selamat malam</string>
+    <string name="privacy_url">pa.com</string>
+
+    <string name="add_to_whatsapp">ada apa</string>
+    <string name="Categories">Kategori</string>
+    <string name="packs">Semua Paket</string>
+    <string name="rate_title">Nilai kami</string>
+    <string name="sure">Apakah Anda yakin ingin berhenti</string>
+    <string name="rate">Kecepatan</string>
+    <string name="quit">Berhenti</string>
+    <string name="install">Install</string>
+    <string name="share_btn">Membagikan</string>
+    <string name="wait">Mohon tunggu</string>
+    <string name="later">coba nanti</string>
+
+
+</resources>

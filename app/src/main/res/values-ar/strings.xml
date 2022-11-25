@@ -1,11 +1,16 @@
+
+<!DOCTYPE resources [
+    <!ENTITY appname "ملصقات اسلامية">
+    ]>
 <resources>
 
-    <string name="app_name" translatable="false">ملصقات</string>
+    <string name="app_name" >&appname;</string>
 
 
     <string name="share">شارك التطبيق</string>
 
-    <string name="send_to">احصل على أفضل ملصقات لتطبيق</string>
+    <string name="send_to"> احصل على أفضل ملصقات لتطبيق &appname; whatsapp \n</string>
+    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
     <string name="categories">فئات</string>
     <string name="latest">آخر</string>
 
@@ -14,8 +19,17 @@
     <string name="evening">مساء الخير</string>
     <string name="night">طاب مساؤك</string>
     <string name="privacy_url">pa.com</string>
-    <string name="add_to_whatsapp">أضف إلى الواتساب</string>
+
+    <string name="add_to_whatsapp">ال WhatsApp</string>
     <string name="Categories">فئات</string>
     <string name="packs">كل الحزم</string>
+    <string name="rate_title">قيمنا</string>
+    <string name="sure">هل أنت متأكد أنك تريد الإقلاع عن التدخين</string>
+    <string name="rate">معدل</string>
+    <string name="quit">يترك</string>
+    <string name="install">تثبيت</string>
+    <string name="share_btn">يشارك</string>
+    <string name="wait">أرجو الإنتظار</string>
+    <string name="later">حاول لاحقا</string>
 
 </resources>
