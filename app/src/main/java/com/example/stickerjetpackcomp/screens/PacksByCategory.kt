@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -75,7 +74,6 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
                     if (!viewModel.apps.value.isNullOrEmpty()) {
                         val app=Random.nextInt(0,viewModel.apps.value!!.size)
                         item {
-
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -91,7 +89,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 
                                 ) {
                                     GlideImage(
-                                        imageModel = "${viewModel.apps?.value!![app]?.image}",
+                                        imageModel = "${viewModel.apps.value!![app].image}",
                                         // Crop, Fit, Inside, FillHeight, FillWidth, None
                                         contentScale = ContentScale.FillWidth,
                                         // shows a placeholder while loading the image.
@@ -106,9 +104,12 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
                                         color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(3.dp)
                                     )
-                                    Box(modifier = Modifier.fillMaxWidth().align(Alignment.Center).background(MaterialTheme.colorScheme.background.copy(0.5f))){
+                                    Box(modifier = Modifier
+                                        .fillMaxWidth()
+                                        .align(Alignment.Center)
+                                        .background(MaterialTheme.colorScheme.background.copy(0.5f))){
                                         Text(
-                                            text =  "${viewModel.apps?.value!![app]?.title}",
+                                            text = "${viewModel.apps.value!![app].title}",
                                             color = MaterialTheme.colorScheme.onBackground,
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier.align(Alignment.Center)
@@ -117,7 +118,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 
                                     Button(
                                         onClick = {
-                                            openUrl(context,"${viewModel.apps?.value!![app]?.url}")
+                                            openUrl(context, "${viewModel.apps.value!![app].url}")
                                         },
                                         modifier = Modifier.align(
                                             Alignment.BottomEnd
@@ -154,8 +155,6 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
 @Composable
 fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
     var visible by remember { mutableStateOf(false) }
-    val density = LocalDensity.current
-    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -182,18 +181,16 @@ fun Pack(sticker: StickerPack, onClick: (StickerPack) -> Unit) {
                     .clip(
                         CircleShape
                     )
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(10.dp)
             ) {
                 GlideImage(
                     imageModel = "${sticker.tray_image_file}",
-                    // Crop, Fit, Inside, FillHeight, FillWidth, None
                     contentScale = ContentScale.Crop,
-                    // shows a placeholder while loading the image.
                     placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
-                    // shows an error ImageBitmap when the request failed.
                     error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
                     modifier = Modifier.size(70.dp)
+
                 )
             }
             Spacer(modifier = Modifier.width(5.dp))

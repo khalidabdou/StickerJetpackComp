@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.ui.theme.backgroundGradient
-import com.example.stickerjetpackcomp.ui.theme.colors
-
 import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
@@ -111,7 +109,6 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
                     if (!viewModel.categories.value.isNullOrEmpty())
                         items(viewModel.categories.value!!.size) {
                             CategoryCompose(
-                                color = colors[it],
                                 cat = viewModel.categories.value!![it],
                                 packagename = packagename,
                                 onClick = {

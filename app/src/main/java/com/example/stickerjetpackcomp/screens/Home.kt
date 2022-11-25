@@ -14,8 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -41,7 +39,6 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
 import com.example.stickerjetpackcomp.model.Category
 import com.example.stickerjetpackcomp.sticker.StickerPack
-import com.example.stickerjetpackcomp.ui.theme.colors
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.SHAPE
 import com.example.stickerjetpackcomp.utils.AppUtil
@@ -99,7 +96,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             ) {
                 Text(
                     text = message.value,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .padding(start = 8.dp)
@@ -132,12 +129,12 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 )
         ) {
             item {
-                Text(
-                    text = stringResource(R.string.Categories),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+//                Text(
+//                    text = stringResource(R.string.Categories),
+//                    style = MaterialTheme.typography.titleLarge,
+//                    color = MaterialTheme.colorScheme.secondary,
+//                    modifier = Modifier.padding(start = 8.dp)
+//                )
                 val listState = rememberLazyListState()
                 LazyRow(
                     state = listState,
@@ -146,7 +143,6 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                     if (!viewModel.categories.value.isNullOrEmpty())
                         items(viewModel.categories.value!!.size) {
                             CategoryCompose(
-                                color = colors[it],
                                 cat = viewModel.categories.value!![it],
                                 packagename = packagename,
                                 onClick = {
@@ -255,7 +251,6 @@ fun AppBarIcon(icon: Int, onClick: () -> Unit) {
 
 @Composable
 fun CategoryCompose(
-    color: Color,
     cat: Category,
     packagename: String,
     onClick: (Int) -> Unit
