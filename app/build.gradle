@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 
@@ -14,11 +15,11 @@ android {
         noCompress "webp"
     }
     defaultConfig {
-        applicationId "com.arabic4w.stickers"
+        applicationId "com.islamic4wt.stickers"
         minSdk 21
         targetSdk 33
-        versionCode 6
-        versionName "6.0"
+        versionCode 5
+        versionName "5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -129,8 +130,5 @@ dependencies {
     implementation "androidx.compose.material3:material3:1.1.0-alpha02"
     implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha12"
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
-
-
-
 
 }
