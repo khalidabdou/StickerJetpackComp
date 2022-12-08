@@ -23,6 +23,7 @@ import com.google.android.gms.ads.AdView
 @Composable
 fun AdvertView(modifier: Modifier = Modifier) {
     val isInEditMode = LocalInspectionMode.current
+
     if (isInEditMode) {
         Text(
             modifier = modifier
@@ -33,7 +34,7 @@ fun AdvertView(modifier: Modifier = Modifier) {
             color = White,
             text = "",
         )
-    } else {
+    } else if (Banner.ad_status) {
         AndroidView(
             modifier = modifier
                 .fillMaxWidth()

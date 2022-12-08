@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build.VERSION.SDK_INT
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -55,7 +53,6 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.model.App
 import com.example.stickerjetpackcomp.sticker.StickerPack
-import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_AUTHORITY
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_ID
 import com.example.stickerjetpackcomp.utils.StickersUtils.Companion.EXTRA_STICKER_PACK_NAME
@@ -272,7 +269,24 @@ fun Details(viewModel: StickerViewModel) {
                     openDialog.value = false
                 },
                 title = {
-                    Text(text = stringResource(R.string.wait))
+                    Text(
+                        text = stringResource(R.string.wait),
+                        style = MaterialTheme.typography.titleMedium
+
+                    )
+                },
+                text = {
+                    if (app != null)
+                        Box(
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .border(
+                                    2.dp, MaterialTheme.colorScheme.primary,
+                                    RoundedCornerShape(6.dp)
+                                )
+                        ) {
+                            AdBannerApp(app)
+                        }
                 },
                 confirmButton = {
                     Box(modifier = Modifier.size(100.dp)) {
@@ -467,44 +481,15 @@ fun SingleSticker(
                     }
                     //ad
                     if (app != null)
-                        Row(
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.onBackground),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-
-                        ) {
-                            Text(
-                                text = "Ad",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            GlideImage(
-                                imageModel = "${app!!.image}",
-                                contentScale = ContentScale.Crop,
-                                placeHolder = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
-                                error = ImageBitmap.imageResource(R.mipmap.ic_launcher_foreground),
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .clip(CircleShape)
-                            )
-                            Text(text = app!!.title, color = MaterialTheme.colorScheme.background)
-                            OutlinedButton(
-                                modifier = Modifier,
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                                ),
-                                onClick = {
-                                    AppUtil.openUrl(context, "${app.url}")
-                                }
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.install),
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                .padding(6.dp)
+                                .border(
+                                    2.dp, MaterialTheme.colorScheme.primary,
+                                    RoundedCornerShape(6.dp)
                                 )
-                            }
+                        ) {
+                            AdBannerApp(app)
                         }
                 }
             }

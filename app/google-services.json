@@ -65,6 +65,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1049948455998:android:c1ea36265a4f4034ea3d6f",
+        "android_client_info": {
+          "package_name": "com.emojis.forwtsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4wqbBs1wivQT6uetYR0xSzhulvW9CyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1049948455998:android:7df8726e2cbf672aea3d6f",
         "android_client_info": {
           "package_name": "com.everyday.stickers"
@@ -97,6 +126,64 @@
         "mobilesdk_app_id": "1:1049948455998:android:e6ccdd1c74f4e4abea3d6f",
         "android_client_info": {
           "package_name": "com.islamic4wt.stickers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4wqbBs1wivQT6uetYR0xSzhulvW9CyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049948455998:android:d610feb73f10c4b6ea3d6f",
+        "android_client_info": {
+          "package_name": "com.stickers.thai.for.whatsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4wqbBs1wivQT6uetYR0xSzhulvW9CyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049948455998-rsrkipt6qdpqu0plrcaliaj275p36npg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049948455998:android:432a7ffc6d8a0766ea3d6f",
+        "android_client_info": {
+          "package_name": "com.wastickerappsmochi.mochipeachcat.mochistickers.stickersforwhatsapp"
         }
       },
       "oauth_client": [

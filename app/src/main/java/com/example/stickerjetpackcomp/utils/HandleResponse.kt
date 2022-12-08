@@ -25,6 +25,5 @@ class HandleResponse<T>(private val response: Response<T?>?) {
         }
     }
 
-
 }
 

@@ -48,6 +48,7 @@ import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.google.android.gms.ads.AdSize
 import com.ringtones.compose.feature.admob.AdvertView
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.random.Random
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -194,15 +195,17 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 },
                 title = {
                     Text(
-                        text = stringResource(R.string.rate_title),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                text = {
-                    Text(
                         stringResource(R.string.sure),
                         style = MaterialTheme.typography.bodyMedium
                     )
+                },
+                text = {
+                    val apps = viewModel.apps.value
+
+                    if (!apps.isNullOrEmpty()) {
+                        val app = apps.get(Random.nextInt(0, apps.size))
+                        AdBannerApp(app)
+                    }
                 },
                 confirmButton = {
                     Button(
@@ -224,7 +227,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
                 },
 
 
-            )
+                )
         }
     }
 }

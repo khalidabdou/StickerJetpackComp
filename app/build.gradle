@@ -15,11 +15,11 @@ android {
         noCompress "webp"
     }
     defaultConfig {
-        applicationId "com.islamic4wt.stickers"
+        applicationId "com.stickers.thai.for.whatsapp"
         minSdk 21
         targetSdk 33
-        versionCode 5
-        versionName "5.0"
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -120,8 +120,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
 
 
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
@@ -130,5 +130,6 @@ dependencies {
     implementation "androidx.compose.material3:material3:1.1.0-alpha02"
     implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha12"
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
+
 
 }
