@@ -11,9 +11,12 @@ import com.example.stickerjetpackcomp.R
 import com.example.stickerjetpackcomp.data.Remote
 import com.example.stickerjetpackcomp.model.*
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Banner
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.BannerFAN
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Inter
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.InterFAN
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.OpenAd
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.Rewarded
+import com.example.stickerjetpackcomp.model.AdProvider.Companion.RewardedFAN
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.HandleResponse
 import com.example.stickerjetpackcomp.utils.NetworkResults
@@ -121,6 +124,19 @@ class StickerViewModel @Inject constructor(
                         "rewarded" -> {
                             Rewarded = it
                             Log.d("ads", OpenAd.toString())
+                        }
+                        "banner_fan" -> {
+                            Log.d("FAN", it.ad_id)
+                            BannerFAN = it
+                            //Log.d("ads", Banner.toString())
+                        }
+                        "inter_fan" -> {
+                            InterFAN=it
+                            //Log.d("ads", Inter.toString())
+                        }
+                        "rewarded_fan" -> {
+                            RewardedFAN=it
+                            //Log.d("ads", Inter.toString())
                         }
                     }
                 }

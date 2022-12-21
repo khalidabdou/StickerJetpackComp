@@ -45,6 +45,8 @@ import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
+import com.wishes.jetpackcompose.admob.Facebook.Companion.showInterstitial
+import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
 import java.io.File
 
 @ExperimentalAnimationApi
@@ -79,7 +81,7 @@ fun Details2(viewModel: StickerViewModel) {
 
                 showRewarded(context)
             } else {
-                showInterstitial(context)
+                showInterstitial(context as Activity)
                 Toast.makeText(context, "try later", Toast.LENGTH_LONG).show()
             }
         }
@@ -144,8 +146,7 @@ fun Details2(viewModel: StickerViewModel) {
         },
 
         bottomBar = {
-            if (AdProvider.Banner.ad_status)
-                AdvertView()
+            AdvertViewAdmob()
         }
     ) { padding ->
         Column(

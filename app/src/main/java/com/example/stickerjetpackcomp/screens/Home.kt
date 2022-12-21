@@ -46,7 +46,8 @@ import com.example.stickerjetpackcomp.utils.Config
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
 import com.google.android.gms.ads.AdSize
-import com.ringtones.compose.feature.admob.AdvertView
+import com.ringtones.compose.feature.admob.AdvertViewAdmob
+
 import com.skydoves.landscapist.glide.GlideImage
 import kotlin.random.Random
 
@@ -116,8 +117,7 @@ fun Home(navController: NavController, viewModel: StickerViewModel) {
             }
         },
         bottomBar = {
-            if (Banner.ad_status)
-                AdvertView()
+            AdvertViewAdmob()
         }
 
     ) {

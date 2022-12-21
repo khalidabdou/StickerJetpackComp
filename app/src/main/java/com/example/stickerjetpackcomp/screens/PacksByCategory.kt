@@ -31,7 +31,7 @@ import com.example.stickerjetpackcomp.model.AdProvider
 import com.example.stickerjetpackcomp.sticker.StickerPack
 import com.example.stickerjetpackcomp.utils.AppTheme.Companion.DETAILS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
-import com.ringtones.compose.feature.admob.AdvertView
+import com.ringtones.compose.feature.admob.AdvertViewAdmob
 import com.skydoves.landscapist.glide.GlideImage
 import kotlin.random.Random
 
@@ -56,8 +56,7 @@ fun PacksByCategory(navController: NavController, viewModel: StickerViewModel) {
         ),
         topBar = {},
         bottomBar = {
-            if (AdProvider.Banner.ad_status)
-                AdvertView()
+            AdvertViewAdmob()
         }
     ) {
 

@@ -13,6 +13,8 @@ import com.downloader.PRDownloaderConfig
 import com.example.stickerjetpackcomp.model.AdProvider.Companion.OpenAd
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.utils.core.utils.hawk.Hawk
+import com.facebook.ads.AdSettings
+import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.appopen.AppOpenAd
 import dagger.hilt.android.HiltAndroidApp
@@ -44,6 +46,8 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
+        AudienceNetworkAds.initialize(this);
+        AdSettings.addTestDevice("f77c9557-73dd-4096-8960-85bf9f46e2bd")
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */

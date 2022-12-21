@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">pelekat kucing</string>
-
-    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="pre_fix" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="app_name">Mochi Cat Stickers</string>
 
 
     <string name="share">Kongsi Apl</string>

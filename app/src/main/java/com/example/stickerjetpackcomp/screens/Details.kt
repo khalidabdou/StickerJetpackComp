@@ -63,6 +63,8 @@ import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.green.china.sticker.core.extensions.others.getLastBitFromUrl
 import com.ringtones.compose.feature.admob.*
 import com.skydoves.landscapist.glide.GlideImage
+import com.wishes.jetpackcompose.admob.Facebook.Companion.showInterstitial
+import com.wishes.jetpackcompose.admob.showInterstitialAfterClick
 import java.io.File
 import kotlin.random.Random
 
@@ -99,7 +101,7 @@ fun Details(viewModel: StickerViewModel) {
 
                 showRewarded(context)
             } else {
-                showInterstitial(context)
+                showInterstitial(context as Activity)
                 //Toast.makeText(context, stringResource(R.string.later), Toast.LENGTH_LONG).show()
             }
         }
@@ -163,8 +165,7 @@ fun Details(viewModel: StickerViewModel) {
         },
 
         bottomBar = {
-            if (AdProvider.Banner.ad_status)
-                AdvertView()
+            AdvertViewAdmob()
         }
     ) { padding ->
         Column(

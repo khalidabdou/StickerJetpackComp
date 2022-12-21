@@ -58,5 +58,30 @@ class AdProvider {
             false,
             null,
         )
+        var BannerFAN: Ad = Ad(
+            0,
+            "",
+            "banner_fan",
+            false,
+            null,
+        )
+
+        var InterFAN: Ad = Ad(
+            0,
+            "",
+            "inter_fan",
+            false,
+            10,
+        )
+
+        //rewarded_fan
+        var RewardedFAN: Ad = Ad(
+            0,
+            "",
+            "rewarded_fan",
+            false,
+            10,
+        )
+
     }
 }

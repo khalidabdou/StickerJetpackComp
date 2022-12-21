@@ -1,6 +1,6 @@
 
 <!DOCTYPE resources [
-    <!ENTITY appname "ملصقات ">
+    <!ENTITY appname "ملصقات اسلامية">
     ]>
 <resources>
 
@@ -24,12 +24,12 @@
     <string name="Categories">فئات</string>
     <string name="packs">كل الحزم</string>
     <string name="rate_title">قيمنا</string>
-    <string name="sure">هل أنت متأكد أنك تريد الإقلاع عن التدخين</string>
-    <string name="rate">معدل</string>
-    <string name="quit">يترك</string>
+    <string name="sure">هل أنت متأكد أنك تريد الخروج</string>
+    <string name="rate">تقيم</string>
+    <string name="quit">مغادرة</string>
     <string name="install">تثبيت</string>
-    <string name="share_btn">يشارك</string>
-    <string name="wait">أرجو الإنتظار</string>
+    <string name="share_btn">شارك</string>
+    <string name="wait">المرجو الإنتظار</string>
     <string name="later">حاول لاحقا</string>
 
 </resources>

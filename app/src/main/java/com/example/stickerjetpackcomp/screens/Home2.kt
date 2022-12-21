@@ -28,7 +28,7 @@ import com.example.stickerjetpackcomp.utils.AppUtil
 import com.example.stickerjetpackcomp.utils.Config.Companion.ENABLE_ADS
 import com.example.stickerjetpackcomp.viewModel.StickerViewModel
 import com.example.testfriends_jetpackcompose.navigation.Screen
-import com.ringtones.compose.feature.admob.AdvertView
+import com.ringtones.compose.feature.admob.AdvertViewAdmob
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -123,8 +123,7 @@ fun Home2(navController: NavController, viewModel: StickerViewModel) {
                         }
                     }
                 }
-                if (ENABLE_ADS)
-                    AdvertView()
+                AdvertViewAdmob()
             }
 
         }
